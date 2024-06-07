@@ -49,6 +49,7 @@ android {
         implementation 'androidx.activity:activity:1.8.0'
         implementation 'com.google.zxing:core:3.2.0'
         androidTestImplementation 'androidx.test:runner:1.1.1'
+        implementation 'me.dm7.barcodescanner:zxing:1.9.8'
         implementation('com.journeyapps:zxing-android-embedded:4.3.0') { transitive = false }
         implementation 'com.google.zxing:core:3.5.1'
         implementation 'com.google.code.gson:gson:2.8.6'
