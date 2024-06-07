@@ -1,7 +1,7 @@
 package com.paolodoom.gpos720_printer;
 
 public class ConfigPrint {
-
+    //TODO: fix warnings
     private String fonte = "NORMAL";
     private String alinhamento;
     private int tamanho;

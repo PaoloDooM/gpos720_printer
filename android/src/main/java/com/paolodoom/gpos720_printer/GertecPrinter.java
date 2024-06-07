@@ -25,7 +25,7 @@ import br.com.gertec.gedi.structs.GEDI_PRNTR_st_BarCodeConfig;
 import br.com.gertec.gedi.structs.GEDI_PRNTR_st_PictureConfig;
 import br.com.gertec.gedi.structs.GEDI_PRNTR_st_StringConfig;
 public class GertecPrinter {
-
+    //TODO: fix warnings
     ICL icl = null;
     // Definições
     private final String IMPRESSORA_ERRO = "Impressora com erro.";

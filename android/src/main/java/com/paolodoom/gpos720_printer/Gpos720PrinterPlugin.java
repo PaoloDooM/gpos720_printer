@@ -21,16 +21,16 @@ import br.com.gertec.gedi.exceptions.GediException;
  * Gpos720PrinterPlugin
  */
 public class Gpos720PrinterPlugin implements FlutterPlugin, MethodCallHandler {
+    //TODO: fix warnings
     private MethodChannel channel;
-    private Context context;
     private GertecPrinter gertecPrinter;
-    private ConfigPrint configPrint = new ConfigPrint();
+    private final ConfigPrint configPrint = new ConfigPrint();
 
     @Override
     public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
         channel = new MethodChannel(flutterPluginBinding.getBinaryMessenger(), "gpos720_printer");
         channel.setMethodCallHandler(this);
-        context = flutterPluginBinding.getApplicationContext();
+        Context context = flutterPluginBinding.getApplicationContext();
         gertecPrinter = new GertecPrinter(context);
         gertecPrinter.setConfigImpressao(configPrint);
     }
