@@ -15,7 +15,6 @@ import androidx.annotation.NonNull;
 
 import java.util.List;
 import java.io.ByteArrayInputStream;
-import java.util.Objects;
 
 /**
  * Gpos720PrinterPlugin
@@ -46,6 +45,7 @@ public class Gpos720PrinterPlugin implements FlutterPlugin, MethodCallHandler {
                     result.success(gertecPrinter.isImpressoraOK());
                 } catch (Exception e) {
                     Log.e("Gpos720_printer", "checarImpressora: " + e.getMessage(), e);
+                    result.error("" + e.hashCode(), e.getLocalizedMessage(), e);
                 }
                 break;
             case "fimImpressao":
@@ -54,6 +54,7 @@ public class Gpos720PrinterPlugin implements FlutterPlugin, MethodCallHandler {
                     result.success("Finalizou impressao");
                 } catch (Exception e) {
                     Log.e("Gpos720_printer", "fimimpressao: " + e.getMessage(), e);
+                    result.error("" + e.hashCode(), e.getLocalizedMessage(), e);
                 }
                 break;
             case "avancaLinha":
@@ -61,6 +62,7 @@ public class Gpos720PrinterPlugin implements FlutterPlugin, MethodCallHandler {
                     gertecPrinter.avancaLinha(call.argument("quantLinhas"));
                 } catch (Exception e) {
                     Log.e("Gpos720_printer", "avancaLinha: " + e.getMessage(), e);
+                    result.error("" + e.hashCode(), e.getLocalizedMessage(), e);
                 }
                 break;
             case "imprimir":
@@ -106,6 +108,7 @@ public class Gpos720PrinterPlugin implements FlutterPlugin, MethodCallHandler {
                     }
                 } catch (Exception e) {
                     Log.e("Gpos720_printer", "imprimir: " + e.getMessage(), e);
+                    result.error("" + e.hashCode(), e.getLocalizedMessage(), e);
                 }
                 break;
             default:
