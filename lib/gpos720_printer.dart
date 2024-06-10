@@ -1,4 +1,5 @@
 import 'dart:typed_data';
+import 'package:gpos720_printer/constants.dart';
 import 'package:gpos720_printer/text_options.dart';
 import 'alignment_types.dart';
 import 'barcode_types.dart';
@@ -22,16 +23,19 @@ class Gpos720Printer {
     return Gpos720PrinterPlatform.instance.avancaLinha(quantLinhas);
   }
 
-  Future<String?> imprimirTexto(String mensagem, TextOptions options, int size,
-      Font font, AlignmentTypes align) {
-    return Gpos720PrinterPlatform.instance
-        .imprimirTexto(mensagem, options, size, font, align);
+  Future<String?> imprimirTexto(String mensagem,
+      {TextOptions? options,
+      int size = defaultFontSize,
+      Font? font,
+      AlignmentTypes align = AlignmentTypes.left}) {
+    return Gpos720PrinterPlatform.instance.imprimirTexto(mensagem,
+        options: options, size: size, font: font, align: align);
   }
 
-  Future<String?> imprimirImagem(
-      Uint8List data, int width, int height, AlignmentTypes align) {
+  Future<String?> imprimirImagem(Uint8List data, int width, int height,
+      {AlignmentTypes align = AlignmentTypes.center}) {
     return Gpos720PrinterPlatform.instance
-        .imprimirImagem(data, width, height, align);
+        .imprimirImagem(data, width, height, align: align);
   }
 
   Future<String?> imprimirCodigoDeBarra(

@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:gpos720_printer/barcode_types.dart';
+import 'package:gpos720_printer/constants.dart';
 import 'package:gpos720_printer/text_options.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 import 'alignment_types.dart';
@@ -44,14 +45,17 @@ abstract class Gpos720PrinterPlatform extends PlatformInterface {
         'avancaLinha(int quantLinhas) has not been implemented.');
   }
 
-  Future<String?> imprimirTexto(String mensagem, TextOptions options, int size,
-      Font font, AlignmentTypes align) {
+  Future<String?> imprimirTexto(String mensagem,
+      {TextOptions? options,
+      int size = defaultFontSize,
+      Font? font,
+      AlignmentTypes align = AlignmentTypes.left}) {
     throw UnimplementedError(
         'imprimirTexto(String mensagem, TextOptions options, int size, Font font, AlignmentTypes align) has not been implemented.');
   }
 
-  Future<String?> imprimirImagem(
-      Uint8List data, int width, int height, AlignmentTypes align) {
+  Future<String?> imprimirImagem(Uint8List data, int width, int height,
+      {AlignmentTypes align = AlignmentTypes.center}) {
     throw UnimplementedError(
         'imprimirImagem(Uint8List data, int width, int height, AlignmentTypes align) has not been implemented.');
   }

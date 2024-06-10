@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:gpos720_printer/constants.dart';
 import 'package:gpos720_printer/print_types.dart';
 import 'package:gpos720_printer/text_options.dart';
 import 'alignment_types.dart';
@@ -35,21 +36,24 @@ class MethodChannelGpos720Printer extends Gpos720PrinterPlatform {
   }
 
   @override
-  Future<String?> imprimirTexto(String mensagem, TextOptions options, int size,
-      Font font, AlignmentTypes align) {
+  Future<String?> imprimirTexto(String mensagem,
+      {TextOptions? options,
+      int size = defaultFontSize,
+      Font? font,
+      AlignmentTypes align = AlignmentTypes.left}) {
     return methodChannel.invokeMethod<String>('imprimir', {
       "tipoImpressao": PrintTypes.texto.getLabel(),
       "mensagem": mensagem,
-      "options": options.toList(),
+      "options": options?.toList() ?? TextOptions(),
       "size": size,
-      "font": font.fontName,
+      "font": font?.fontName ?? Font(),
       "align": align.getLabel()
     });
   }
 
   @override
-  Future<String?> imprimirImagem(
-      Uint8List data, int width, int height, AlignmentTypes align) {
+  Future<String?> imprimirImagem(Uint8List data, int width, int height,
+      {AlignmentTypes align = AlignmentTypes.center}) {
     return methodChannel.invokeMethod<String>('imprimir', {
       "tipoImpressao": PrintTypes.imagem.getLabel(),
       "data": data,

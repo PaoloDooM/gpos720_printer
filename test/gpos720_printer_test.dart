@@ -2,6 +2,7 @@ import 'dart:typed_data';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:gpos720_printer/alignment_types.dart';
 import 'package:gpos720_printer/barcode_types.dart';
+import 'package:gpos720_printer/constants.dart';
 import 'package:gpos720_printer/font_model.dart';
 import 'package:gpos720_printer/gpos720_printer.dart';
 import 'package:gpos720_printer/gpos720_printer_platform_interface.dart';
@@ -41,15 +42,18 @@ class MockGpos720PrinterPlatform
   }
 
   @override
-  Future<String?> imprimirImagem(
-      Uint8List data, int width, int height, AlignmentTypes align) {
+  Future<String?> imprimirImagem(Uint8List data, int width, int height,
+      {AlignmentTypes align = AlignmentTypes.center}) {
     // TODO: implement imprimirImagem
     return Future.value("");
   }
 
   @override
-  Future<String?> imprimirTexto(String mensagem, TextOptions options, int size,
-      Font font, AlignmentTypes align) {
+  Future<String?> imprimirTexto(String mensagem,
+      {TextOptions? options,
+      int size = defaultFontSize,
+      Font? font,
+      AlignmentTypes align = AlignmentTypes.left}) {
     // TODO: implement imprimirTexto
     return Future.value("");
   }

@@ -45,7 +45,7 @@ public class Gpos720PrinterPlugin implements FlutterPlugin, MethodCallHandler {
                     result.success(gertecPrinter.isImpressoraOK());
                 } catch (Exception e) {
                     Log.e("Gpos720_printer", "checarImpressora: " + e.getMessage(), e);
-                    result.error("" + e.hashCode(), e.getLocalizedMessage(), e);
+                    result.error("Error on \"checarImpressora\"", e.getLocalizedMessage(), e);
                 }
                 break;
             case "fimImpressao":
@@ -54,7 +54,7 @@ public class Gpos720PrinterPlugin implements FlutterPlugin, MethodCallHandler {
                     result.success("Finalizou impressao");
                 } catch (Exception e) {
                     Log.e("Gpos720_printer", "fimimpressao: " + e.getMessage(), e);
-                    result.error("" + e.hashCode(), e.getLocalizedMessage(), e);
+                    result.error("Error on \"fimImpressao\"", e.getLocalizedMessage(), e);
                 }
                 break;
             case "avancaLinha":
@@ -62,7 +62,7 @@ public class Gpos720PrinterPlugin implements FlutterPlugin, MethodCallHandler {
                     gertecPrinter.avancaLinha(call.argument("quantLinhas"));
                 } catch (Exception e) {
                     Log.e("Gpos720_printer", "avancaLinha: " + e.getMessage(), e);
-                    result.error("" + e.hashCode(), e.getLocalizedMessage(), e);
+                    result.error("Error on \"avancaLinha\"", e.getLocalizedMessage(), e);
                 }
                 break;
             case "imprimir":
@@ -108,7 +108,7 @@ public class Gpos720PrinterPlugin implements FlutterPlugin, MethodCallHandler {
                     }
                 } catch (Exception e) {
                     Log.e("Gpos720_printer", "imprimir: " + e.getMessage(), e);
-                    result.error("" + e.hashCode(), e.getLocalizedMessage(), e);
+                    result.error("Error on \"imprimir\"", e.getLocalizedMessage(), e);
                 }
                 break;
             default:
