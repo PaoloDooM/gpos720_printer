@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:gpos720_printer/print_types.dart';
+import 'package:gpos720_printer/text_options.dart';
 import 'alignment_types.dart';
 import 'barcode_types.dart';
 import 'gpos720_printer_platform_interface.dart';
@@ -33,12 +34,12 @@ class MethodChannelGpos720Printer extends Gpos720PrinterPlatform {
   }
 
   @override
-  Future<String?> imprimirTexto(String mensagem, List<bool> options, int size,
+  Future<String?> imprimirTexto(String mensagem, TextOptions options, int size,
       String font, AlignmentTypes align) {
     return methodChannel.invokeMethod<String>('imprimir', {
       "tipoImpressao": PrintTypes.texto.getLabel(),
       "mensagem": mensagem,
-      "options": options,
+      "options": options.toList(),
       "size": size,
       "font": font,
       "align": align.getLabel()

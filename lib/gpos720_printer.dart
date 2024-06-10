@@ -1,4 +1,5 @@
 import 'dart:typed_data';
+import 'package:gpos720_printer/text_options.dart';
 import 'alignment_types.dart';
 import 'barcode_types.dart';
 import 'gpos720_printer_platform_interface.dart';
@@ -20,7 +21,7 @@ class Gpos720Printer {
     return Gpos720PrinterPlatform.instance.avancaLinha(quantLinhas);
   }
 
-  Future<String?> imprimirTexto(String mensagem, List<bool> options, int size,
+  Future<String?> imprimirTexto(String mensagem, TextOptions options, int size,
       String font, AlignmentTypes align) {
     return Gpos720PrinterPlatform.instance
         .imprimirTexto(mensagem, options, size, font, align);
