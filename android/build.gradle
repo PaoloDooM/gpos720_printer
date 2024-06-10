@@ -35,12 +35,13 @@ android {
 
     defaultConfig {
         minSdkVersion 22
+        multiDexEnabled true
     }
 
     dependencies {
         testImplementation 'junit:junit:4.13.2'
         testImplementation 'org.mockito:mockito-core:5.0.0'
-        compileOnly fileTree(include: ['*.aar'], dir: 'libs')
+        compileOnly fileTree(include: ['*.jar','*.aar'], dir: 'libs')
         implementation('com.journeyapps:zxing-android-embedded:4.3.0') { transitive = false }
         implementation 'com.google.zxing:core:3.5.1'
         implementation 'com.android.support:multidex:1.0.3'
