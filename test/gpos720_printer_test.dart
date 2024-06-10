@@ -2,6 +2,7 @@ import 'dart:typed_data';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:gpos720_printer/alignment_types.dart';
 import 'package:gpos720_printer/barcode_types.dart';
+import 'package:gpos720_printer/font_model.dart';
 import 'package:gpos720_printer/gpos720_printer.dart';
 import 'package:gpos720_printer/gpos720_printer_platform_interface.dart';
 import 'package:gpos720_printer/gpos720_printer_method_channel.dart';
@@ -48,7 +49,7 @@ class MockGpos720PrinterPlatform
 
   @override
   Future<String?> imprimirTexto(String mensagem, TextOptions options, int size,
-      String font, AlignmentTypes align) {
+      Font font, AlignmentTypes align) {
     // TODO: implement imprimirTexto
     return Future.value("");
   }

@@ -3,6 +3,7 @@ import 'package:gpos720_printer/barcode_types.dart';
 import 'package:gpos720_printer/text_options.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 import 'alignment_types.dart';
+import 'font_model.dart';
 import 'gpos720_printer_method_channel.dart';
 
 abstract class Gpos720PrinterPlatform extends PlatformInterface {
@@ -44,9 +45,9 @@ abstract class Gpos720PrinterPlatform extends PlatformInterface {
   }
 
   Future<String?> imprimirTexto(String mensagem, TextOptions options, int size,
-      String font, AlignmentTypes align) {
+      Font font, AlignmentTypes align) {
     throw UnimplementedError(
-        'imprimirTexto(String mensagem, TextOptions options, int size, String font, AlignmentTypes align) has not been implemented.');
+        'imprimirTexto(String mensagem, TextOptions options, int size, Font font, AlignmentTypes align) has not been implemented.');
   }
 
   Future<String?> imprimirImagem(

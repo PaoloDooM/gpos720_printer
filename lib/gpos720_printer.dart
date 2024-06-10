@@ -2,6 +2,7 @@ import 'dart:typed_data';
 import 'package:gpos720_printer/text_options.dart';
 import 'alignment_types.dart';
 import 'barcode_types.dart';
+import 'font_model.dart';
 import 'gpos720_printer_platform_interface.dart';
 
 class Gpos720Printer {
@@ -22,7 +23,7 @@ class Gpos720Printer {
   }
 
   Future<String?> imprimirTexto(String mensagem, TextOptions options, int size,
-      String font, AlignmentTypes align) {
+      Font font, AlignmentTypes align) {
     return Gpos720PrinterPlatform.instance
         .imprimirTexto(mensagem, options, size, font, align);
   }

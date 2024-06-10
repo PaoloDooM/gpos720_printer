@@ -4,6 +4,7 @@ import 'package:gpos720_printer/print_types.dart';
 import 'package:gpos720_printer/text_options.dart';
 import 'alignment_types.dart';
 import 'barcode_types.dart';
+import 'font_model.dart';
 import 'gpos720_printer_platform_interface.dart';
 
 /// An implementation of [Gpos720PrinterPlatform] that uses method channels.
@@ -35,13 +36,13 @@ class MethodChannelGpos720Printer extends Gpos720PrinterPlatform {
 
   @override
   Future<String?> imprimirTexto(String mensagem, TextOptions options, int size,
-      String font, AlignmentTypes align) {
+      Font font, AlignmentTypes align) {
     return methodChannel.invokeMethod<String>('imprimir', {
       "tipoImpressao": PrintTypes.texto.getLabel(),
       "mensagem": mensagem,
       "options": options.toList(),
       "size": size,
-      "font": font,
+      "font": font.fontName,
       "align": align.getLabel()
     });
   }
