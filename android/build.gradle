@@ -5,9 +5,6 @@ buildscript {
     repositories {
         google()
         mavenCentral()
-        flatDir {
-            dirs 'libs'
-        }
     }
 
     dependencies {
@@ -15,6 +12,7 @@ buildscript {
     }
 }
 
+// https://medium.com/@kyodo-tech/solving-aar-dependency-challenges-in-flutter-plugins-7b5420525c1f
 rootProject.allprojects {
     repositories {
         google()
@@ -46,7 +44,7 @@ android {
     dependencies {
         testImplementation 'junit:junit:4.13.2'
         testImplementation 'org.mockito:mockito-core:5.0.0'
-        compileOnly fileTree(include: ['*.jar','*.aar'], dir: 'libs')
+        compileOnly fileTree(dir: 'libs', include: ['*.aar'])
         implementation('com.journeyapps:zxing-android-embedded:4.3.0') { transitive = false }
         implementation 'com.google.zxing:core:3.5.1'
     }
