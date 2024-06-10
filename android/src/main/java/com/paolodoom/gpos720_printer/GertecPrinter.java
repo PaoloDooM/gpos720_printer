@@ -1,11 +1,10 @@
 package com.paolodoom.gpos720_printer;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.util.Log;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
@@ -24,8 +23,8 @@ import br.com.gertec.gedi.interfaces.IPRNTR;
 import br.com.gertec.gedi.structs.GEDI_PRNTR_st_BarCodeConfig;
 import br.com.gertec.gedi.structs.GEDI_PRNTR_st_PictureConfig;
 import br.com.gertec.gedi.structs.GEDI_PRNTR_st_StringConfig;
+
 public class GertecPrinter {
-    //TODO: fix warnings
     ICL icl = null;
     // Definições
     private final String IMPRESSORA_ERRO = "Impressora com erro.";
@@ -34,8 +33,7 @@ public class GertecPrinter {
     private static boolean isPrintInit = false;
 
     // Vaviáveis iniciais
-    private Activity activity;
-    private Context context;
+    private final Context context;
 
     // Classe de impressão
     private IGEDI iGedi = null;
@@ -46,7 +44,6 @@ public class GertecPrinter {
 
     // Classe de configuração da impressão
     private ConfigPrint configPrint;
-    private Typeface typeface;
 
     /**
      * Método construtor da classe
@@ -59,23 +56,10 @@ public class GertecPrinter {
     }
 
     /**
-     * Método construtor da classe
-     *
-     * @param a = Activity atual que esta sendo inicializada a class
-     *
-     *          public GertecPrinter(Activity a) { this.activity = a; startIGEDI(a);
-     *          }
-     */
-    // public GertecPrinter(Activity a) {
-    // this.activity = a;
-    // startIGEDI(a);
-    // }
-
-    /**
      * Método que instância a classe GEDI da lib
      *
      * @apiNote = Este mátodo faz a instância da classe GEDI através de uma Thread.
-     *          Será sempre chamado na construção da classe. Não alterar...
+     * Será sempre chamado na construção da classe. Não alterar...
      */
     private void startIGEDI() {
         new Thread(() -> {
@@ -84,36 +68,13 @@ public class GertecPrinter {
             this.iPrint = this.iGedi.getPRNTR();
             icl = GEDI.getInstance().getCL(); // Get ICL
             try {
-                new Thread().sleep(250);
+                Thread.sleep(250);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                Log.e("Gpos720_printer", "startIGEDI: " + e.getMessage(), e);
             }
         }).start();
     }
 
-    /**
-     * Método que instância a classe GEDI da lib
-     *
-     * @apiNote = Este mátodo faz a instância da classe GEDI através de uma Thread.
-     *          Será sempre chamado na construção da classe. Não alterar...
-     *
-     *          private void startIGEDI(Activity a) { new Thread(() -> { iGedi = new
-     *          Gedi(a); this.iGedi = GEDI.getInstance(a); this.iPrint =
-     *          this.iGedi.getPRNTR(); try { new Thread().sleep(250); } catch
-     *          (InterruptedException e) { e.printStackTrace(); } }).start(); }
-     */
-    // private void startIGEDI(Activity a) {
-    // new Thread(() -> {
-    // iGedi = new Gedi(a);
-    // this.iGedi = GEDI.getInstance(a);
-    // this.iPrint = this.iGedi.getPRNTR();
-    // try {
-    // new Thread().sleep(250);
-    // } catch (InterruptedException e) {
-    // e.printStackTrace();
-    // }
-    // }).start();
-    // }
     /**
      * Método que recebe a configuração para ser usada na impressão
      *
@@ -130,27 +91,28 @@ public class GertecPrinter {
         this.stringConfig.offset = configPrint.getOffSet();
         this.stringConfig.lineSpace = configPrint.getLineSpace();
 
+        Typeface typeface;
         switch (configPrint.getFonte()) {
             case "NORMAL":
-                this.typeface = Typeface.create(configPrint.getFonte(), Typeface.NORMAL);
+                typeface = Typeface.create(configPrint.getFonte(), Typeface.NORMAL);
                 break;
             case "DEFAULT":
-                this.typeface = Typeface.create(Typeface.DEFAULT, Typeface.NORMAL);
+                typeface = Typeface.create(Typeface.DEFAULT, Typeface.NORMAL);
                 break;
             case "DEFAULT BOLD":
-                this.typeface = Typeface.create(Typeface.DEFAULT_BOLD, Typeface.NORMAL);
+                typeface = Typeface.create(Typeface.DEFAULT_BOLD, Typeface.NORMAL);
                 break;
             case "MONOSPACE":
-                this.typeface = Typeface.create(Typeface.MONOSPACE, Typeface.NORMAL);
+                typeface = Typeface.create(Typeface.MONOSPACE, Typeface.NORMAL);
                 break;
             case "SANS SERIF":
-                this.typeface = Typeface.create(Typeface.SANS_SERIF, Typeface.NORMAL);
+                typeface = Typeface.create(Typeface.SANS_SERIF, Typeface.NORMAL);
                 break;
             case "SERIF":
-                this.typeface = Typeface.create(Typeface.SERIF, Typeface.NORMAL);
+                typeface = Typeface.create(Typeface.SERIF, Typeface.NORMAL);
                 break;
             default:
-                this.typeface = Typeface.createFromAsset(this.context.getAssets(), configPrint.getFonte());
+                typeface = Typeface.createFromAsset(this.context.getAssets(), configPrint.getFonte());
         }
 
         if (this.configPrint.isNegrito() && this.configPrint.isItalico()) {
@@ -165,20 +127,18 @@ public class GertecPrinter {
             this.stringConfig.paint.setFlags(Paint.UNDERLINE_TEXT_FLAG);
         }
 
-        this.stringConfig.paint.setTypeface(this.typeface);
+        this.stringConfig.paint.setTypeface(typeface);
     }
 
     /**
      * Método que retorna o atual estado da impressora
      *
-     * @throws GediException = vai retorno o código do erro.
-     *
      * @return String = traduzStatusImpressora()
-     *
+     * @throws GediException = vai retorno o código do erro.
      */
     public String getStatusImpressora() throws GediException {
         try {
-            ImpressoraInit();
+            impressoraInit();
             this.status = this.iPrint.Status();
         } catch (GediException e) {
             throw new GediException(e.getErrorCode());
@@ -191,9 +151,7 @@ public class GertecPrinter {
      * Método que recebe o atual texto a ser impresso
      *
      * @param texto = Texto que será impresso.
-     *
      * @throws Exception = caso a impressora esteja com erro.
-     *
      */
     public void imprimeTexto(String texto) throws Exception {
 
@@ -214,13 +172,10 @@ public class GertecPrinter {
      *
      * @param texto   = Texto que será impresso.
      * @param tamanho = Tamanho da fonte que será usada
-     *
      * @throws Exception = caso a impressora esteja com erro.
-     *
      * @apiNote = Esse mátodo só altera o tamanho do texto na impressão que for
-     *          chamado a classe {@link ConfigPrint} não será alterada para
-     *          continuar sendo usado na impressão da proxíma linha
-     *
+     * chamado a classe {@link ConfigPrint} não será alterada para
+     * continuar sendo usado na impressão da proxíma linha
      */
     public void imprimeTexto(String texto, int tamanho) throws Exception {
 
@@ -246,13 +201,10 @@ public class GertecPrinter {
      *
      * @param texto   = Texto que será impresso.
      * @param negrito = Caso o texto deva ser impresso em negrito
-     *
      * @throws Exception = caso a impressora esteja com erro.
-     *
      * @apiNote = Esse mátodo só altera o tamanho do texto na impressão que for
-     *          chamado * a classe {@link ConfigPrint} não será alterada para
-     *          continuar sendo usado na impressão da * proxíma linha
-     *
+     * chamado * a classe {@link ConfigPrint} não será alterada para
+     * continuar sendo usado na impressão da * proxíma linha
      */
     public void imprimeTexto(String texto, boolean negrito) throws Exception {
 
@@ -283,13 +235,10 @@ public class GertecPrinter {
      * @param texto   = Texto que será impresso.
      * @param negrito = Caso o texto deva ser impresso em negrito
      * @param italico = Caso o texto deva ser impresso em itálico
-     *
      * @throws Exception = caso a impressora esteja com erro.
-     *
      * @apiNote = Esse mátodo só altera o tamanho do texto na impressão que for
-     *          chamado * a classe {@link ConfigPrint} não será alterada para
-     *          continuar sendo usado na impressão da * proxíma linha
-     *
+     * chamado * a classe {@link ConfigPrint} não será alterada para
+     * continuar sendo usado na impressão da * proxíma linha
      */
     public void imprimeTexto(String texto, boolean negrito, boolean italico) throws Exception {
 
@@ -325,13 +274,10 @@ public class GertecPrinter {
      * @param negrito    = Caso o texto deva ser impresso em negrito
      * @param italico    = Caso o texto deva ser impresso em itálico
      * @param sublinhado = Caso o texto deva ser impresso em itálico.
-     *
      * @throws Exception = caso a impressora esteja com erro.
-     *
      * @apiNote = Esse mátodo só altera o tamanho do texto na impressão que for
-     *          chamado * a classe {@link ConfigPrint} não será alterada para
-     *          continuar sendo usado na impressão da * proxíma linha
-     *
+     * chamado * a classe {@link ConfigPrint} não será alterada para
+     * continuar sendo usado na impressão da * proxíma linha
      */
     public void imprimeTexto(String texto, boolean negrito, boolean italico, boolean sublinhado) throws Exception {
 
@@ -368,14 +314,12 @@ public class GertecPrinter {
      * Método privado que faz a impressão do texto.
      *
      * @param texto = Texto que será impresso
-     *
      * @throws GediException = retorna o código do erro
-     *
      */
     private boolean sPrintLine(String texto) throws Exception {
         // Print Data
         try {
-            ImpressoraInit();
+            impressoraInit();
             this.iPrint.DrawStringExt(this.stringConfig, texto);
             this.avancaLinha(configPrint.getAvancaLinhas());
             // ImpressoraOutput();
@@ -388,18 +332,12 @@ public class GertecPrinter {
     /**
      * Método que faz a impressão de imagens
      *
-     * @param imagem = Nome da imagem que deve estar na pasta drawable
-     *
+     * @param bmp = Bitmap da imagem a imprimir
      * @throws IllegalArgumentException = Argumento passado ilegal
      * @throws GediException            = retorna o código do erro.
-     *
      */
-    public boolean imprimeImagem(String imagem) throws GediException {
-
-        int id = 0;
-        Bitmap bmp;
+    public boolean imprimeImagem(Bitmap bmp) throws GediException {
         try {
-
             pictureConfig = new GEDI_PRNTR_st_PictureConfig();
 
             // Align
@@ -410,16 +348,7 @@ public class GertecPrinter {
             // Width
             pictureConfig.width = this.configPrint.getiWidth();
 
-            if (MainActivity.Model.equals(MainActivity.G720)) {
-                id = context.getResources().getIdentifier(imagem, "drawable", context.getPackageName());
-                bmp = BitmapFactory.decodeResource(context.getResources(), id);
-            } else {
-                id = this.activity.getApplicationContext().getResources().getIdentifier(imagem, "drawable",
-                        this.activity.getApplicationContext().getPackageName());
-                bmp = BitmapFactory.decodeResource(this.activity.getResources(), id);
-            }
-
-            ImpressoraInit();
+            impressoraInit();
             this.iPrint.DrawPictureExt(pictureConfig, bmp);
             this.avancaLinha(configPrint.getAvancaLinhas());
 
@@ -440,10 +369,8 @@ public class GertecPrinter {
      * @param height      = Tamanho
      * @param width       = Tamanho
      * @param barCodeType = Tipo do código que será impresso
-     *
      * @throws IllegalArgumentException = Argumento passado ilegal
      * @throws GediException            = retorna o código do erro.
-     *
      */
     public boolean imprimeBarCode(String texto, int height, int width, String barCodeType) throws GediException {
 
@@ -458,7 +385,7 @@ public class GertecPrinter {
             // Width
             barCodeConfig.width = width;
 
-            ImpressoraInit();
+            impressoraInit();
             this.iPrint.DrawBarCode(barCodeConfig, texto);
             this.avancaLinha(configPrint.getAvancaLinhas());
             // ImpressoraOutput();
@@ -480,10 +407,8 @@ public class GertecPrinter {
      * @param height      = Tamanho
      * @param width       = Tamanho
      * @param barCodeType = Tipo do código que será impresso
-     *
      * @throws IllegalArgumentException = Argumento passado ilegal
      * @throws GediException            = retorna o código do erro.
-     *
      */
     public boolean imprimeBarCodeIMG(String texto, int height, int width, String barCodeType)
             throws GediException, WriterException {
@@ -501,18 +426,18 @@ public class GertecPrinter {
             pictureConfig.height = bitmap.getHeight();
             pictureConfig.width = bitmap.getWidth();
 
-            ImpressoraInit();
+            impressoraInit();
             this.iPrint.DrawPictureExt(pictureConfig, bitmap);
 
             return true;
         } catch (IllegalArgumentException e) {
-            e.printStackTrace();
+            Log.e("Gpos720_printer", "imprimeBarCodeIMG: " + e.getMessage(), e);
             throw new IllegalArgumentException(e);
         } catch (GediException e) {
-            e.printStackTrace();
+            Log.e("Gpos720_printer", "imprimeBarCodeIMG: " + e.getMessage(), e);
             throw new GediException(e.getErrorCode());
         } catch (WriterException e) {
-            e.printStackTrace();
+            Log.e("Gpos720_printer", "imprimeBarCodeIMG: " + e.getMessage(), e);
             throw new WriterException(e);
         }
 
@@ -522,12 +447,9 @@ public class GertecPrinter {
      * Método que faz o avanço de linhas após uma impressão.
      *
      * @param linhas = Número de linhas que dever ser pulado após a impressão.
-     *
      * @throws GediException = retorna o código do erro.
-     *
      * @apiNote = Esse método não deve ser chamado dentro de um FOR ou WHILE, o
-     *          número de linhas deve ser sempre passado no atributo do método.
-     *
+     * número de linhas deve ser sempre passado no atributo do método.
      */
     public void avancaLinha(int linhas) throws GediException {
         try {
@@ -543,23 +465,17 @@ public class GertecPrinter {
      * Método que retorno se a impressora está apta a fazer impressões
      *
      * @return true = quando estiver tudo ok.
-     *
      */
     public boolean isImpressoraOK() {
-
-        if (status.getValue() == 0) {
-            return true;
-        }
-        return false;
+        return status.getValue() == 0;
     }
 
     /**
      * Método que faz a inicialização da impressao
      *
      * @throws GediException = retorno o código do erro.
-     *
      */
-    public void ImpressoraInit() throws GediException {
+    public void impressoraInit() throws GediException {
         try {
             if (this.iPrint != null && !isPrintInit) {
                 this.icl.PowerOff(); // Desligar Módulo NFC - comando Mandatório antes de enviar comandos para a impressora."
@@ -567,7 +483,7 @@ public class GertecPrinter {
                 isPrintInit = true;
             }
         } catch (GediException e) {
-            e.printStackTrace();
+            Log.e("Gpos720_printer", "impressoraOutput: " + e.getMessage(), e);
             throw new GediException(e.getErrorCode());
         }
     }
@@ -576,16 +492,15 @@ public class GertecPrinter {
      * Método que faz a finalizacao do objeto iPrint
      *
      * @throws GediException = retorno o código do erro.
-     *
      */
-    public void ImpressoraOutput() throws GediException {
+    public void impressoraOutput() throws GediException {
         try {
             if (this.iPrint != null) {
                 this.iPrint.Output();
                 isPrintInit = false;
             }
         } catch (GediException e) {
-            e.printStackTrace();
+            Log.e("Gpos720_printer", "impressoraOutput: " + e.getMessage(), e);
             throw new GediException(e.getErrorCode());
         }
     }
@@ -594,9 +509,7 @@ public class GertecPrinter {
      * Método que faz a tradução do status atual da impressora.
      *
      * @param status = Recebe o {@link GEDI_PRNTR_e_Status} como atributo
-     *
      * @return String = Retorno o atual status da impressora
-     *
      */
     private String traduzStatusImpressora(GEDI_PRNTR_e_Status status) {
         String retorno;

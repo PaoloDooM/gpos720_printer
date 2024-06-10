@@ -9,19 +9,18 @@ import io.flutter.plugin.common.MethodChannel.Result;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
 import java.util.List;
 import java.io.ByteArrayInputStream;
-
-import br.com.gertec.gedi.exceptions.GediException;
+import java.util.Objects;
 
 /**
  * Gpos720PrinterPlugin
  */
 public class Gpos720PrinterPlugin implements FlutterPlugin, MethodCallHandler {
-    //TODO: fix warnings
     private MethodChannel channel;
     private GertecPrinter gertecPrinter;
     private final ConfigPrint configPrint = new ConfigPrint();
@@ -46,22 +45,22 @@ public class Gpos720PrinterPlugin implements FlutterPlugin, MethodCallHandler {
                     gertecPrinter.getStatusImpressora();
                     result.success(gertecPrinter.isImpressoraOK());
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    Log.e("Gpos720_printer", "checarImpressora: " + e.getMessage(), e);
                 }
                 break;
-            case "fimimpressao":
+            case "fimImpressao":
                 try {
-                    gertecPrinter.ImpressoraOutput();
+                    gertecPrinter.impressoraOutput();
                     result.success("Finalizou impressao");
-                } catch (GediException e) {
-                    e.printStackTrace();
+                } catch (Exception e) {
+                    Log.e("Gpos720_printer", "fimimpressao: " + e.getMessage(), e);
                 }
                 break;
             case "avancaLinha":
                 try {
                     gertecPrinter.avancaLinha(call.argument("quantLinhas"));
-                } catch (GediException e) {
-                    e.printStackTrace();
+                } catch (Exception e) {
+                    Log.e("Gpos720_printer", "avancaLinha: " + e.getMessage(), e);
                 }
                 break;
             case "imprimir":
@@ -69,7 +68,6 @@ public class Gpos720PrinterPlugin implements FlutterPlugin, MethodCallHandler {
                     gertecPrinter.getStatusImpressora();
                     if (gertecPrinter.isImpressoraOK()) {
                         String tipoImpressao = call.argument("tipoImpressao");
-                        String mensagem = call.argument("mensagem");
                         switch (tipoImpressao) {
                             case "Texto":
                                 List<Boolean> options = call.argument("options");
@@ -80,33 +78,34 @@ public class Gpos720PrinterPlugin implements FlutterPlugin, MethodCallHandler {
                                 System.out.println(call.argument("font").toString());
                                 configPrint.setTamanho(call.argument("size"));
                                 configPrint.setFonte(call.argument("font"));
-                                configPrint.setAlinhamento(call.argument("alinhar"));
+                                configPrint.setAlinhamento(call.argument("align"));
                                 gertecPrinter.setConfigImpressao(configPrint);
-                                gertecPrinter.imprimeTexto(mensagem);
+                                gertecPrinter.imprimeTexto(call.argument("mensagem"));
                                 break;
                             case "Imagem":
-                                byte[] dataImage = (byte[]) call.argument("data");
-                                int alignImage = call.argument("align");
-                                Bitmap image = byteArrayToBitmap(dataImage);
-                                //TODO: config with params
-                                configPrint.setiWidth(400);
-                                configPrint.setiHeight(400);
+                                byte[] dataImage0 = (byte[]) call.argument("data");
+                                Bitmap image0 = byteArrayToBitmap(dataImage0);
+                                configPrint.setAlinhamento(call.argument("align"));
+                                configPrint.setiWidth(call.argument("width"));
+                                configPrint.setiHeight(call.argument("height"));
                                 gertecPrinter.setConfigImpressao(configPrint);
-                                gertecPrinter.imprimeImagem("logogertec");
+                                gertecPrinter.imprimeImagem(image0);
                                 break;
                             case "CodigoDeBarra":
                                 configPrint.setAlinhamento("CENTER");
                                 gertecPrinter.setConfigImpressao(configPrint);
-                                gertecPrinter.imprimeBarCodeIMG(mensagem, call.argument("height"),
+                                gertecPrinter.imprimeBarCodeIMG(call.argument("mensagem"), call.argument("height"),
                                         call.argument("width"), call.argument("barCode"));
                                 break;
                             case "TodasFuncoes":
-                                ImprimeTodasAsFucoes();
+                                byte[] dataImage1 = (byte[]) call.argument("data");
+                                Bitmap image1 = byteArrayToBitmap(dataImage1);
+                                imprimeTodasAsFucoes(image1, call.argument("width"), call.argument("height"));
                                 break;
                         }
                     }
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    Log.e("Gpos720_printer", "imprimir: " + e.getMessage(), e);
                 }
                 break;
             default:
@@ -119,7 +118,7 @@ public class Gpos720PrinterPlugin implements FlutterPlugin, MethodCallHandler {
         channel.setMethodCallHandler(null);
     }
 
-    private void ImprimeTodasAsFucoes() {
+    private void imprimeTodasAsFucoes(Bitmap bmp, int width, int height) {
         configPrint.setItalico(false);
         configPrint.setNegrito(true);
         configPrint.setTamanho(20);
@@ -128,12 +127,12 @@ public class Gpos720PrinterPlugin implements FlutterPlugin, MethodCallHandler {
         try {
             gertecPrinter.getStatusImpressora();
             // Imprimindo Imagem
-            configPrint.setiWidth(300);
-            configPrint.setiHeight(130);
+            configPrint.setiWidth(width);
+            configPrint.setiHeight(height);
             configPrint.setAlinhamento("CENTER");
             gertecPrinter.setConfigImpressao(configPrint);
             gertecPrinter.imprimeTexto("==[Iniciando Impressao Imagem]==");
-            gertecPrinter.imprimeImagem("gertec");
+            gertecPrinter.imprimeImagem(bmp);
             gertecPrinter.avancaLinha(10);
             gertecPrinter.imprimeTexto("====[Fim Impressão Imagem]====");
             gertecPrinter.avancaLinha(10);
@@ -258,7 +257,7 @@ public class Gpos720PrinterPlugin implements FlutterPlugin, MethodCallHandler {
             gertecPrinter.avancaLinha(40);
 
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e("Gpos720_printer", "imprimeTodasAsFucoes: " + e.getMessage(), e);
         }
     }
 

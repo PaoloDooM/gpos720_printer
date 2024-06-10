@@ -1,7 +1,6 @@
 package com.paolodoom.gpos720_printer;
 
 public class ConfigPrint {
-    //TODO: fix warnings
     private String fonte = "NORMAL";
     private String alinhamento;
     private int tamanho;
@@ -62,15 +61,10 @@ public class ConfigPrint {
         this.fonte = fonte;
         switch (fonte) {
             case "NORMAL":
-                break;
-            case "DEFAULT":
-                break;
-            case "DEFAULT BOLD":
-                break;
             case "MONOSPACE":
-                break;
+            case "DEFAULT BOLD":
+            case "DEFAULT":
             case "SANS SERIF":
-                break;
             case "SERIF":
                 break;
             default:
