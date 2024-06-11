@@ -60,6 +60,7 @@ public class Gpos720PrinterPlugin implements FlutterPlugin, MethodCallHandler {
             case "avancaLinha":
                 try {
                     gertecPrinter.avancaLinha(call.argument("quantLinhas"));
+                    result.success(gertecPrinter.isImpressoraOK());
                 } catch (Exception e) {
                     Log.e("Gpos720_printer", "avancaLinha: " + e.getMessage(), e);
                     result.error("Error on \"avancaLinha\"", e.getLocalizedMessage(), e);
@@ -105,6 +106,9 @@ public class Gpos720PrinterPlugin implements FlutterPlugin, MethodCallHandler {
                                 imprimeTodasAsFucoes(image1, call.argument("width"), call.argument("height"));
                                 break;
                         }
+                        result.success(gertecPrinter.isImpressoraOK());
+                    } else {
+                        throw new Exception("isImpressoraOK = " + gertecPrinter.isImpressoraOK());
                     }
                 } catch (Exception e) {
                     Log.e("Gpos720_printer", "imprimir: " + e.getMessage(), e);

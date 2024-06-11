@@ -1,9 +1,164 @@
 # gpos720_printer
 
-A plugin to integrate printing in the GPOS720.
+A plugin to integrate printing in the <a href="https://www.gertec.com.br/produtos/gpos720/">Gertec GPOS720</a>.
+
+## Features
+
+| Methods               | Implemented |
+|:----------------------|:-----------:|
+| checarImpressora      |     ✔️      |
+| fimimpressao          |     ✔️      |
+| avancaLinha           |     ✔️      |
+| imprimirTexto         |     ✔️      |
+| imprimirImagem        |     ✔️      |
+| imprimirCodigoDeBarra |     ✔️      |
+| imprimirTodasFuncoes  |     ✔️      |
+| imprimirEscPos        |     ❌️      |
+
+## Requirements
+
+* <b>Android minimum sdk version</b> >= 22.
+* <b>Flutter version</b> >= 2.0.0.
+* <b>Dart version</b> >= 2.12.0.
+
+## Instalation
+
+### Step 1
+
+* In the "/android/src/main/AndroidManifest.xml", add:
+```AndroidManifest
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    ...
+    <uses-feature android:name="android.hardware.usb.host" />
+    ...
+</manifest>
+```
+
+### Step 2
+
+The Android Gradle Plugin (AGP) doesn’t support direct local AAR dependencies in Android library projects due to how it packages the resulting AAR, so we need to do the following configurations.
+
+* In the "/android/app/libs/" directory, paste the two .aar dependencies used by this library. You can find them in this <a href="https://github.com/PaoloDooM/gpos720_printer/tree/master/android/libs">link</a>.
+
+* Then in the "android/app/build.gradle", add:
+```gradle
+...
+Android{
+    ...
+    dependencies {
+        implementation fileTree(dir: 'libs', include: ['*.aar'])
+    }
+}
+...
+```
+
+* Lastly in the "android/build.gradle", add:
+```gradle
+...
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+        flatDir {
+            dirs 'libs'
+        }
+    }
+}
+...
+```
 
 ## Getting Started
 
-TODO!!!
+Just instantiate the "Gpos720Printer" and invoke the desired functions as shown in <a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/example/lib/main.dart">this example project</a>.
 
-https://medium.com/@kyodo-tech/solving-aar-dependency-challenges-in-flutter-plugins-7b5420525c1f
+### Instantiate:
+
+Instantiate the "Gpos720Printer" object like this:
+```dart
+import 'package:gpos720_printer/gpos720_printer.dart';
+void main(){
+  Gpos720Printer gpos720Printer = Gpos720Printer();
+}
+```
+
+## Documumentation
+
+### Methods:
+
+#### <b>Future<String?> avancaLinha(int quantLinhas)</b>
+* Description: Adds line breaks to the current printout.
+* Return: A String indicating the printer status, which returns true if “isPrinterOK”.
+* Parameters: 
+1. <b>quantLinhas</b>: An Integer specifying the desired number of line breaks.
+* Throws: An Exception if the printer fails.
+
+#### <b>Future<String?> checarImpressora()</b>
+* Description: Checks the printer’s status.
+* Return: : A String indicating the printer’s status in Portuguese.
+* Throws: An Exception if the printer fails.
+
+#### <b>Future<String?> fimimpressao()</b>
+* Description: Finalizes the printing queue.
+* Return: A String indicating the printer’s status in Portuguese".
+* Throws: An Exception if the printer fails.
+
+#### <b>Future<String?> imprimirCodigoDeBarra(String mensagem, int width, int height, BarcodeTypes barcodeType)</b>
+Description: Prints various types of barcodes.
+Return: A String indicating the printer status, which returns true if “isPrinterOK”.
+Parameters:
+1. <b>mensagem</b>: A String specifying the desired data on the barcode.
+2. <b>width</b>: An Integer specifing the desired width.
+3. <b>height</b>: An Integer specifing the desired height.
+4. <b>barcodeTypes</b>: A BarcodeTypes enum specifing the desired barcode type.
+Throws: An Exception if the printer fails.
+
+#### <b>Future<String?> imprimirImagem(Uint8List data, int width, int height, {AlignmentTypes align = AlignmentTypes.center})</b>
+Description: Prints raw images.
+Return: A String indicating the printer status, which returns true if “isPrinterOK”.
+Parameters:
+1. <b>data</b>: A Uint8List with the image raw data.
+2. <b>width</b>: An Integer specifing the desired width.
+3. <b>height</b>: An Integer specifing the desired height.
+4. <b>align (optional)</b>: An AlignmentTypes enum specifying the desired alignment. By default, align will be center.
+Throws: An Exception if the printer fails.
+
+#### <b>imprimirTexto(String mensagem, {TextOptions? options, int size = defaultFontSize, Font? font, AlignmentTypes align = AlignmentTypes.left})</b>
+Description: Prints text.
+Return: A String indicating the printer status, which returns true if “isPrinterOK”.
+Parameters:
+1. <b>mensagem</b>: An String with the desired text to be printed.
+2. <b>options (optional)</b>: A TextOptions specifing if the text will be render as bold, italic or underlined.
+3. <b>size (optional)</b>: An Integer specifing the desired font size.
+4. <b>Font (optional)</b>: A Font specifing the desired font to be used in the text.
+5. <b>align (optional)</b>: An AlignmentTypes enum specifying the desired alignment. By default, align will be left.
+Throws: An Exception if the printer fails.
+
+#### <b>Future<String?> imprimirTodasFuncoes(Uint8List data, int width, int height)</b>
+Description: Prints all printer functions.
+Return: A String indicating the printer status, which returns true if “isPrinterOK”.
+Parameters:
+1. <b>data</b>: A Uint8List with the image raw data.
+2. <b>width</b>: An Integer specifing the desired width.
+3. <b>height</b>: An Integer specifing the desired height.
+Throws: An Exception if the printer fails.
+
+### Configutarion parameters:
+
+#### <b>BarcodeTypes</b>
+An enum to indicate the type of barcode to be printed. <a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/lib/barcode_types.dart">Click here</a> to consult the available types.
+
+#### <b>AlignmentTypes</b>
+An enum to indicate the type of barcode to be printed. <a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/lib/alignment_types.dart">Click here</a> to consult the available types.
+
+#### <b>Font</b>
+An object to specify the desired font for printing. The constructor receives the font name as a parameter, and the font must be available in the assets folder under the directory "/fonts". By default, it is set to "NORMAL", <a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/lib/font_model.dart">click here</a> to view the implementation.
+
+#### <b>TextOptions</b>
+An object that specifies the desired text decoration. It can add bold, italic, or underline styles. By default, all styles are set to false, <a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/lib/text_options.dart">click here</a> to view the implementation.
+
+## TODO
+
+* Pass image data from outside the MethodChannel to avoid payload size/speed limitations.
+* Implement plugin tests.
+* Standarize exceptions outputs.
+* Print raw ESC/POS commands.
