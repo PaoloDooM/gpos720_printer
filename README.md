@@ -85,24 +85,24 @@ void main(){
 
 ### Methods:
 
-#### ![#000435]<b>Future<String?> avancaLinha(int quantLinhas)</b>`#000435`
+#### <code style="color:orangered"><b>Future<String?> avancaLinha(int quantLinhas)</b></code>
 * Description: Adds line breaks to the current printout.
 * Return: A String indicating the printer status, which returns true if “isPrinterOK”.
 * Parameters: 
 1. <b>quantLinhas</b>: An Integer specifying the desired number of line breaks.
 * Throws: An Exception if the printer fails.
 
-#### ![#000435]<b>Future<String?> checarImpressora()</b>`#000435`
+#### <code style="color:orangered"><b>Future<String?> checarImpressora()</b></code>
 * Description: Checks the printer’s status.
 * Return: : A String indicating the printer’s status in Portuguese.
 * Throws: An Exception if the printer fails.
 
-#### ![#000435]<b>Future<String?> fimimpressao()</b>`#000435`
+#### <code style="color:orangered"><b>Future<String?> fimimpressao()</b></code>
 * Description: Finalizes the printing queue.
 * Return: A String indicating the printer’s status in Portuguese".
 * Throws: An Exception if the printer fails.
 
-#### ![#000435]<b>Future<String?> imprimirCodigoDeBarra(String mensagem, int width, int height, BarcodeTypes barcodeType)</b>`#000435`
+#### <code style="color:orangered"><b>Future<String?> imprimirCodigoDeBarra(String mensagem, int width, int height, BarcodeTypes barcodeType)</b></code>
 * Description: Prints various types of barcodes.
 * Return: A String indicating the printer status, which returns true if “isPrinterOK”.
 * Parameters:
@@ -112,7 +112,7 @@ void main(){
 4. <b>barcodeTypes</b>: A BarcodeTypes enum specifing the desired barcode type.
 * Throws: An Exception if the printer fails.
 
-#### ![#000435]<b>Future<String?> imprimirImagem(Uint8List data, int width, int height, {AlignmentTypes align = AlignmentTypes.center})</b>`#000435`
+#### <code style="color:orangered"><b>Future<String?> imprimirImagem(Uint8List data, int width, int height, {AlignmentTypes align = AlignmentTypes.center})</b></code>
 * Description: Prints raw images.
 * Return: A String indicating the printer status, which returns true if “isPrinterOK”.
 * Parameters:
@@ -122,7 +122,7 @@ void main(){
 4. <b>align (optional)</b>: An AlignmentTypes enum specifying the desired alignment. By default, align will be center.
 * Throws: An Exception if the printer fails.
 
-#### ![#000435]<b>imprimirTexto(String mensagem, {TextOptions? options, int size = defaultFontSize, Font? font, AlignmentTypes align = AlignmentTypes.left})</b>`#000435`
+#### <code style="color:orangered"><b>imprimirTexto(String mensagem, {TextOptions? options, int size = defaultFontSize, Font? font, AlignmentTypes align = AlignmentTypes.left})</b></code>
 * Description: Prints text.
 * Return: A String indicating the printer status, which returns true if “isPrinterOK”.
 * Parameters:
@@ -133,7 +133,7 @@ void main(){
 5. <b>align (optional)</b>: An AlignmentTypes enum specifying the desired alignment. By default, align will be left.
 * Throws: An Exception if the printer fails.
 
-#### ![#000435]<b>Future<String?> imprimirTodasFuncoes(Uint8List data, int width, int height)</b>`#000435`
+#### <code style="color:orangered"><b>Future<String?> imprimirTodasFuncoes(Uint8List data, int width, int height)</b></code>
 * Description: Prints all printer functions.
 * Return: A String indicating the printer status, which returns true if “isPrinterOK”.
 * Parameters:
@@ -144,16 +144,16 @@ void main(){
 
 ### Configutarion parameters:
 
-#### ![#000435]<b>BarcodeTypes</b>`#000435`
+#### <code style="color:orangered"><b>BarcodeTypes</b></code>
 An enum to indicate the type of barcode to be printed. <a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/lib/barcode_types.dart">Click here</a> to consult the available types.
 
-#### ![#000435]<b>AlignmentTypes</b>`#000435`
+#### <code style="color:orangered"><b>AlignmentTypes</b></code>
 An enum to indicate the type of barcode to be printed. <a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/lib/alignment_types.dart">Click here</a> to consult the available types.
 
-#### ![#000435]<b>Font</b>`#000435`
+#### <code style="color:orangered"><b>Font</b></code>
 An object to specify the desired font for printing. The constructor receives the font name as a parameter, and the font must be available in the assets folder under the directory "/fonts". By default, it is set to "NORMAL", <a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/lib/font_model.dart">click here</a> to view the implementation.
 
-#### ![#000435]<b>TextOptions</b>`#000435`
+#### <code style="color:orangered"><b>TextOptions</b></code>
 An object that specifies the desired text decoration. It can add bold, italic, or underline styles. By default, all styles are set to false, <a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/lib/text_options.dart">click here</a> to view the implementation.
 
 ## TODO
