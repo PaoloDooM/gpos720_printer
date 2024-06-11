@@ -71,6 +71,8 @@ allprojects {
 
 Just instantiate the "Gpos720Printer" and invoke the desired functions as shown in <a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/example/lib/main.dart">this example project</a>.
 
+> You must have a Gertec GPOS720 device to be able to use this plugin.
+
 ### Instantiate:
 
 Instantiate the "Gpos720Printer" object like this:
