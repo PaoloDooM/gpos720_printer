@@ -154,7 +154,8 @@ class _ExampleState extends State<Example> {
                           context,
                           "fimImpressao",
                           "Finalizes the printing queue.",
-                          () async => await gpos720PrinterPlugin.fimImpressao()),
+                          () async =>
+                              await gpos720PrinterPlugin.fimImpressao()),
                     ],
                   ),
                 ),
@@ -193,8 +194,10 @@ class _ExampleState extends State<Example> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-            titlePadding: const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-            contentPadding: const EdgeInsets.symmetric(horizontal: 24, vertical: 5),
+            titlePadding:
+                const EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+            contentPadding:
+                const EdgeInsets.symmetric(horizontal: 24, vertical: 5),
             actionsPadding: EdgeInsets.zero,
             insetPadding: const EdgeInsets.all(20),
             title: success
