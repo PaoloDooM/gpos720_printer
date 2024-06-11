@@ -85,75 +85,75 @@ void main(){
 
 ### Methods:
 
-#### <b>Future<String?> avancaLinha(int quantLinhas)</b>
+#### <span style="color:#000435"><b>Future<String?> avancaLinha(int quantLinhas)</b></span>
 * Description: Adds line breaks to the current printout.
 * Return: A String indicating the printer status, which returns true if “isPrinterOK”.
 * Parameters: 
 1. <b>quantLinhas</b>: An Integer specifying the desired number of line breaks.
 * Throws: An Exception if the printer fails.
 
-#### <b>Future<String?> checarImpressora()</b>
+#### <span style="color:#000435"><b>Future<String?> checarImpressora()</b></span>
 * Description: Checks the printer’s status.
 * Return: : A String indicating the printer’s status in Portuguese.
 * Throws: An Exception if the printer fails.
 
-#### <b>Future<String?> fimimpressao()</b>
+#### <span style="color:#000435"><b>Future<String?> fimimpressao()</b></span>
 * Description: Finalizes the printing queue.
 * Return: A String indicating the printer’s status in Portuguese".
 * Throws: An Exception if the printer fails.
 
-#### <b>Future<String?> imprimirCodigoDeBarra(String mensagem, int width, int height, BarcodeTypes barcodeType)</b>
-Description: Prints various types of barcodes.
-Return: A String indicating the printer status, which returns true if “isPrinterOK”.
-Parameters:
+#### <span style="color:#000435"><b>Future<String?> imprimirCodigoDeBarra(String mensagem, int width, int height, BarcodeTypes barcodeType)</b></span>
+* Description: Prints various types of barcodes.
+* Return: A String indicating the printer status, which returns true if “isPrinterOK”.
+* Parameters:
 1. <b>mensagem</b>: A String specifying the desired data on the barcode.
 2. <b>width</b>: An Integer specifing the desired width.
 3. <b>height</b>: An Integer specifing the desired height.
 4. <b>barcodeTypes</b>: A BarcodeTypes enum specifing the desired barcode type.
-Throws: An Exception if the printer fails.
+* Throws: An Exception if the printer fails.
 
-#### <b>Future<String?> imprimirImagem(Uint8List data, int width, int height, {AlignmentTypes align = AlignmentTypes.center})</b>
-Description: Prints raw images.
-Return: A String indicating the printer status, which returns true if “isPrinterOK”.
-Parameters:
+#### <span style="color:#000435"><b>Future<String?> imprimirImagem(Uint8List data, int width, int height, {AlignmentTypes align = AlignmentTypes.center})</b></span>
+* Description: Prints raw images.
+* Return: A String indicating the printer status, which returns true if “isPrinterOK”.
+* Parameters:
 1. <b>data</b>: A Uint8List with the image raw data.
 2. <b>width</b>: An Integer specifing the desired width.
 3. <b>height</b>: An Integer specifing the desired height.
 4. <b>align (optional)</b>: An AlignmentTypes enum specifying the desired alignment. By default, align will be center.
-Throws: An Exception if the printer fails.
+* Throws: An Exception if the printer fails.
 
-#### <b>imprimirTexto(String mensagem, {TextOptions? options, int size = defaultFontSize, Font? font, AlignmentTypes align = AlignmentTypes.left})</b>
-Description: Prints text.
-Return: A String indicating the printer status, which returns true if “isPrinterOK”.
-Parameters:
+#### <span style="color:#000435"><b>imprimirTexto(String mensagem, {TextOptions? options, int size = defaultFontSize, Font? font, AlignmentTypes align = AlignmentTypes.left})</b></span>
+* Description: Prints text.
+* Return: A String indicating the printer status, which returns true if “isPrinterOK”.
+* Parameters:
 1. <b>mensagem</b>: An String with the desired text to be printed.
 2. <b>options (optional)</b>: A TextOptions specifing if the text will be render as bold, italic or underlined.
 3. <b>size (optional)</b>: An Integer specifing the desired font size.
 4. <b>Font (optional)</b>: A Font specifing the desired font to be used in the text.
 5. <b>align (optional)</b>: An AlignmentTypes enum specifying the desired alignment. By default, align will be left.
-Throws: An Exception if the printer fails.
+* Throws: An Exception if the printer fails.
 
-#### <b>Future<String?> imprimirTodasFuncoes(Uint8List data, int width, int height)</b>
-Description: Prints all printer functions.
-Return: A String indicating the printer status, which returns true if “isPrinterOK”.
-Parameters:
+#### <span style="color:#000435"><b>Future<String?> imprimirTodasFuncoes(Uint8List data, int width, int height)</b></span>
+* Description: Prints all printer functions.
+* Return: A String indicating the printer status, which returns true if “isPrinterOK”.
+* Parameters:
 1. <b>data</b>: A Uint8List with the image raw data.
 2. <b>width</b>: An Integer specifing the desired width.
 3. <b>height</b>: An Integer specifing the desired height.
-Throws: An Exception if the printer fails.
+* Throws: An Exception if the printer fails.
 
 ### Configutarion parameters:
 
-#### <b>BarcodeTypes</b>
+#### <span style="color:#000435"><b>BarcodeTypes</b></span>
 An enum to indicate the type of barcode to be printed. <a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/lib/barcode_types.dart">Click here</a> to consult the available types.
 
-#### <b>AlignmentTypes</b>
+#### <span style="color:#000435"><b>AlignmentTypes</b></span>
 An enum to indicate the type of barcode to be printed. <a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/lib/alignment_types.dart">Click here</a> to consult the available types.
 
-#### <b>Font</b>
+#### <span style="color:#000435"><b>Font</b></span>
 An object to specify the desired font for printing. The constructor receives the font name as a parameter, and the font must be available in the assets folder under the directory "/fonts". By default, it is set to "NORMAL", <a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/lib/font_model.dart">click here</a> to view the implementation.
 
-#### <b>TextOptions</b>
+#### <span style="color:#000435"><b>TextOptions</b></span>
 An object that specifies the desired text decoration. It can add bold, italic, or underline styles. By default, all styles are set to false, <a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/lib/text_options.dart">click here</a> to view the implementation.
 
 ## TODO
