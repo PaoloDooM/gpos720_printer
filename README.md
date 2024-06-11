@@ -26,7 +26,7 @@ A plugin to integrate printing in the <a href="https://www.gertec.com.br/produto
 ### Step 1
 
 * In the "/android/src/main/AndroidManifest.xml", add:
-```AndroidManifest
+```xml
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     ...
     <uses-feature android:name="android.hardware.usb.host" />
