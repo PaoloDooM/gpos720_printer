@@ -23,3 +23,8 @@ flutter:
       android:
         package: com.paolodoom.gpos720_printer
         pluginClass: Gpos720PrinterPlugin
+
+topics:
+  - printer
+  - gertec
+  - gpos720
