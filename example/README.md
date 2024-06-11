@@ -2,6 +2,8 @@
 
 Demonstrates how to use the gpos720_printer plugin.
 
+Look at the documentation <a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/README.md">here</a>
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.

@@ -36,8 +36,8 @@ abstract class Gpos720PrinterPlatform extends PlatformInterface {
     throw UnimplementedError('checarImpressora() has not been implemented.');
   }
 
-  Future<String?> fimimpressao() {
-    throw UnimplementedError('fimimpressao() has not been implemented.');
+  Future<String?> fimImpressao() {
+    throw UnimplementedError('fimImpressao() has not been implemented.');
   }
 
   Future<String?> avancaLinha(int quantLinhas) {

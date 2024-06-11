@@ -15,8 +15,8 @@ class Gpos720Printer {
     return Gpos720PrinterPlatform.instance.checarImpressora();
   }
 
-  Future<String?> fimimpressao() {
-    return Gpos720PrinterPlatform.instance.fimimpressao();
+  Future<String?> fimImpressao() {
+    return Gpos720PrinterPlatform.instance.fimImpressao();
   }
 
   Future<String?> avancaLinha(int quantLinhas) {

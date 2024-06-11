@@ -29,8 +29,8 @@ class MockGpos720PrinterPlatform
   }
 
   @override
-  Future<String?> fimimpressao() {
-    // TODO: implement fimimpressao
+  Future<String?> fimImpressao() {
+    // TODO: implement fimImpressao
     return Future.value("");
   }
 

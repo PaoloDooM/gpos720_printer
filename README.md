@@ -7,7 +7,7 @@ A Flutter plugin to integrate printing in the <a href="https://www.gertec.com.br
 | Methods               | Implemented |
 |:----------------------|:-----------:|
 | checarImpressora      |     ✔️      |
-| fimimpressao          |     ✔️      |
+| fimImpressao          |     ✔️      |
 | avancaLinha           |     ✔️      |
 | imprimirTexto         |     ✔️      |
 | imprimirImagem        |     ✔️      |
@@ -97,7 +97,7 @@ void main(){
 * Return: : A String indicating the printer’s status in Portuguese.
 * Throws: An Exception if the printer fails.
 
-#### <code><b>Future<String?> fimimpressao()</b></code>
+#### <code><b>Future<String?> fimImpressao()</b></code>
 * Description: Finalizes the printing queue.
 * Return: A String indicating the printer’s status in Portuguese".
 * Throws: An Exception if the printer fails.

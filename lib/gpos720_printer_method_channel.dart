@@ -25,7 +25,7 @@ class MethodChannelGpos720Printer extends Gpos720PrinterPlatform {
   }
 
   @override
-  Future<String?> fimimpressao() {
+  Future<String?> fimImpressao() {
     return methodChannel.invokeMethod<String>('fimImpressao');
   }
 

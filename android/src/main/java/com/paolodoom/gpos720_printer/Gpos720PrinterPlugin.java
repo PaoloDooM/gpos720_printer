@@ -53,7 +53,7 @@ public class Gpos720PrinterPlugin implements FlutterPlugin, MethodCallHandler {
                     gertecPrinter.impressoraOutput();
                     result.success("Finalizou impressao");
                 } catch (Exception e) {
-                    Log.e("Gpos720_printer", "fimimpressao: " + e.getMessage(), e);
+                    Log.e("Gpos720_printer", "fimImpressao: " + e.getMessage(), e);
                     result.error("Error on \"fimImpressao\"", e.getLocalizedMessage(), e);
                 }
                 break;

@@ -1,4 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <uses-feature android:name="android.hardware.usb.host" />
     <application
         android:label="gpos720_printer_example"
         android:name="${applicationName}"
