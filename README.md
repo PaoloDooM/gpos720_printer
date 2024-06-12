@@ -99,7 +99,7 @@ void main() {
 
 ### Methods:
 
-#### <code>Future<PrinterStatus> avancaLinha(int quantLinhas)</code>
+#### <code>Future\<PrinterStatus\> avancaLinha(int quantLinhas)</code>
 
 * Description: Adds line breaks to the current printout.
 * Returns:
@@ -111,7 +111,7 @@ void main() {
 
 * Throws: A PlatformException or a MissingPluginException.
 
-#### <code>Future<PrinterStatus> checarImpressora()</code>
+#### <code>Future\<PrinterStatus\> checarImpressora()</code>
 
 * Description: Checks the printer’s status.
 * Returns:
@@ -119,7 +119,7 @@ void main() {
   PrinterStatus</a> enum indicating the printer’s status.
 * Throws: A PlatformException or a MissingPluginException.
 
-#### <code>Future<PrinterStatus> fimImpressao()</code>
+#### <code>Future\<PrinterStatus\> fimImpressao()</code>
 
 * Description: Finalizes the printing queue.
 * Returns:
@@ -127,7 +127,7 @@ void main() {
   PrinterStatus</a> enum indicating the printer’s status.
 * Throws: A PlatformException or a MissingPluginException.
 
-#### <code>Future<PrinterStatus> imprimirCodigoDeBarra(String mensagem, int width, int height, BarcodeTypes barcodeType)</code>
+#### <code>Future\<PrinterStatus\> imprimirCodigoDeBarra(String mensagem, int width, int height, BarcodeTypes barcodeType)</code>
 
 * Description: Prints various types of barcodes.
 * Returns:
@@ -142,7 +142,7 @@ void main() {
 
 * Throws: A PlatformException or a MissingPluginException.
 
-#### <code>Future<PrinterStatus> imprimirImagem(Uint8List data, int width, int height, {AlignmentTypes align = AlignmentTypes.center})</code>
+#### <code>Future\<PrinterStatus\> imprimirImagem(Uint8List data, int width, int height, {AlignmentTypes align = AlignmentTypes.center})</code>
 
 * Description: Prints raw images.
 * Returns:
@@ -158,7 +158,7 @@ void main() {
 
 * Throws: A PlatformException or a MissingPluginException.
 
-#### <code>Future<PrinterStatus> imprimirTexto(String mensagem, {TextOptions? options, int size = defaultFontSize, Font? font, AlignmentTypes align = AlignmentTypes.left})</code>
+#### <code>Future\<PrinterStatus\> imprimirTexto(String mensagem, {TextOptions? options, int size = defaultFontSize, Font? font, AlignmentTypes align = AlignmentTypes.left})</code>
 
 * Description: Prints text.
 * Returns:
@@ -176,7 +176,7 @@ void main() {
 
 * Throws: A PlatformException or a MissingPluginException.
 
-#### <code>Future<PrinterStatus> imprimirTodasFuncoes(Uint8List data, int width, int height)</code>
+#### <code>Future\<PrinterStatus\> imprimirTodasFuncoes(Uint8List data, int width, int height)</code>
 
 * Description: Prints all printer functions.
 * Returns:
