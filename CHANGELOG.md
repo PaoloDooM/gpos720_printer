@@ -24,6 +24,10 @@
 
 * Formatting corrections in the README.md.
 
-# 0.0.6
+## 0.0.6
 
 * Fixes invalid arguments in "imprimirTexto".
+
+## 0.0.6+1
+
+* Formatting corrections in the CHANGELOG.md.
