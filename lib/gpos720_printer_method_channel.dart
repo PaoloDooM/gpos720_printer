@@ -56,9 +56,9 @@ class MethodChannelGpos720Printer extends Gpos720PrinterPlatform {
         int.tryParse(await methodChannel.invokeMethod<String>('imprimir', {
               "tipoImpressao": PrintTypes.texto.getLabel(),
               "mensagem": mensagem,
-              "options": options?.toList() ?? TextOptions(),
+              "options": options?.toList() ?? TextOptions().toList(),
               "size": size,
-              "font": font?.fontName ?? Font(),
+              "font": font?.fontName ?? Font().fontName,
               "align": align.getLabel()
             }) ??
             '');
