@@ -99,7 +99,7 @@ void main() {
 
 ### Methods:
 
-#### <code><b>Future<PrinterStatus> avancaLinha(int quantLinhas)</b></code>
+#### <code>Future<PrinterStatus> avancaLinha(int quantLinhas)</code>
 
 * Description: Adds line breaks to the current printout.
 * Returns:
@@ -111,7 +111,7 @@ void main() {
 
 * Throws: A PlatformException or a MissingPluginException.
 
-#### <code><b>Future<PrinterStatus> checarImpressora()</b></code>
+#### <code>Future<PrinterStatus> checarImpressora()</code>
 
 * Description: Checks the printer’s status.
 * Returns:
@@ -119,7 +119,7 @@ void main() {
   PrinterStatus</a> enum indicating the printer’s status.
 * Throws: A PlatformException or a MissingPluginException.
 
-#### <code><b>Future<PrinterStatus> fimImpressao()</b></code>
+#### <code>Future<PrinterStatus> fimImpressao()</code>
 
 * Description: Finalizes the printing queue.
 * Returns:
@@ -127,7 +127,7 @@ void main() {
   PrinterStatus</a> enum indicating the printer’s status.
 * Throws: A PlatformException or a MissingPluginException.
 
-#### <code><b>Future<PrinterStatus> imprimirCodigoDeBarra(String mensagem, int width, int height, BarcodeTypes barcodeType)</b></code>
+#### <code>Future<PrinterStatus> imprimirCodigoDeBarra(String mensagem, int width, int height, BarcodeTypes barcodeType)</code>
 
 * Description: Prints various types of barcodes.
 * Returns:
@@ -142,7 +142,7 @@ void main() {
 
 * Throws: A PlatformException or a MissingPluginException.
 
-#### <code><b>Future<PrinterStatus> imprimirImagem(Uint8List data, int width, int height, {AlignmentTypes align = AlignmentTypes.center})</b></code>
+#### <code>Future<PrinterStatus> imprimirImagem(Uint8List data, int width, int height, {AlignmentTypes align = AlignmentTypes.center})</code>
 
 * Description: Prints raw images.
 * Returns:
@@ -158,7 +158,7 @@ void main() {
 
 * Throws: A PlatformException or a MissingPluginException.
 
-#### <code><b>Future<PrinterStatus> imprimirTexto(String mensagem, {TextOptions? options, int size = defaultFontSize, Font? font, AlignmentTypes align = AlignmentTypes.left})</b></code>
+#### <code>Future<PrinterStatus> imprimirTexto(String mensagem, {TextOptions? options, int size = defaultFontSize, Font? font, AlignmentTypes align = AlignmentTypes.left})</code>
 
 * Description: Prints text.
 * Returns:
@@ -176,7 +176,7 @@ void main() {
 
 * Throws: A PlatformException or a MissingPluginException.
 
-#### <code><b>Future<PrinterStatus> imprimirTodasFuncoes(Uint8List data, int width, int height)</b></code>
+#### <code>Future<PrinterStatus> imprimirTodasFuncoes(Uint8List data, int width, int height)</code>
 
 * Description: Prints all printer functions.
 * Returns:
@@ -192,19 +192,19 @@ void main() {
 
 ### Configutarion parameters:
 
-#### <code><b>BarcodeTypes</b></code>
+#### <code>BarcodeTypes</code>
 
 An enum to indicate the type of barcode to be
 printed. <a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/lib/barcode_types.dart">
 Click here</a> to consult the available types.
 
-#### <code><b>AlignmentTypes</b></code>
+#### <code>AlignmentTypes</code>
 
 An enum to indicate the type of barcode to be
 printed. <a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/lib/alignment_types.dart">
 Click here</a> to consult the available types.
 
-#### <code><b>Font</b></code>
+#### <code>Font</code>
 
 An object to specify the desired font for printing. The constructor receives the font name as a
 parameter, and the font must be available in the assets folder under the directory "/fonts". By
@@ -212,7 +212,7 @@ default, it is set to "
 NORMAL", <a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/lib/font_model.dart">
 click here</a> to view the implementation.
 
-#### <code><b>TextOptions</b></code>
+#### <code>TextOptions</code>
 
 An object that specifies the desired text decoration. It can add bold, italic, or underline styles.
 By default, all styles are set to
@@ -221,7 +221,7 @@ click here</a> to view the implementation.
 
 ### Output:
 
-#### <code><b>PrinterStatus</b></code>
+#### <code>PrinterStatus</code>
 
 An enum to indicate the current status of the
 printer, it can be parsed to a String using
