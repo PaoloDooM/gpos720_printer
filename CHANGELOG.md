@@ -15,3 +15,7 @@
 ## 0.0.4
 
 * Refactor to return a enum representation of the printer status on print commands.
+
+## 0.0.5
+
+* Updated the README.md to reflect the latest modifications.
