@@ -11,3 +11,7 @@
 ## 0.0.3
 
 * Fixes typos on README.md.
+
+## 0.0.4
+
+* Refactor to return a enum representation of the printer status on print commands.

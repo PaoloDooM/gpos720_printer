@@ -131,12 +131,12 @@ public class GertecPrinter {
     }
 
     /**
-     * Método que retorna o atual estado da impressora
+     * Método que retorna um string do atual estado da impressora
      *
      * @return String = traduzStatusImpressora()
      * @throws GediException = vai retorno o código do erro.
      */
-    public String getStatusImpressora() throws GediException {
+    public String getStatusImpressoraString() throws GediException {
         try {
             impressoraInit();
             this.status = this.iPrint.Status();
@@ -145,6 +145,22 @@ public class GertecPrinter {
         }
 
         return traduzStatusImpressora(this.status);
+    }
+
+    /**
+     * Método que retorna um enum do tipo GEDI_PRNTR_e_Status do atual estado da impressora
+     *
+     * @return GEDI_PRNTR_e_Status
+     * @throws GediException = vai retorno o código do erro.
+     */
+    public GEDI_PRNTR_e_Status getStatusImpressoraEnum() throws GediException {
+        try {
+            impressoraInit();
+            this.status = this.iPrint.Status();
+            return this.status;
+        } catch (GediException e) {
+            throw new GediException(e.getErrorCode());
+        }
     }
 
     /**

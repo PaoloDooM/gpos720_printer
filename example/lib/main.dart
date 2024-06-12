@@ -6,9 +6,10 @@ import 'package:gpos720_printer/barcode_types.dart';
 import 'package:gpos720_printer/constants.dart';
 import 'package:gpos720_printer/font_model.dart';
 import 'package:gpos720_printer/gpos720_printer.dart';
-import 'package:gpos720_printer/status_printer.dart';
+import 'package:gpos720_printer/printer_status.dart';
 import 'package:gpos720_printer/text_options.dart';
-import 'package:flutter/services.dart' show rootBundle;
+import 'package:flutter/services.dart'
+    show MissingPluginException, PlatformException, rootBundle;
 import 'package:image/image.dart' as imgn;
 
 void main() {
@@ -43,7 +44,7 @@ class _ExampleState extends State<Example> {
   final String loremIpsum =
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Elementum pulvinar etiam non quam lacus. Vitae tortor condimentum lacinia quis vel eros. Massa sapien faucibus et molestie ac feugiat sed lectus vestibulum. Ullamcorper morbi tincidunt ornare massa eget egestas. Molestie at elementum eu facilisis sed odio morbi quis. Tincidunt ornare massa eget egestas purus viverra accumsan in. Augue ut lectus arcu bibendum at. Sem et tortor consequat id porta. Purus sit amet luctus venenatis lectus magna. Nunc lobortis mattis aliquam faucibus purus in massa tempor nec. Fringilla phasellus faucibus scelerisque eleifend donec pretium vulputate sapien. Accumsan sit amet nulla facilisi morbi tempus. Imperdiet proin fermentum leo vel orci porta non. Amet mauris commodo quis imperdiet.";
 
-  Future<String?> getPlatform() async {
+  Future<String> getPlatform() async {
     return await gpos720PrinterPlugin.getPlatformVersion();
   }
 
@@ -59,10 +60,10 @@ class _ExampleState extends State<Example> {
           children: [
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: FutureBuilder<String?>(
+              child: FutureBuilder<String>(
                   future: getPlatform(),
                   builder:
-                      (BuildContext context, AsyncSnapshot<String?> snapshot) {
+                      (BuildContext context, AsyncSnapshot<String> snapshot) {
                     if (snapshot.hasData) {
                       return Center(
                           child: Text(
@@ -169,7 +170,7 @@ class _ExampleState extends State<Example> {
   }
 
   Widget methodCardBuilder(BuildContext context, String title, String subtitle,
-      Future<String?> Function() method) {
+      Future<PrinterStatus> Function() method) {
     return Card(
       child: ListTile(
         title: Text(title),
@@ -178,9 +179,17 @@ class _ExampleState extends State<Example> {
           child: const Text("Print"),
           onPressed: () async {
             try {
-              _dialogBuilder(context, message: await method());
+              _dialogBuilder(context, (await method()).getLabel());
+            } on PlatformException catch (e) {
+              _dialogBuilder(context,
+                  "${e.code}\n\n${e.message ?? 'Empty message'}\n\n${e.details ?? 'Empty stacktrace'}",
+                  success: false);
+            } on MissingPluginException catch (e) {
+              _dialogBuilder(context,
+                  "Not implemented.\n\n${e.message ?? 'Empty message'}",
+                  success: false);
             } catch (e) {
-              _dialogBuilder(context, message: e.toString(), success: false);
+              _dialogBuilder(context, e.toString(), success: false);
             }
           },
         ),
@@ -188,8 +197,8 @@ class _ExampleState extends State<Example> {
     );
   }
 
-  Future<void> _dialogBuilder(BuildContext context,
-      {String? message, bool success = true}) {
+  Future<void> _dialogBuilder(BuildContext context, String message,
+      {bool success = true}) {
     ScrollController dialogScrollController = ScrollController();
     return showDialog<void>(
       context: context,
@@ -214,10 +223,7 @@ class _ExampleState extends State<Example> {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
                   child: SingleChildScrollView(
-                      controller: dialogScrollController,
-                      child: Text(success
-                          ? statusPrinterFromString(message).getLabel()
-                          : message ?? "Empty response")),
+                      controller: dialogScrollController, child: Text(message)),
                 )),
             actions: <Widget>[
               TextButton(

@@ -41,33 +41,33 @@ public class Gpos720PrinterPlugin implements FlutterPlugin, MethodCallHandler {
                 break;
             case "checarImpressora":
                 try {
-                    result.success(gertecPrinter.getStatusImpressora());
+                    result.success("" + gertecPrinter.getStatusImpressoraEnum().getValue());
                 } catch (Exception e) {
                     Log.e("Gpos720_printer", "checarImpressora: " + e.getMessage(), e);
-                    result.error("Error on \"checarImpressora\"", e.getLocalizedMessage(), e);
+                    result.error("Erro no método \"checarImpressora\"", e.getLocalizedMessage(), e);
                 }
                 break;
             case "fimImpressao":
                 try {
                     gertecPrinter.impressoraOutput();
-                    result.success(gertecPrinter.getStatusImpressora());
+                    result.success("" + gertecPrinter.getStatusImpressoraEnum().getValue());
                 } catch (Exception e) {
                     Log.e("Gpos720_printer", "fimImpressao: " + e.getMessage(), e);
-                    result.error("Error on \"fimImpressao\"", e.getLocalizedMessage(), e);
+                    result.error("Erro no método \"fimImpressao\"", e.getLocalizedMessage(), e);
                 }
                 break;
             case "avancaLinha":
                 try {
                     gertecPrinter.avancaLinha(call.argument("quantLinhas"));
-                    result.success(gertecPrinter.getStatusImpressora());
+                    result.success("" + gertecPrinter.getStatusImpressoraEnum().getValue());
                 } catch (Exception e) {
                     Log.e("Gpos720_printer", "avancaLinha: " + e.getMessage(), e);
-                    result.error("Error on \"avancaLinha\"", e.getLocalizedMessage(), e);
+                    result.error("Erro no método \"avancaLinha\"", e.getLocalizedMessage(), e);
                 }
                 break;
             case "imprimir":
                 try {
-                    gertecPrinter.getStatusImpressora();
+                    gertecPrinter.getStatusImpressoraEnum();
                     if (gertecPrinter.isImpressoraOK()) {
                         String tipoImpressao = call.argument("tipoImpressao");
                         switch (tipoImpressao) {
@@ -105,13 +105,13 @@ public class Gpos720PrinterPlugin implements FlutterPlugin, MethodCallHandler {
                                 imprimeTodasAsFucoes(image1, call.argument("width"), call.argument("height"));
                                 break;
                         }
-                        result.success(gertecPrinter.getStatusImpressora());
+                        result.success("" + gertecPrinter.getStatusImpressoraEnum().getValue());
                     } else {
                         throw new Exception("isImpressoraOK = " + gertecPrinter.isImpressoraOK());
                     }
                 } catch (Exception e) {
                     Log.e("Gpos720_printer", "imprimir: " + e.getMessage(), e);
-                    result.error("Error on \"imprimir\"", e.getLocalizedMessage(), e);
+                    result.error("Erro no método \"imprimir\"", e.getLocalizedMessage(), e);
                 }
                 break;
             default:
@@ -124,147 +124,142 @@ public class Gpos720PrinterPlugin implements FlutterPlugin, MethodCallHandler {
         channel.setMethodCallHandler(null);
     }
 
-    private void imprimeTodasAsFucoes(Bitmap bmp, int width, int height) {
+    private void imprimeTodasAsFucoes(Bitmap bmp, int width, int height) throws Exception {
         configPrint.setItalico(false);
         configPrint.setNegrito(true);
         configPrint.setTamanho(20);
         configPrint.setFonte("MONOSPACE");
         gertecPrinter.setConfigImpressao(configPrint);
-        try {
-            gertecPrinter.getStatusImpressora();
-            // Imprimindo Imagem
-            configPrint.setiWidth(width);
-            configPrint.setiHeight(height);
-            configPrint.setAlinhamento("CENTER");
-            gertecPrinter.setConfigImpressao(configPrint);
-            gertecPrinter.imprimeTexto("==[Iniciando Impressao Imagem]==");
-            gertecPrinter.imprimeImagem(bmp);
-            gertecPrinter.avancaLinha(10);
-            gertecPrinter.imprimeTexto("====[Fim Impressão Imagem]====");
-            gertecPrinter.avancaLinha(10);
-            // Fim Imagem
+        gertecPrinter.getStatusImpressoraEnum();
+        // Imprimindo Imagem
+        configPrint.setiWidth(width);
+        configPrint.setiHeight(height);
+        configPrint.setAlinhamento("CENTER");
+        gertecPrinter.setConfigImpressao(configPrint);
+        gertecPrinter.imprimeTexto("==[Iniciando Impressao Imagem]==");
+        gertecPrinter.imprimeImagem(bmp);
+        gertecPrinter.avancaLinha(10);
+        gertecPrinter.imprimeTexto("====[Fim Impressão Imagem]====");
+        gertecPrinter.avancaLinha(10);
+        // Fim Imagem
 
-            // Impressão Centralizada
-            configPrint.setAlinhamento("CENTER");
-            configPrint.setTamanho(30);
-            gertecPrinter.setConfigImpressao(configPrint);
-            gertecPrinter.imprimeTexto("CENTRALIZADO");
-            gertecPrinter.avancaLinha(10);
-            // Fim Impressão Centralizada
+        // Impressão Centralizada
+        configPrint.setAlinhamento("CENTER");
+        configPrint.setTamanho(30);
+        gertecPrinter.setConfigImpressao(configPrint);
+        gertecPrinter.imprimeTexto("CENTRALIZADO");
+        gertecPrinter.avancaLinha(10);
+        // Fim Impressão Centralizada
 
-            // Impressão Esquerda
-            configPrint.setAlinhamento("LEFT");
-            configPrint.setTamanho(40);
-            gertecPrinter.setConfigImpressao(configPrint);
-            gertecPrinter.imprimeTexto("ESQUERDA");
-            gertecPrinter.avancaLinha(10);
-            // Fim Impressão Esquerda
+        // Impressão Esquerda
+        configPrint.setAlinhamento("LEFT");
+        configPrint.setTamanho(40);
+        gertecPrinter.setConfigImpressao(configPrint);
+        gertecPrinter.imprimeTexto("ESQUERDA");
+        gertecPrinter.avancaLinha(10);
+        // Fim Impressão Esquerda
 
-            // Impressão Direita
-            configPrint.setAlinhamento("RIGHT");
-            configPrint.setTamanho(20);
-            gertecPrinter.setConfigImpressao(configPrint);
-            gertecPrinter.imprimeTexto("DIREITA");
-            gertecPrinter.avancaLinha(10);
-            // Fim Impressão Direita
+        // Impressão Direita
+        configPrint.setAlinhamento("RIGHT");
+        configPrint.setTamanho(20);
+        gertecPrinter.setConfigImpressao(configPrint);
+        gertecPrinter.imprimeTexto("DIREITA");
+        gertecPrinter.avancaLinha(10);
+        // Fim Impressão Direita
 
-            // Impressão Negrito
-            configPrint.setNegrito(true);
-            configPrint.setAlinhamento("LEFT");
-            configPrint.setTamanho(20);
-            gertecPrinter.setConfigImpressao(configPrint);
-            gertecPrinter.imprimeTexto("=======[Escrita Netrigo]=======");
-            gertecPrinter.avancaLinha(10);
-            // Fim Impressão Negrito
+        // Impressão Negrito
+        configPrint.setNegrito(true);
+        configPrint.setAlinhamento("LEFT");
+        configPrint.setTamanho(20);
+        gertecPrinter.setConfigImpressao(configPrint);
+        gertecPrinter.imprimeTexto("=======[Escrita Netrigo]=======");
+        gertecPrinter.avancaLinha(10);
+        // Fim Impressão Negrito
 
-            // Impressão Italico
-            configPrint.setNegrito(false);
-            configPrint.setItalico(true);
-            configPrint.setAlinhamento("LEFT");
-            configPrint.setTamanho(20);
-            gertecPrinter.setConfigImpressao(configPrint);
-            gertecPrinter.imprimeTexto("=======[Escrita Italico]=======");
-            gertecPrinter.avancaLinha(10);
-            // Fim Impressão Italico
+        // Impressão Italico
+        configPrint.setNegrito(false);
+        configPrint.setItalico(true);
+        configPrint.setAlinhamento("LEFT");
+        configPrint.setTamanho(20);
+        gertecPrinter.setConfigImpressao(configPrint);
+        gertecPrinter.imprimeTexto("=======[Escrita Italico]=======");
+        gertecPrinter.avancaLinha(10);
+        // Fim Impressão Italico
 
-            // Impressão Italico
-            configPrint.setNegrito(false);
-            configPrint.setItalico(false);
-            configPrint.setSublinhado(true);
-            configPrint.setAlinhamento("LEFT");
-            configPrint.setTamanho(20);
-            gertecPrinter.setConfigImpressao(configPrint);
-            gertecPrinter.imprimeTexto("======[Escrita Sublinhado]=====");
-            gertecPrinter.avancaLinha(10);
-            // Fim Impressão Italico
+        // Impressão Italico
+        configPrint.setNegrito(false);
+        configPrint.setItalico(false);
+        configPrint.setSublinhado(true);
+        configPrint.setAlinhamento("LEFT");
+        configPrint.setTamanho(20);
+        gertecPrinter.setConfigImpressao(configPrint);
+        gertecPrinter.imprimeTexto("======[Escrita Sublinhado]=====");
+        gertecPrinter.avancaLinha(10);
+        // Fim Impressão Italico
 
-            // Impressão BarCode 128
-            configPrint.setNegrito(false);
-            configPrint.setItalico(false);
-            configPrint.setSublinhado(false);
-            configPrint.setAlinhamento("CENTER");
-            configPrint.setTamanho(20);
-            gertecPrinter.setConfigImpressao(configPrint);
-            gertecPrinter.imprimeTexto("====[Codigo Barras CODE 128]====");
-            gertecPrinter.imprimeBarCode("12345678901234567890", 120, 120, "CODE_128");
-            gertecPrinter.avancaLinha(10);
-            // Fim Impressão BarCode 128
+        // Impressão BarCode 128
+        configPrint.setNegrito(false);
+        configPrint.setItalico(false);
+        configPrint.setSublinhado(false);
+        configPrint.setAlinhamento("CENTER");
+        configPrint.setTamanho(20);
+        gertecPrinter.setConfigImpressao(configPrint);
+        gertecPrinter.imprimeTexto("====[Codigo Barras CODE 128]====");
+        gertecPrinter.imprimeBarCode("12345678901234567890", 120, 120, "CODE_128");
+        gertecPrinter.avancaLinha(10);
+        // Fim Impressão BarCode 128
 
-            // Impressão Normal
-            configPrint.setNegrito(false);
-            configPrint.setItalico(false);
-            configPrint.setSublinhado(true);
-            configPrint.setAlinhamento("LEFT");
-            configPrint.setTamanho(20);
-            gertecPrinter.setConfigImpressao(configPrint);
-            gertecPrinter.imprimeTexto("=======[Escrita Normal]=======");
-            gertecPrinter.avancaLinha(10);
-            // Fim Impressão Normal
+        // Impressão Normal
+        configPrint.setNegrito(false);
+        configPrint.setItalico(false);
+        configPrint.setSublinhado(true);
+        configPrint.setAlinhamento("LEFT");
+        configPrint.setTamanho(20);
+        gertecPrinter.setConfigImpressao(configPrint);
+        gertecPrinter.imprimeTexto("=======[Escrita Normal]=======");
+        gertecPrinter.avancaLinha(10);
+        // Fim Impressão Normal
 
-            // Impressão Normal
-            configPrint.setNegrito(false);
-            configPrint.setItalico(false);
-            configPrint.setSublinhado(true);
-            configPrint.setAlinhamento("LEFT");
-            configPrint.setTamanho(20);
-            gertecPrinter.setConfigImpressao(configPrint);
-            gertecPrinter.imprimeTexto("=========[BlankLine 50]=========");
-            gertecPrinter.avancaLinha(50);
-            gertecPrinter.imprimeTexto("=======[Fim BlankLine 50]=======");
-            gertecPrinter.avancaLinha(10);
-            // Fim Impressão Normal
+        // Impressão Normal
+        configPrint.setNegrito(false);
+        configPrint.setItalico(false);
+        configPrint.setSublinhado(true);
+        configPrint.setAlinhamento("LEFT");
+        configPrint.setTamanho(20);
+        gertecPrinter.setConfigImpressao(configPrint);
+        gertecPrinter.imprimeTexto("=========[BlankLine 50]=========");
+        gertecPrinter.avancaLinha(50);
+        gertecPrinter.imprimeTexto("=======[Fim BlankLine 50]=======");
+        gertecPrinter.avancaLinha(10);
+        // Fim Impressão Normal
 
-            // Impressão BarCode 13
-            configPrint.setNegrito(false);
-            configPrint.setItalico(false);
-            configPrint.setSublinhado(false);
-            configPrint.setAlinhamento("CENTER");
-            configPrint.setTamanho(20);
-            gertecPrinter.setConfigImpressao(configPrint);
-            gertecPrinter.imprimeTexto("=====[Codigo Barras EAN13]=====");
-            gertecPrinter.imprimeBarCode("7891234567895", 120, 120, "EAN_13");
-            gertecPrinter.avancaLinha(10);
-            // Fim Impressão BarCode 128
+        // Impressão BarCode 13
+        configPrint.setNegrito(false);
+        configPrint.setItalico(false);
+        configPrint.setSublinhado(false);
+        configPrint.setAlinhamento("CENTER");
+        configPrint.setTamanho(20);
+        gertecPrinter.setConfigImpressao(configPrint);
+        gertecPrinter.imprimeTexto("=====[Codigo Barras EAN13]=====");
+        gertecPrinter.imprimeBarCode("7891234567895", 120, 120, "EAN_13");
+        gertecPrinter.avancaLinha(10);
+        // Fim Impressão BarCode 128
 
-            // Impressão BarCode 13
-            gertecPrinter.setConfigImpressao(configPrint);
-            gertecPrinter.imprimeTexto("===[Codigo QrCode Gertec LIB]==");
-            gertecPrinter.avancaLinha(10);
-            gertecPrinter.imprimeBarCode("Gertec Developer Partner LIB", 240, 240, "QR_CODE");
+        // Impressão BarCode 13
+        gertecPrinter.setConfigImpressao(configPrint);
+        gertecPrinter.imprimeTexto("===[Codigo QrCode Gertec LIB]==");
+        gertecPrinter.avancaLinha(10);
+        gertecPrinter.imprimeBarCode("Gertec Developer Partner LIB", 240, 240, "QR_CODE");
 
-            configPrint.setNegrito(false);
-            configPrint.setItalico(false);
-            configPrint.setSublinhado(false);
-            configPrint.setAlinhamento("CENTER");
-            configPrint.setTamanho(20);
-            gertecPrinter.imprimeTexto("===[Codigo QrCode Gertec IMG]==");
-            gertecPrinter.imprimeBarCodeIMG("Gertec Developer Partner IMG", 240, 240, "QR_CODE");
+        configPrint.setNegrito(false);
+        configPrint.setItalico(false);
+        configPrint.setSublinhado(false);
+        configPrint.setAlinhamento("CENTER");
+        configPrint.setTamanho(20);
+        gertecPrinter.imprimeTexto("===[Codigo QrCode Gertec IMG]==");
+        gertecPrinter.imprimeBarCodeIMG("Gertec Developer Partner IMG", 240, 240, "QR_CODE");
 
-            gertecPrinter.avancaLinha(40);
-
-        } catch (Exception e) {
-            Log.e("Gpos720_printer", "imprimeTodasAsFucoes: " + e.getMessage(), e);
-        }
+        gertecPrinter.avancaLinha(40);
     }
 
     public Bitmap byteArrayToBitmap(byte[] byteArray) {

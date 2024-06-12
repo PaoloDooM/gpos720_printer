@@ -102,37 +102,37 @@ void main() {
 #### <code><b>Future<String?> avancaLinha(int quantLinhas)</b></code>
 
 * Description: Adds line breaks to the current printout.
-* Returns: A String indicating the printer’s status in Portuguese, it can be parsed to an enum using
-  the <a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/lib/status_printer.dart">
-  statusPrinterFromString</a> function.
+* Returns:
+  An <a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/lib/printer_status.dart">
+  PrinterStatus</a> enum indicating the printer’s status.
 * Parameters:
 
 1. <b>quantLinhas</b>: An Integer specifying the desired number of line breaks.
 
-* Throws: An Exception if the printer fails.
+* Throws: A PlatformException or a MissingPluginException.
 
 #### <code><b>Future<String?> checarImpressora()</b></code>
 
 * Description: Checks the printer’s status.
-* Returns: A String indicating the printer’s status in Portuguese, it can be parsed to an enum using
-  the <a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/lib/status_printer.dart">
-  statusPrinterFromString</a> function.
-* Throws: An Exception if the printer fails.
+* Returns:
+  An <a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/lib/printer_status.dart">
+  PrinterStatus</a> enum indicating the printer’s status.
+* Throws: A PlatformException or a MissingPluginException.
 
 #### <code><b>Future<String?> fimImpressao()</b></code>
 
 * Description: Finalizes the printing queue.
-* Returns: A String indicating the printer’s status in Portuguese, it can be parsed to an enum using
-  the <a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/lib/status_printer.dart">
-  statusPrinterFromString</a> function.
-* Throws: An Exception if the printer fails.
+* Returns:
+  An <a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/lib/printer_status.dart">
+  PrinterStatus</a> enum indicating the printer’s status.
+* Throws: A PlatformException or a MissingPluginException.
 
 #### <code><b>Future<String?> imprimirCodigoDeBarra(String mensagem, int width, int height, BarcodeTypes barcodeType)</b></code>
 
 * Description: Prints various types of barcodes.
-* Returns: A String indicating the printer’s status in Portuguese, it can be parsed to an enum using
-  the <a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/lib/status_printer.dart">
-  statusPrinterFromString</a> function.
+* Returns:
+  An <a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/lib/printer_status.dart">
+  PrinterStatus</a> enum indicating the printer’s status.
 * Parameters:
 
 1. <b>mensagem</b>: A String specifying the desired data on the barcode.
@@ -140,14 +140,14 @@ void main() {
 3. <b>height</b>: An Integer specifing the desired height.
 4. <b>barcodeTypes</b>: A BarcodeTypes enum specifing the desired barcode type.
 
-* Throws: An Exception if the printer fails.
+* Throws: A PlatformException or a MissingPluginException.
 
 #### <code><b>Future<String?> imprimirImagem(Uint8List data, int width, int height, {AlignmentTypes align = AlignmentTypes.center})</b></code>
 
 * Description: Prints raw images.
-* Returns: A String indicating the printer’s status in Portuguese, it can be parsed to an enum using
-  the <a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/lib/status_printer.dart">
-  statusPrinterFromString</a> function.
+* Returns:
+  An <a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/lib/printer_status.dart">
+  PrinterStatus</a> enum indicating the printer’s status.
 * Parameters:
 
 1. <b>data</b>: A Uint8List with the image raw data.
@@ -156,14 +156,14 @@ void main() {
 4. <b>align (optional)</b>: An AlignmentTypes enum specifying the desired alignment. By default,
    align will be center.
 
-* Throws: An Exception if the printer fails.
+* Throws: A PlatformException or a MissingPluginException.
 
 #### <code><b>imprimirTexto(String mensagem, {TextOptions? options, int size = defaultFontSize, Font? font, AlignmentTypes align = AlignmentTypes.left})</b></code>
 
 * Description: Prints text.
-* Returns: A String indicating the printer’s status in Portuguese, it can be parsed to an enum using
-  the <a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/lib/status_printer.dart">
-  statusPrinterFromString</a> function.
+* Returns:
+  An <a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/lib/printer_status.dart">
+  PrinterStatus</a> enum indicating the printer’s status.
 * Parameters:
 
 1. <b>mensagem</b>: A String with the desired text to be printed.
@@ -174,21 +174,21 @@ void main() {
 5. <b>align (optional)</b>: An AlignmentTypes enum specifying the desired alignment. By default,
    align will be left.
 
-* Throws: An Exception if the printer fails.
+* Throws: A PlatformException or a MissingPluginException.
 
 #### <code><b>Future<String?> imprimirTodasFuncoes(Uint8List data, int width, int height)</b></code>
 
 * Description: Prints all printer functions.
-* Returns: A String indicating the printer’s status in Portuguese, it can be parsed to an enum using
-  the <a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/lib/status_printer.dart">
-  statusPrinterFromString</a> function.
+* Returns:
+  An <a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/lib/printer_status.dart">
+  PrinterStatus</a> enum indicating the printer’s status.
 * Parameters:
 
 1. <b>data</b>: A Uint8List with the image raw data.
 2. <b>width</b>: An Integer specifing the desired width.
 3. <b>height</b>: An Integer specifing the desired height.
 
-* Throws: An Exception if the printer fails.
+* Throws: A PlatformException or a MissingPluginException.
 
 ### Configutarion parameters:
 
@@ -221,10 +221,12 @@ click here</a> to view the implementation.
 
 ### Output:
 
-#### <code><b>StatusPrinter</b></code>
+#### <code><b>PrinterStatus</b></code>
 
 An enum to indicate the current status of the
-printer. <a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/lib/status_printer.dart">
+printer, it can be parsed to a String using
+the ".getLabel()"
+method. <a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/lib/printer_status.dart">
 Click here</a> to view the implementation.
 
 ## TODO

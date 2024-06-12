@@ -7,6 +7,7 @@ import 'package:gpos720_printer/font_model.dart';
 import 'package:gpos720_printer/gpos720_printer.dart';
 import 'package:gpos720_printer/gpos720_printer_platform_interface.dart';
 import 'package:gpos720_printer/gpos720_printer_method_channel.dart';
+import 'package:gpos720_printer/printer_status.dart';
 import 'package:gpos720_printer/text_options.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
@@ -14,54 +15,55 @@ class MockGpos720PrinterPlatform
     with MockPlatformInterfaceMixin
     implements Gpos720PrinterPlatform {
   @override
-  Future<String?> getPlatformVersion() => Future.value('42');
+  Future<String> getPlatformVersion() => Future.value('42');
 
   @override
-  Future<String?> avancaLinha(int quantLinhas) {
+  Future<PrinterStatus> avancaLinha(int quantLinhas) {
     // TODO: implement avancaLinha
-    return Future.value("");
+    return Future.value(PrinterStatus.impressoraOk);
   }
 
   @override
-  Future<String?> checarImpressora() {
+  Future<PrinterStatus> checarImpressora() {
     // TODO: implement checarImpressora
-    return Future.value("");
+    return Future.value(PrinterStatus.impressoraOk);
   }
 
   @override
-  Future<String?> fimImpressao() {
+  Future<PrinterStatus> fimImpressao() {
     // TODO: implement fimImpressao
-    return Future.value("");
+    return Future.value(PrinterStatus.impressoraOk);
   }
 
   @override
-  Future<String?> imprimirCodigoDeBarra(
+  Future<PrinterStatus> imprimirCodigoDeBarra(
       String mensagem, int width, int height, BarcodeTypes barcodeType) {
     // TODO: implement imprimirCodigoDeBarra
-    return Future.value("");
+    return Future.value(PrinterStatus.impressoraOk);
   }
 
   @override
-  Future<String?> imprimirImagem(Uint8List data, int width, int height,
+  Future<PrinterStatus> imprimirImagem(Uint8List data, int width, int height,
       {AlignmentTypes align = AlignmentTypes.center}) {
     // TODO: implement imprimirImagem
-    return Future.value("");
+    return Future.value(PrinterStatus.impressoraOk);
   }
 
   @override
-  Future<String?> imprimirTexto(String mensagem,
+  Future<PrinterStatus> imprimirTexto(String mensagem,
       {TextOptions? options,
       int size = defaultFontSize,
       Font? font,
       AlignmentTypes align = AlignmentTypes.left}) {
     // TODO: implement imprimirTexto
-    return Future.value("");
+    return Future.value(PrinterStatus.impressoraOk);
   }
 
   @override
-  Future<String?> imprimirTodasFuncoes(Uint8List data, int width, int height) {
+  Future<PrinterStatus> imprimirTodasFuncoes(
+      Uint8List data, int width, int height) {
     // TODO: implement imprimirTodasFuncoes
-    return Future.value("");
+    return Future.value(PrinterStatus.impressoraOk);
   }
 }
 
