@@ -6,6 +6,7 @@ import 'package:gpos720_printer/barcode_types.dart';
 import 'package:gpos720_printer/constants.dart';
 import 'package:gpos720_printer/font_model.dart';
 import 'package:gpos720_printer/gpos720_printer.dart';
+import 'package:gpos720_printer/status_printer.dart';
 import 'package:gpos720_printer/text_options.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:image/image.dart' as imgn;
@@ -214,7 +215,9 @@ class _ExampleState extends State<Example> {
                   padding: const EdgeInsets.symmetric(horizontal: 8.0),
                   child: SingleChildScrollView(
                       controller: dialogScrollController,
-                      child: Text(message ?? "Empty response")),
+                      child: Text(success
+                          ? statusPrinterFromString(message).getLabel()
+                          : message ?? "Empty response")),
                 )),
             actions: <Widget>[
               TextButton(

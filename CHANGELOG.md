@@ -4,4 +4,5 @@
 
 ## 0.0.2
 
-* Adds topics to the package
+* Refactor to return a string representation of the printer status on print commands.
+* Adds a StatusPrinter enum and a method to parse it from a string.

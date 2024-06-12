@@ -41,8 +41,7 @@ public class Gpos720PrinterPlugin implements FlutterPlugin, MethodCallHandler {
                 break;
             case "checarImpressora":
                 try {
-                    gertecPrinter.getStatusImpressora();
-                    result.success(gertecPrinter.isImpressoraOK());
+                    result.success(gertecPrinter.getStatusImpressora());
                 } catch (Exception e) {
                     Log.e("Gpos720_printer", "checarImpressora: " + e.getMessage(), e);
                     result.error("Error on \"checarImpressora\"", e.getLocalizedMessage(), e);
@@ -51,7 +50,7 @@ public class Gpos720PrinterPlugin implements FlutterPlugin, MethodCallHandler {
             case "fimImpressao":
                 try {
                     gertecPrinter.impressoraOutput();
-                    result.success("Finalizou impressao");
+                    result.success(gertecPrinter.getStatusImpressora());
                 } catch (Exception e) {
                     Log.e("Gpos720_printer", "fimImpressao: " + e.getMessage(), e);
                     result.error("Error on \"fimImpressao\"", e.getLocalizedMessage(), e);
@@ -60,7 +59,7 @@ public class Gpos720PrinterPlugin implements FlutterPlugin, MethodCallHandler {
             case "avancaLinha":
                 try {
                     gertecPrinter.avancaLinha(call.argument("quantLinhas"));
-                    result.success(gertecPrinter.isImpressoraOK());
+                    result.success(gertecPrinter.getStatusImpressora());
                 } catch (Exception e) {
                     Log.e("Gpos720_printer", "avancaLinha: " + e.getMessage(), e);
                     result.error("Error on \"avancaLinha\"", e.getLocalizedMessage(), e);
@@ -106,7 +105,7 @@ public class Gpos720PrinterPlugin implements FlutterPlugin, MethodCallHandler {
                                 imprimeTodasAsFucoes(image1, call.argument("width"), call.argument("height"));
                                 break;
                         }
-                        result.success(gertecPrinter.isImpressoraOK());
+                        result.success(gertecPrinter.getStatusImpressora());
                     } else {
                         throw new Exception("isImpressoraOK = " + gertecPrinter.isImpressoraOK());
                     }
