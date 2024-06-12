@@ -31,3 +31,7 @@
 ## 0.0.6+1
 
 * Formatting corrections in the CHANGELOG.md.
+
+## 0.0.6+2
+
+* Fixes typos on README.md.

@@ -103,7 +103,7 @@ void main() {
 
 * Description: Adds line breaks to the current printout.
 * Returns:
-  An <a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/lib/printer_status.dart">
+  A <a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/lib/printer_status.dart">
   PrinterStatus</a> enum indicating the printer’s status.
 * Parameters:
 
@@ -115,7 +115,7 @@ void main() {
 
 * Description: Checks the printer’s status.
 * Returns:
-  An <a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/lib/printer_status.dart">
+  A <a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/lib/printer_status.dart">
   PrinterStatus</a> enum indicating the printer’s status.
 * Throws: A PlatformException or a MissingPluginException.
 
@@ -123,7 +123,7 @@ void main() {
 
 * Description: Finalizes the printing queue.
 * Returns:
-  An <a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/lib/printer_status.dart">
+  A <a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/lib/printer_status.dart">
   PrinterStatus</a> enum indicating the printer’s status.
 * Throws: A PlatformException or a MissingPluginException.
 
@@ -131,7 +131,7 @@ void main() {
 
 * Description: Prints various types of barcodes.
 * Returns:
-  An <a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/lib/printer_status.dart">
+  A <a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/lib/printer_status.dart">
   PrinterStatus</a> enum indicating the printer’s status.
 * Parameters:
 
@@ -146,7 +146,7 @@ void main() {
 
 * Description: Prints raw images.
 * Returns:
-  An <a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/lib/printer_status.dart">
+  A <a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/lib/printer_status.dart">
   PrinterStatus</a> enum indicating the printer’s status.
 * Parameters:
 
@@ -162,7 +162,7 @@ void main() {
 
 * Description: Prints text.
 * Returns:
-  An <a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/lib/printer_status.dart">
+  A <a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/lib/printer_status.dart">
   PrinterStatus</a> enum indicating the printer’s status.
 * Parameters:
 
@@ -180,7 +180,7 @@ void main() {
 
 * Description: Prints all printer functions.
 * Returns:
-  An <a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/lib/printer_status.dart">
+  A <a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/lib/printer_status.dart">
   PrinterStatus</a> enum indicating the printer’s status.
 * Parameters:
 
