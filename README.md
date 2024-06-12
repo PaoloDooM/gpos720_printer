@@ -102,7 +102,7 @@ void main() {
 #### <code><b>Future<String?> avancaLinha(int quantLinhas)</b></code>
 
 * Description: Adds line breaks to the current printout.
-* Returns: A String indicating the printer’s status in Portuguese, it can be parsed to a enum using
+* Returns: A String indicating the printer’s status in Portuguese, it can be parsed to an enum using
   the <a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/lib/status_printer.dart">
   statusPrinterFromString</a> function.
 * Parameters:
@@ -114,7 +114,7 @@ void main() {
 #### <code><b>Future<String?> checarImpressora()</b></code>
 
 * Description: Checks the printer’s status.
-* Returns: A String indicating the printer’s status in Portuguese, it can be parsed to a enum using
+* Returns: A String indicating the printer’s status in Portuguese, it can be parsed to an enum using
   the <a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/lib/status_printer.dart">
   statusPrinterFromString</a> function.
 * Throws: An Exception if the printer fails.
@@ -122,7 +122,7 @@ void main() {
 #### <code><b>Future<String?> fimImpressao()</b></code>
 
 * Description: Finalizes the printing queue.
-* Returns: A String indicating the printer’s status in Portuguese, it can be parsed to a enum using
+* Returns: A String indicating the printer’s status in Portuguese, it can be parsed to an enum using
   the <a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/lib/status_printer.dart">
   statusPrinterFromString</a> function.
 * Throws: An Exception if the printer fails.
@@ -130,7 +130,7 @@ void main() {
 #### <code><b>Future<String?> imprimirCodigoDeBarra(String mensagem, int width, int height, BarcodeTypes barcodeType)</b></code>
 
 * Description: Prints various types of barcodes.
-* Returns: A String indicating the printer’s status in Portuguese, it can be parsed to a enum using
+* Returns: A String indicating the printer’s status in Portuguese, it can be parsed to an enum using
   the <a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/lib/status_printer.dart">
   statusPrinterFromString</a> function.
 * Parameters:
@@ -145,7 +145,7 @@ void main() {
 #### <code><b>Future<String?> imprimirImagem(Uint8List data, int width, int height, {AlignmentTypes align = AlignmentTypes.center})</b></code>
 
 * Description: Prints raw images.
-* Returns: A String indicating the printer’s status in Portuguese, it can be parsed to a enum using
+* Returns: A String indicating the printer’s status in Portuguese, it can be parsed to an enum using
   the <a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/lib/status_printer.dart">
   statusPrinterFromString</a> function.
 * Parameters:
@@ -161,12 +161,12 @@ void main() {
 #### <code><b>imprimirTexto(String mensagem, {TextOptions? options, int size = defaultFontSize, Font? font, AlignmentTypes align = AlignmentTypes.left})</b></code>
 
 * Description: Prints text.
-* Returns: A String indicating the printer’s status in Portuguese, it can be parsed to a enum using
+* Returns: A String indicating the printer’s status in Portuguese, it can be parsed to an enum using
   the <a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/lib/status_printer.dart">
   statusPrinterFromString</a> function.
 * Parameters:
 
-1. <b>mensagem</b>: An String with the desired text to be printed.
+1. <b>mensagem</b>: A String with the desired text to be printed.
 2. <b>options (optional)</b>: A TextOptions specifing if the text will be render as bold, italic or
    underlined.
 3. <b>size (optional)</b>: An Integer specifing the desired font size.
@@ -179,7 +179,7 @@ void main() {
 #### <code><b>Future<String?> imprimirTodasFuncoes(Uint8List data, int width, int height)</b></code>
 
 * Description: Prints all printer functions.
-* Returns: A String indicating the printer’s status in Portuguese, it can be parsed to a enum using
+* Returns: A String indicating the printer’s status in Portuguese, it can be parsed to an enum using
   the <a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/lib/status_printer.dart">
   statusPrinterFromString</a> function.
 * Parameters:
