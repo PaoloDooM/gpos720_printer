@@ -19,3 +19,7 @@
 ## 0.0.5
 
 * Updated the README.md to reflect the latest modifications.
+
+## 0.0.5+1
+
+* Formatting corrections in the README.md.
