@@ -22,7 +22,7 @@ Gertec GPOS720</a>.
 * <b>Flutter version</b> >= 2.0.0.
 * <b>Dart version</b> >= 2.12.0.
 
-## Instalation
+## Installation
 
 ### Step 1
 
@@ -95,7 +95,7 @@ void main() {
 }
 ```
 
-## Documumentation
+## Documentation
 
 ### Methods:
 
@@ -136,9 +136,9 @@ void main() {
 * Parameters:
 
 1. <b>mensagem</b>: A String specifying the desired data on the barcode.
-2. <b>width</b>: An Integer specifing the desired width.
-3. <b>height</b>: An Integer specifing the desired height.
-4. <b>barcodeTypes</b>: A BarcodeTypes enum specifing the desired barcode type.
+2. <b>width</b>: An Integer specifying the desired width.
+3. <b>height</b>: An Integer specifying the desired height.
+4. <b>barcodeTypes</b>: A BarcodeTypes enum specifying the desired barcode type.
 
 * Throws: A PlatformException or a MissingPluginException.
 
@@ -151,8 +151,8 @@ void main() {
 * Parameters:
 
 1. <b>data</b>: A Uint8List with the image raw data.
-2. <b>width</b>: An Integer specifing the desired width.
-3. <b>height</b>: An Integer specifing the desired height.
+2. <b>width</b>: An Integer specifying the desired width.
+3. <b>height</b>: An Integer specifying the desired height.
 4. <b>align (optional)</b>: An AlignmentTypes enum specifying the desired alignment. By default,
    align will be center.
 
@@ -167,10 +167,10 @@ void main() {
 * Parameters:
 
 1. <b>mensagem</b>: A String with the desired text to be printed.
-2. <b>options (optional)</b>: A TextOptions specifing if the text will be render as bold, italic or
+2. <b>options (optional)</b>: A TextOptions specifying if the text will be render as bold, italic or
    underlined.
-3. <b>size (optional)</b>: An Integer specifing the desired font size.
-4. <b>Font (optional)</b>: A Font specifing the desired font to be used in the text.
+3. <b>size (optional)</b>: An Integer specifying the desired font size.
+4. <b>Font (optional)</b>: A Font specifying the desired font to be used in the text.
 5. <b>align (optional)</b>: An AlignmentTypes enum specifying the desired alignment. By default,
    align will be left.
 
@@ -185,12 +185,12 @@ void main() {
 * Parameters:
 
 1. <b>data</b>: A Uint8List with the image raw data.
-2. <b>width</b>: An Integer specifing the desired width.
-3. <b>height</b>: An Integer specifing the desired height.
+2. <b>width</b>: An Integer specifying the desired width.
+3. <b>height</b>: An Integer specifying the desired height.
 
 * Throws: A PlatformException or a MissingPluginException.
 
-### Configutarion parameters:
+### Configuration parameters:
 
 #### <code>BarcodeTypes</code>
 
@@ -233,5 +233,5 @@ Click here</a> to view the implementation.
 
 * Pass image data from outside the MethodChannel to avoid payload size/speed limitations.
 * Implement plugin tests.
-* Standarize exceptions outputs.
+* Standardize exceptions outputs.
 * Print raw ESC/POS commands.

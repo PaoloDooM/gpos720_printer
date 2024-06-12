@@ -35,3 +35,7 @@
 ## 0.0.6+2
 
 * Fixes typos on README.md.
+
+## 0.0.6+3
+
+* Fixes more typos on README.md.
