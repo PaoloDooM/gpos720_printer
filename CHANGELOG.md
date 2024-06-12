@@ -23,3 +23,7 @@
 ## 0.0.5+1
 
 * Formatting corrections in the README.md.
+
+# 0.0.6
+
+* Fixes invalid arguments in "imprimirTexto".
