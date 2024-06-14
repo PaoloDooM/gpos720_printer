@@ -1,4 +1,4 @@
-import 'package:flutter/foundation.dart';
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:gpos720_printer/alignment_types.dart';
@@ -10,7 +10,7 @@ import 'package:gpos720_printer/printer_status.dart';
 import 'package:gpos720_printer/text_options.dart';
 import 'package:flutter/services.dart'
     show MissingPluginException, PlatformException, rootBundle;
-import 'package:image/image.dart' as imgn;
+import 'package:image/image.dart' as img;
 
 void main() {
   runApp(const MyApp());
@@ -103,61 +103,54 @@ class _ExampleState extends State<Example> {
                           () async => gpos720PrinterPlugin.checarImpressora()),
                       methodCardBuilder(context, "imprimirTodasFuncoes",
                           "Prints all printer functions.", () async {
-                        Uint8List bytes =
+                        img.Image? image = img.decodeImage(
                             (await rootBundle.load("assets/flutter.png"))
                                 .buffer
-                                .asUint8List();
-                        imgn.Image image = imgn.decodeImage(bytes.toList())!;
+                                .asUint8List());
                         return await gpos720PrinterPlugin.imprimirTodasFuncoes(
-                            bytes, image.height, image.width);
+                            Uint8List.fromList(img.encodeJpg(image!)),
+                            image.height,
+                            image.width);
                       }),
-                      methodCardBuilder(
-                          context,
-                          "imprimirCodigoDeBarra",
-                          "Prints various types of barcodes.",
-                          () async =>
-                              await gpos720PrinterPlugin.imprimirCodigoDeBarra(
-                                  "https://www.google.com/",
-                                  200,
-                                  200,
-                                  BarcodeTypes.qrCode)),
+                      methodCardBuilder(context, "imprimirCodigoDeBarra",
+                          "Prints various types of barcodes.", () async {
+                        await gpos720PrinterPlugin.imprimirCodigoDeBarra(
+                            "https://www.google.com/",
+                            200,
+                            200,
+                            BarcodeTypes.qrCode);
+                        return await gpos720PrinterPlugin.fimImpressao();
+                      }),
                       methodCardBuilder(
                           context, "imprimirImagem", "Prints raw images.",
                           () async {
-                        Uint8List bytes =
+                        img.Image? image = img.decodeImage(
                             (await rootBundle.load("assets/flutter.png"))
                                 .buffer
-                                .asUint8List();
-                        imgn.Image image = imgn.decodeImage(bytes.toList())!;
-                        return await gpos720PrinterPlugin.imprimirImagem(
-                            bytes, image.height, image.width,
+                                .asUint8List());
+                        await gpos720PrinterPlugin.imprimirImagem(
+                            Uint8List.fromList(img.encodeJpg(image!)),
+                            image.height,
+                            image.width,
                             align: AlignmentTypes.center);
+                        return await gpos720PrinterPlugin.fimImpressao();
                       }),
                       methodCardBuilder(
-                          context,
-                          "imprimirTexto",
-                          "Prints text.",
-                          () async => await gpos720PrinterPlugin.imprimirTexto(
-                              loremIpsum,
-                              align: AlignmentTypes.right,
-                              size: defaultFontSize,
-                              font: Font(fontName: 'NORMAL'),
-                              options: TextOptions(
-                                  bold: false,
-                                  italic: false,
-                                  underlined: false))),
-                      methodCardBuilder(
-                        context,
-                        "avancaLinha",
-                        "Adds line breaks to the current printout.",
-                        () async => await gpos720PrinterPlugin.avancaLinha(5),
-                      ),
-                      methodCardBuilder(
-                          context,
-                          "fimImpressao",
-                          "Finalizes the printing queue.",
-                          () async =>
-                              await gpos720PrinterPlugin.fimImpressao()),
+                          context, "imprimirTexto", "Prints text.", () async {
+                        await gpos720PrinterPlugin.imprimirTexto(loremIpsum,
+                            align: AlignmentTypes.right,
+                            size: defaultFontSize,
+                            font: Font(fontName: 'NORMAL'),
+                            options: TextOptions(
+                                bold: false, italic: false, underlined: false));
+                        return await gpos720PrinterPlugin.fimImpressao();
+                      }),
+                      methodCardBuilder(context, "avancaLinha",
+                          "Adds line breaks to the current printout.",
+                          () async {
+                        await gpos720PrinterPlugin.avancaLinha(5);
+                        return await gpos720PrinterPlugin.fimImpressao();
+                      }),
                     ],
                   ),
                 ),
@@ -179,7 +172,7 @@ class _ExampleState extends State<Example> {
           child: const Text("Print"),
           onPressed: () async {
             try {
-              _dialogBuilder(context, (await method()).getLabel());
+              _dialogBuilder(context, (await method()).getLabel);
             } on PlatformException catch (e) {
               _dialogBuilder(context,
                   "${e.code}\n\n${e.message ?? 'Empty message'}\n\n${e.details ?? 'Empty stacktrace'}",

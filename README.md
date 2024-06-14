@@ -111,6 +111,8 @@ void main() {
 
 * Throws: A PlatformException or a MissingPluginException.
 
+> Remember to call the method ‘fimImpressao()’ to print what is in the print buffer.
+
 #### <code>Future\<PrinterStatus\> checarImpressora()</code>
 
 * Description: Checks the printer’s status.
@@ -142,21 +144,25 @@ void main() {
 
 * Throws: A PlatformException or a MissingPluginException.
 
+> Remember to call the method ‘fimImpressao()’ to print what is in the print buffer.
+
 #### <code>Future\<PrinterStatus\> imprimirImagem(Uint8List data, int width, int height, {AlignmentTypes align = AlignmentTypes.center})</code>
 
-* Description: Prints raw images.
+* Description: Prints raw images. Only accepts JPG images.
 * Returns:
   A <a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/lib/printer_status.dart">
   PrinterStatus</a> enum indicating the printer’s status.
 * Parameters:
 
-1. <b>data</b>: A Uint8List with the image raw data.
+1. <b>data</b>: A Uint8List with the JPG image raw data.
 2. <b>width</b>: An Integer specifying the desired width.
 3. <b>height</b>: An Integer specifying the desired height.
 4. <b>align (optional)</b>: An AlignmentTypes enum specifying the desired alignment. By default,
    align will be center.
 
 * Throws: A PlatformException or a MissingPluginException.
+
+> Remember to call the method ‘fimImpressao()’ to print what is in the print buffer.
 
 #### <code>Future\<PrinterStatus\> imprimirTexto(String mensagem, {TextOptions? options, int size = defaultFontSize, Font? font, AlignmentTypes align = AlignmentTypes.left})</code>
 
@@ -176,19 +182,23 @@ void main() {
 
 * Throws: A PlatformException or a MissingPluginException.
 
+> Remember to call the method ‘fimImpressao()’ to print what is in the print buffer.
+
 #### <code>Future\<PrinterStatus\> imprimirTodasFuncoes(Uint8List data, int width, int height)</code>
 
-* Description: Prints all printer functions.
+* Description: Prints all printer functions. Only accepts JPG images.
 * Returns:
   A <a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/lib/printer_status.dart">
   PrinterStatus</a> enum indicating the printer’s status.
 * Parameters:
 
-1. <b>data</b>: A Uint8List with the image raw data.
+1. <b>data</b>: A Uint8List with the JPG image raw data.
 2. <b>width</b>: An Integer specifying the desired width.
 3. <b>height</b>: An Integer specifying the desired height.
 
 * Throws: A PlatformException or a MissingPluginException.
+
+> This method already executes the ‘fimImpressao()’ method.
 
 ### Configuration parameters:
 
@@ -225,7 +235,7 @@ click here</a> to view the implementation.
 
 An enum to indicate the current status of the
 printer, it can be parsed to a String using
-the ".getLabel()"
+the ".getLabel"
 method. <a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/lib/printer_status.dart">
 Click here</a> to view the implementation.
 

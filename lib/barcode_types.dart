@@ -19,7 +19,7 @@ enum BarcodeTypes {
 }
 
 extension BarcodeTypesExtension on BarcodeTypes {
-  String getLabel() {
+  String get getLabel {
     switch (this) {
       case BarcodeTypes.aztec:
         return "AZTEC";

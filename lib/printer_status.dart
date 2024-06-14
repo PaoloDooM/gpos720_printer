@@ -7,7 +7,7 @@ enum PrinterStatus {
 }
 
 extension PrinterStatusExtension on PrinterStatus {
-  String getLabel() {
+  String get getLabel {
     switch (this) {
       case PrinterStatus.impressoraOk:
         return 'IMPRESSORA OK';

@@ -39,3 +39,9 @@
 ## 0.0.6+3
 
 * Fixes more typos on README.md.
+
+## 0.0.7
+
+* Reconfiguration of default values.
+* Refactor in ‘getLabel’ methods.
+* Updated README.md.

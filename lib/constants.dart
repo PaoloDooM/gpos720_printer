@@ -1,1 +1,1 @@
-const int defaultFontSize = 9;
+const int defaultFontSize = 17;

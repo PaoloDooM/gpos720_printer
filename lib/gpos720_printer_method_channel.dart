@@ -54,12 +54,12 @@ class MethodChannelGpos720Printer extends Gpos720PrinterPlatform {
       AlignmentTypes align = AlignmentTypes.left}) async {
     int? status =
         int.tryParse(await methodChannel.invokeMethod<String>('imprimir', {
-              "tipoImpressao": PrintTypes.texto.getLabel(),
+              "tipoImpressao": PrintTypes.texto.getLabel,
               "mensagem": mensagem,
               "options": options?.toList() ?? TextOptions().toList(),
               "size": size,
               "font": font?.fontName ?? Font().fontName,
-              "align": align.getLabel()
+              "align": align.getLabel
             }) ??
             '');
     return PrinterStatus
@@ -71,11 +71,11 @@ class MethodChannelGpos720Printer extends Gpos720PrinterPlatform {
       {AlignmentTypes align = AlignmentTypes.center}) async {
     int? status =
         int.tryParse(await methodChannel.invokeMethod<String>('imprimir', {
-              "tipoImpressao": PrintTypes.imagem.getLabel(),
+              "tipoImpressao": PrintTypes.imagem.getLabel,
               "data": data,
               "width": width,
               "height": height,
-              "align": align.getLabel()
+              "align": align.getLabel
             }) ??
             '');
     return PrinterStatus
@@ -87,11 +87,11 @@ class MethodChannelGpos720Printer extends Gpos720PrinterPlatform {
       String mensagem, int width, int height, BarcodeTypes barcodeType) async {
     int? status =
         int.tryParse(await methodChannel.invokeMethod<String>('imprimir', {
-              "tipoImpressao": PrintTypes.codgigoDeBarra.getLabel(),
+              "tipoImpressao": PrintTypes.codgigoDeBarra.getLabel,
               "mensagem": mensagem,
               "width": width,
               "height": height,
-              "barCode": barcodeType.getLabel()
+              "barCode": barcodeType.getLabel
             }) ??
             '');
     return PrinterStatus
@@ -101,15 +101,12 @@ class MethodChannelGpos720Printer extends Gpos720PrinterPlatform {
   @override
   Future<PrinterStatus> imprimirTodasFuncoes(
       Uint8List data, int width, int height) async {
-    int? status =
-        int.tryParse(await methodChannel.invokeMethod<String>('imprimir', {
-              "tipoImpressao": PrintTypes.todasFuncoes.getLabel(),
-              "data": data,
-              "width": width,
-              "height": height
-            }) ??
-            '');
-    return PrinterStatus
-        .values[status ?? PrinterStatus.statusDesconhecido.index];
+    await methodChannel.invokeMethod<String>('imprimir', {
+      "tipoImpressao": PrintTypes.todasFuncoes.getLabel,
+      "data": data,
+      "width": width,
+      "height": height
+    });
+    return await fimImpressao();
   }
 }

@@ -1,7 +1,7 @@
 enum PrintTypes { texto, imagem, codgigoDeBarra, todasFuncoes }
 
 extension PrintTypesExtension on PrintTypes {
-  String getLabel() {
+  String get getLabel {
     switch (this) {
       case PrintTypes.texto:
         return "Texto";
