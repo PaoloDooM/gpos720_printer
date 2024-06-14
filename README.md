@@ -101,6 +101,8 @@ void main() {
 
 #### <code>Future\<PrinterStatus\> avancaLinha(int quantLinhas)</code>
 
+> Remember to call the method ‘fimImpressao()’ to print what is in the print buffer.
+
 * Description: Adds line breaks to the current printout.
 * Returns:
   A <a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/lib/printer_status.dart">
@@ -110,8 +112,6 @@ void main() {
 1. <b>quantLinhas</b>: An Integer specifying the desired number of line breaks.
 
 * Throws: A PlatformException or a MissingPluginException.
-
-> Remember to call the method ‘fimImpressao()’ to print what is in the print buffer.
 
 #### <code>Future\<PrinterStatus\> checarImpressora()</code>
 
@@ -131,6 +131,8 @@ void main() {
 
 #### <code>Future\<PrinterStatus\> imprimirCodigoDeBarra(String mensagem, int width, int height, BarcodeTypes barcodeType)</code>
 
+> Remember to call the method ‘fimImpressao()’ to print what is in the print buffer.
+
 * Description: Prints various types of barcodes.
 * Returns:
   A <a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/lib/printer_status.dart">
@@ -144,9 +146,9 @@ void main() {
 
 * Throws: A PlatformException or a MissingPluginException.
 
-> Remember to call the method ‘fimImpressao()’ to print what is in the print buffer.
-
 #### <code>Future\<PrinterStatus\> imprimirImagem(Uint8List data, int width, int height, {AlignmentTypes align = AlignmentTypes.center})</code>
+
+> Remember to call the method ‘fimImpressao()’ to print what is in the print buffer.
 
 * Description: Prints raw images. Only accepts JPG images.
 * Returns:
@@ -162,9 +164,9 @@ void main() {
 
 * Throws: A PlatformException or a MissingPluginException.
 
-> Remember to call the method ‘fimImpressao()’ to print what is in the print buffer.
-
 #### <code>Future\<PrinterStatus\> imprimirTexto(String mensagem, {TextOptions? options, int size = defaultFontSize, Font? font, AlignmentTypes align = AlignmentTypes.left})</code>
+
+> Remember to call the method ‘fimImpressao()’ to print what is in the print buffer.
 
 * Description: Prints text.
 * Returns:
@@ -182,9 +184,9 @@ void main() {
 
 * Throws: A PlatformException or a MissingPluginException.
 
-> Remember to call the method ‘fimImpressao()’ to print what is in the print buffer.
-
 #### <code>Future\<PrinterStatus\> imprimirTodasFuncoes(Uint8List data, int width, int height)</code>
+
+> This method already executes the ‘fimImpressao()’ method.
 
 * Description: Prints all printer functions. Only accepts JPG images.
 * Returns:
@@ -197,8 +199,6 @@ void main() {
 3. <b>height</b>: An Integer specifying the desired height.
 
 * Throws: A PlatformException or a MissingPluginException.
-
-> This method already executes the ‘fimImpressao()’ method.
 
 ### Configuration parameters:
 

@@ -22,7 +22,7 @@
 
 ## 0.0.5+1
 
-* Formatting corrections in the README.md.
+* Formatting and corrections in the README.md.
 
 ## 0.0.6
 
@@ -45,3 +45,7 @@
 * Reconfiguration of default values.
 * Refactor in ‘getLabel’ methods.
 * Updated README.md.
+
+## 0.0.7+1
+
+* Formatting in the README.md.
