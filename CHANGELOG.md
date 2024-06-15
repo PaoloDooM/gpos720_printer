@@ -49,3 +49,7 @@
 ## 0.0.7+1
 
 * Formatting in the README.md.
+
+## 0.0.7+2
+
+* Updated example.
