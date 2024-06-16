@@ -24,7 +24,7 @@ extension PrinterStatusExtension on PrinterStatus {
     }
   }
 
-  bool isImpressoraOK() {
+  bool get isImpressoraOK {
     return this != PrinterStatus.impressoraOk;
   }
 }

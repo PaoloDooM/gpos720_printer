@@ -26,7 +26,7 @@
 
 ## 0.0.6
 
-* Fixes invalid arguments in "imprimirTexto".
+* Fixes invalid arguments in method <code>imprimirTexto</code>.
 
 ## 0.0.6+1
 
@@ -43,7 +43,7 @@
 ## 0.0.7
 
 * Reconfiguration of default values.
-* Refactor in ‘getLabel’ methods.
+* Refactor in <code>getLabel</code> methods.
 * Updated README.md.
 
 ## 0.0.7+1
@@ -53,3 +53,7 @@
 ## 0.0.7+2
 
 * Updated example.
+
+## 0.0.8
+
+* Refactor from method <code>bool PrinterStatus.isImpressoraOK()</code> to getter <code>bool PrinterStatus.isImpressoraOK</code>.
