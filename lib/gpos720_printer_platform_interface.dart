@@ -37,10 +37,6 @@ abstract class Gpos720PrinterPlatform extends PlatformInterface {
     throw UnimplementedError('checarImpressora() has not been implemented.');
   }
 
-  Future<PrinterStatus> fimImpressao() {
-    throw UnimplementedError('fimImpressao() has not been implemented.');
-  }
-
   Future<PrinterStatus> avancaLinha(int quantLinhas) {
     throw UnimplementedError(
         'avancaLinha(int quantLinhas) has not been implemented.');
@@ -65,6 +61,12 @@ abstract class Gpos720PrinterPlatform extends PlatformInterface {
       String mensagem, int width, int height, BarcodeTypes barcodeType) {
     throw UnimplementedError(
         'imprimirCodigoDeBarra(String mensagem, int width, int height, BarcodeTypes barcodeType) has not been implemented.');
+  }
+
+  Future<PrinterStatus> imprimirCodigoDeBarraImg(
+      String mensagem, int width, int height, BarcodeTypes barcodeType) {
+    throw UnimplementedError(
+        'imprimirCodigoDeBarraImg(String mensagem, int width, int height, BarcodeTypes barcodeType) has not been implemented.');
   }
 
   Future<PrinterStatus> imprimirTodasFuncoes(
