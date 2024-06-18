@@ -16,10 +16,6 @@ class Gpos720Printer {
     return Gpos720PrinterPlatform.instance.checarImpressora();
   }
 
-  Future<PrinterStatus> fimImpressao() {
-    return Gpos720PrinterPlatform.instance.fimImpressao();
-  }
-
   Future<PrinterStatus> avancaLinha(int quantLinhas) {
     return Gpos720PrinterPlatform.instance.avancaLinha(quantLinhas);
   }
@@ -43,6 +39,12 @@ class Gpos720Printer {
       String mensagem, int width, int height, BarcodeTypes barcodeType) {
     return Gpos720PrinterPlatform.instance
         .imprimirCodigoDeBarra(mensagem, width, height, barcodeType);
+  }
+
+  Future<PrinterStatus> imprimirCodigoDeBarraImg(
+      String mensagem, int width, int height, BarcodeTypes barcodeType) {
+    return Gpos720PrinterPlatform.instance
+        .imprimirCodigoDeBarraImg(mensagem, width, height, barcodeType);
   }
 
   Future<PrinterStatus> imprimirTodasFuncoes(

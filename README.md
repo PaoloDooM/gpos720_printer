@@ -5,16 +5,16 @@ Gertec GPOS720</a>.
 
 ## Features
 
-| Methods               | Implemented |
-|:----------------------|:-----------:|
-| checarImpressora      |     ✔️      |
-| fimImpressao          |     ✔️      |
-| avancaLinha           |     ✔️      |
-| imprimirTexto         |     ✔️      |
-| imprimirImagem        |     ✔️      |
-| imprimirCodigoDeBarra |     ✔️      |
-| imprimirTodasFuncoes  |     ✔️      |
-| imprimirEscPos        |     ❌️      |
+| Methods                  | Implemented |
+|:-------------------------|:-----------:|
+| checarImpressora         |     ✔️      |
+| avancaLinha              |     ✔️      |
+| imprimirTexto            |     ✔️      |
+| imprimirImagem           |     ✔️      |
+| imprimirCodigoDeBarra    |     ✔️      |
+| imprimirCodigoDeBarraImg |     ✔️      |
+| imprimirTodasFuncoes     |     ✔️      |
+| imprimirEscPos           |     ❌️      |
 
 ## Requirements
 
@@ -101,8 +101,6 @@ void main() {
 
 #### <code>Future\<PrinterStatus\> avancaLinha(int quantLinhas)</code>
 
-> Remember to call the method ‘fimImpressao()’ to print what is in the print buffer.
-
 * Description: Adds line breaks to the current printout.
 * Returns:
   A <a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/lib/printer_status.dart">
@@ -121,17 +119,7 @@ void main() {
   PrinterStatus</a> enum indicating the printer’s status.
 * Throws: A PlatformException or a MissingPluginException.
 
-#### <code>Future\<PrinterStatus\> fimImpressao()</code>
-
-* Description: Finalizes the printing queue.
-* Returns:
-  A <a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/lib/printer_status.dart">
-  PrinterStatus</a> enum indicating the printer’s status.
-* Throws: A PlatformException or a MissingPluginException.
-
 #### <code>Future\<PrinterStatus\> imprimirCodigoDeBarra(String mensagem, int width, int height, BarcodeTypes barcodeType)</code>
-
-> Remember to call the method ‘fimImpressao()’ to print what is in the print buffer.
 
 * Description: Prints various types of barcodes.
 * Returns:
@@ -146,17 +134,30 @@ void main() {
 
 * Throws: A PlatformException or a MissingPluginException.
 
-#### <code>Future\<PrinterStatus\> imprimirImagem(Uint8List data, int width, int height, {AlignmentTypes align = AlignmentTypes.center})</code>
+#### <code>Future\<PrinterStatus\> imprimirCodigoDeBarraImg(String mensagem, int width, int height, BarcodeTypes barcodeType)</code>
 
-> Remember to call the method ‘fimImpressao()’ to print what is in the print buffer.
-
-* Description: Prints raw images. Only accepts JPG images.
+* Description: Prints various types of barcodes, rendering them as images.
 * Returns:
   A <a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/lib/printer_status.dart">
   PrinterStatus</a> enum indicating the printer’s status.
 * Parameters:
 
-1. <b>data</b>: A Uint8List with the JPG image raw data.
+1. <b>mensagem</b>: A String specifying the desired data on the barcode.
+2. <b>width</b>: An Integer specifying the desired width.
+3. <b>height</b>: An Integer specifying the desired height.
+4. <b>barcodeTypes</b>: A BarcodeTypes enum specifying the desired barcode type.
+
+* Throws: A PlatformException or a MissingPluginException.
+
+#### <code>Future\<PrinterStatus\> imprimirImagem(Uint8List data, int width, int height, {AlignmentTypes align = AlignmentTypes.center})</code>
+
+* Description: Prints raw images.
+* Returns:
+  A <a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/lib/printer_status.dart">
+  PrinterStatus</a> enum indicating the printer’s status.
+* Parameters:
+
+1. <b>data</b>: A Uint8List with the image raw data.
 2. <b>width</b>: An Integer specifying the desired width.
 3. <b>height</b>: An Integer specifying the desired height.
 4. <b>align (optional)</b>: An AlignmentTypes enum specifying the desired alignment. By default,
@@ -165,8 +166,6 @@ void main() {
 * Throws: A PlatformException or a MissingPluginException.
 
 #### <code>Future\<PrinterStatus\> imprimirTexto(String mensagem, {TextOptions? options, int size = defaultFontSize, Font? font, AlignmentTypes align = AlignmentTypes.left})</code>
-
-> Remember to call the method ‘fimImpressao()’ to print what is in the print buffer.
 
 * Description: Prints text.
 * Returns:
@@ -186,15 +185,13 @@ void main() {
 
 #### <code>Future\<PrinterStatus\> imprimirTodasFuncoes(Uint8List data, int width, int height)</code>
 
-> This method already executes the ‘fimImpressao()’ method.
-
-* Description: Prints all printer functions. Only accepts JPG images.
+* Description: Prints all printer functions.
 * Returns:
   A <a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/lib/printer_status.dart">
   PrinterStatus</a> enum indicating the printer’s status.
 * Parameters:
 
-1. <b>data</b>: A Uint8List with the JPG image raw data.
+1. <b>data</b>: A Uint8List with the image raw data.
 2. <b>width</b>: An Integer specifying the desired width.
 3. <b>height</b>: An Integer specifying the desired height.
 

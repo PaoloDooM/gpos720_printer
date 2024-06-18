@@ -30,15 +30,16 @@ class MockGpos720PrinterPlatform
   }
 
   @override
-  Future<PrinterStatus> fimImpressao() {
-    // TODO: implement fimImpressao
+  Future<PrinterStatus> imprimirCodigoDeBarra(
+      String mensagem, int width, int height, BarcodeTypes barcodeType) {
+    // TODO: implement imprimirCodigoDeBarra
     return Future.value(PrinterStatus.impressoraOk);
   }
 
   @override
-  Future<PrinterStatus> imprimirCodigoDeBarra(
+  Future<PrinterStatus> imprimirCodigoDeBarraImg(
       String mensagem, int width, int height, BarcodeTypes barcodeType) {
-    // TODO: implement imprimirCodigoDeBarra
+    // TODO: implement imprimirCodigoDeBarraImg
     return Future.value(PrinterStatus.impressoraOk);
   }
 
