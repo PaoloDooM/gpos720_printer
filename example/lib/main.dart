@@ -360,6 +360,6 @@ class _ExampleState extends State<Example> {
       return byteData.buffer
           .asUint8List(byteData.offsetInBytes, byteData.lengthInBytes);
     }
-    throw "The image could not be converted";
+    throw "The image could not be converted to png";
   }
 }
