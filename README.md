@@ -10,7 +10,7 @@ Gertec GPOS720</a>.
 | checarImpressora         |     ✔️      |
 | avancaLinha              |     ✔️      |
 | imprimirTexto            |     ✔️      |
-| imprimirImagem           |     ✔️      |
+| imprimirImagem           |     ❌️      |
 | imprimirCodigoDeBarra    |     ✔️      |
 | imprimirCodigoDeBarraImg |     ✔️      |
 | imprimirTodasFuncoes     |     ✔️      |
@@ -238,6 +238,7 @@ Click here</a> to view the implementation.
 
 ## TODO
 
+* Fix the <code>imprimirImagem</code> method failure due to a bug in the Gertec printing library.
 * Pass image data from outside the MethodChannel to avoid payload size/speed limitations.
 * Implement plugin tests.
 * Standardize exceptions outputs.
