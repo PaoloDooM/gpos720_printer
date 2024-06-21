@@ -1,4 +1,10 @@
-enum PrintTypes { texto, imagem, codgigoDeBarra, todasFuncoes }
+enum PrintTypes {
+  texto,
+  imagem,
+  codgigoDeBarra,
+  codgigoDeBarraImg,
+  todasFuncoes
+}
 
 extension PrintTypesExtension on PrintTypes {
   String get getLabel {
@@ -9,6 +15,8 @@ extension PrintTypesExtension on PrintTypes {
         return "Imagem";
       case PrintTypes.codgigoDeBarra:
         return "CodigoDeBarra";
+      case PrintTypes.codgigoDeBarraImg:
+        return "CodigoDeBarraImg";
       case PrintTypes.todasFuncoes:
         return "TodasFuncoes";
       default:

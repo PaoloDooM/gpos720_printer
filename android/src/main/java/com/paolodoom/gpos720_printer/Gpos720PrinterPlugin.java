@@ -22,7 +22,7 @@ import java.io.ByteArrayInputStream;
 public class Gpos720PrinterPlugin implements FlutterPlugin, MethodCallHandler {
     private MethodChannel channel;
     private GertecPrinter gertecPrinter;
-    private final ConfigPrint configPrint = new ConfigPrint();
+    private ConfigPrint configPrint = new ConfigPrint();
 
     @Override
     public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
@@ -35,6 +35,7 @@ public class Gpos720PrinterPlugin implements FlutterPlugin, MethodCallHandler {
 
     @Override
     public void onMethodCall(@NonNull MethodCall call, @NonNull Result result) {
+        configPrint = new ConfigPrint();
         switch (call.method) {
             case "getPlatformVersion":
                 result.success("Android " + android.os.Build.VERSION.RELEASE);
@@ -99,6 +100,11 @@ public class Gpos720PrinterPlugin implements FlutterPlugin, MethodCallHandler {
                                 gertecPrinter.imprimeBarCodeIMG(call.argument("mensagem"), call.argument("height"),
                                         call.argument("width"), call.argument("barCode"));
                                 break;
+                            case "CodigoDeBarraImg":
+                                configPrint.setAlinhamento("CENTER");
+                                gertecPrinter.setConfigImpressao(configPrint);
+                                gertecPrinter.imprimeBarCodeIMG(call.argument("mensagem"), call.argument("height"),
+                                        call.argument("width"), call.argument("barCode"));
                             case "TodasFuncoes":
                                 byte[] dataImage1 = (byte[]) call.argument("data");
                                 Bitmap image1 = byteArrayToBitmap(dataImage1);

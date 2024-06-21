@@ -1,6 +1,5 @@
-import 'dart:typed_data';
-import 'package:flutter/material.dart';
 import 'dart:async';
+import 'package:flutter/material.dart';
 import 'package:gpos720_printer/alignment_types.dart';
 import 'package:gpos720_printer/barcode_types.dart';
 import 'package:gpos720_printer/constants.dart';
@@ -9,11 +8,26 @@ import 'package:gpos720_printer/gpos720_printer.dart';
 import 'package:gpos720_printer/printer_status.dart';
 import 'package:gpos720_printer/text_options.dart';
 import 'package:flutter/services.dart'
-    show MissingPluginException, PlatformException, rootBundle;
-import 'package:image/image.dart' as img;
+    show
+        ByteData,
+        MissingPluginException,
+        PlatformException,
+        Uint8List,
+        rootBundle;
+import 'dart:ui' as ui;
 
 void main() {
   runApp(const MyApp());
+}
+
+class SnapshotData {
+  String platformVersion;
+  Uint8List imageData;
+  int imageWidth;
+  int imageHeight;
+
+  SnapshotData(
+      this.platformVersion, this.imageData, this.imageWidth, this.imageHeight);
 }
 
 class MyApp extends StatefulWidget {
@@ -43,13 +57,22 @@ class _ExampleState extends State<Example> {
   final String loremIpsum =
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Elementum pulvinar etiam non quam lacus. Vitae tortor condimentum lacinia quis vel eros. Massa sapien faucibus et molestie ac feugiat sed lectus vestibulum. Ullamcorper morbi tincidunt ornare massa eget egestas. Molestie at elementum eu facilisis sed odio morbi quis. Tincidunt ornare massa eget egestas purus viverra accumsan in. Augue ut lectus arcu bibendum at. Sem et tortor consequat id porta. Purus sit amet luctus venenatis lectus magna. Nunc lobortis mattis aliquam faucibus purus in massa tempor nec. Fringilla phasellus faucibus scelerisque eleifend donec pretium vulputate sapien. Accumsan sit amet nulla facilisi morbi tempus. Imperdiet proin fermentum leo vel orci porta non. Amet mauris commodo quis imperdiet.";
   final ScrollController scrollbarController = ScrollController();
+  final double toolbarHeight = 65;
 
-  Future<Map<String, dynamic>> loadAsyncData() async {
-    return {
-      "platformVersion": await gpos720PrinterPlugin.getPlatformVersion(),
-      "image": transparentToWhite(img.decodeImage(
-          (await rootBundle.load("assets/flutter.png")).buffer.asUint8List())!)
-    };
+  Future<SnapshotData> loadAsyncData() async {
+    Completer<ui.Image> completer = Completer();
+    ui.decodeImageFromList(
+        (await rootBundle.load("assets/flutter.png")).buffer.asUint8List(),
+        (result) {
+      completer.complete(result);
+    });
+    ui.Image convertedImage =
+        await convertTransparentToWhite(await completer.future);
+    return SnapshotData(
+        await gpos720PrinterPlugin.getPlatformVersion(),
+        await convertUiImageToUint8List(convertedImage),
+        convertedImage.width,
+        convertedImage.height);
   }
 
   @override
@@ -58,10 +81,10 @@ class _ExampleState extends State<Example> {
       appBar: AppBar(
         title: const Text('gpos720_printer'),
       ),
-      body: FutureBuilder<Map<String, dynamic>>(
+      body: FutureBuilder<SnapshotData>(
           future: loadAsyncData(),
-          builder: (BuildContext context,
-              AsyncSnapshot<Map<String, dynamic>> snapshot) {
+          builder:
+              (BuildContext context, AsyncSnapshot<SnapshotData> snapshot) {
             if (snapshot.hasData) {
               return PrimaryScrollController(
                 controller: scrollbarController,
@@ -71,9 +94,8 @@ class _ExampleState extends State<Example> {
                   child: CustomScrollView(
                     slivers: [
                       SliverAppBar(
-                        expandedHeight:
-                            snapshot.data!['image']!.height.toDouble(),
-                        toolbarHeight: 65,
+                        expandedHeight: snapshot.data!.imageHeight.toDouble(),
+                        toolbarHeight: toolbarHeight,
                         pinned: true,
                         flexibleSpace: FlexibleSpaceBar(
                           expandedTitleScale: 1,
@@ -96,7 +118,7 @@ class _ExampleState extends State<Example> {
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 10, vertical: 5),
                                   child: Text(
-                                    'Running on: ${snapshot.data!['platformVersion'] ?? 'Android unknown'}',
+                                    'Running on: ${snapshot.data!.platformVersion}',
                                     style: const TextStyle(fontSize: 20),
                                   ),
                                   decoration: ShapeDecoration(
@@ -116,9 +138,9 @@ class _ExampleState extends State<Example> {
                             },
                           ),
                           background: Container(
-                              color: Colors.white,
-                              child: Image.memory(Uint8List.fromList(
-                                  img.encodeJpg(snapshot.data!['image']!)))),
+                            color: Colors.white,
+                            child: Image.memory(snapshot.data!.imageData),
+                          ),
                         ),
                       ),
                       SliverPadding(
@@ -136,35 +158,40 @@ class _ExampleState extends State<Example> {
                               "Prints all printer functions.", () async {
                             return await gpos720PrinterPlugin
                                 .imprimirTodasFuncoes(
-                                    Uint8List.fromList(img
-                                        .encodeJpg(snapshot.data!['image']!)),
-                                    snapshot.data!['image']!.height,
-                                    snapshot.data!['image']!.width);
+                                    snapshot.data!.imageData,
+                                    snapshot.data!.imageHeight,
+                                    snapshot.data!.imageWidth);
                           }),
                           methodCardBuilder(context, "imprimirCodigoDeBarra",
                               "Prints various types of barcodes.", () async {
-                            await gpos720PrinterPlugin.imprimirCodigoDeBarra(
-                                "https://www.google.com/",
-                                200,
-                                200,
-                                BarcodeTypes.qrCode);
-                            return await gpos720PrinterPlugin.fimImpressao();
+                            return await gpos720PrinterPlugin
+                                .imprimirCodigoDeBarra(
+                                    "0123456789", 200, 100, BarcodeTypes.upcA);
+                          }),
+                          methodCardBuilder(context, "imprimirCodigoDeBarraImg",
+                              "Prints various types of barcodes, rendering them as images.",
+                              () async {
+                            return await gpos720PrinterPlugin
+                                .imprimirCodigoDeBarraImg(
+                                    "https://www.google.com/",
+                                    200,
+                                    200,
+                                    BarcodeTypes.qrCode);
                           }),
                           methodCardBuilder(
                               context, "imprimirImagem", "Prints raw images.",
                               () async {
-                            await gpos720PrinterPlugin.imprimirImagem(
-                                Uint8List.fromList(
-                                    img.encodeJpg(snapshot.data!['image']!)),
-                                snapshot.data!['image']!.height,
-                                snapshot.data!['image']!.width,
+                            return await gpos720PrinterPlugin.imprimirImagem(
+                                snapshot.data!.imageData,
+                                snapshot.data!.imageHeight,
+                                snapshot.data!.imageWidth,
                                 align: AlignmentTypes.center);
-                            return await gpos720PrinterPlugin.fimImpressao();
                           }),
                           methodCardBuilder(
                               context, "imprimirTexto", "Prints text.",
                               () async {
-                            await gpos720PrinterPlugin.imprimirTexto(loremIpsum,
+                            return await gpos720PrinterPlugin.imprimirTexto(
+                                loremIpsum,
                                 align: AlignmentTypes.right,
                                 size: defaultFontSize,
                                 font: Font(fontName: 'NORMAL'),
@@ -172,14 +199,16 @@ class _ExampleState extends State<Example> {
                                     bold: false,
                                     italic: false,
                                     underlined: false));
-                            return await gpos720PrinterPlugin.fimImpressao();
                           }),
                           methodCardBuilder(context, "avancaLinha",
                               "Adds line breaks to the current printout.",
                               () async {
-                            await gpos720PrinterPlugin.avancaLinha(5);
-                            return await gpos720PrinterPlugin.fimImpressao();
+                            return await gpos720PrinterPlugin.avancaLinha(5);
                           }),
+                          SizedBox.fromSize(
+                            size: ui.Size(MediaQuery.of(context).size.width,
+                                snapshot.data!.imageHeight - toolbarHeight),
+                          )
                         ])),
                       )
                     ],
@@ -309,14 +338,28 @@ class _ExampleState extends State<Example> {
     );
   }
 
-  img.Image transparentToWhite(img.Image image) {
-    for (int y = 0; y < image.height; y++) {
-      for (int x = 0; x < image.width; x++) {
-        if (image.getPixel(x, y) == 0) {
-          image.setPixel(x, y, img.getColor(255, 255, 255, 255));
-        }
-      }
+  Future<ui.Image> convertTransparentToWhite(ui.Image image) async {
+    final pictureRecorder = ui.PictureRecorder();
+    final canvas = Canvas(pictureRecorder);
+    final paint = Paint();
+    canvas.drawImage(image, Offset.zero, paint);
+    paint.blendMode = BlendMode.dstOver;
+    paint.color = const Color(0xFFFFFFFF);
+    canvas.drawRect(
+        Rect.fromLTWH(0, 0, image.width.toDouble(), image.height.toDouble()),
+        paint);
+    final picture = pictureRecorder.endRecording();
+    final newImage = await picture.toImage(image.width, image.height);
+    return newImage;
+  }
+
+  Future<Uint8List> convertUiImageToUint8List(ui.Image image) async {
+    final ByteData? byteData =
+        await image.toByteData(format: ui.ImageByteFormat.png);
+    if (byteData != null) {
+      return byteData.buffer
+          .asUint8List(byteData.offsetInBytes, byteData.lengthInBytes);
     }
-    return image;
+    throw "The image could not be converted to png";
   }
 }

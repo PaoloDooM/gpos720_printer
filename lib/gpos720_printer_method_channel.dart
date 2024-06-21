@@ -29,8 +29,7 @@ class MethodChannelGpos720Printer extends Gpos720PrinterPlatform {
         .values[status ?? PrinterStatus.statusDesconhecido.index];
   }
 
-  @override
-  Future<PrinterStatus> fimImpressao() async {
+  Future<PrinterStatus> _fimImpressao() async {
     int? status = int.tryParse(
         await methodChannel.invokeMethod<String>('fimImpressao') ?? '');
     return PrinterStatus
@@ -39,11 +38,9 @@ class MethodChannelGpos720Printer extends Gpos720PrinterPlatform {
 
   @override
   Future<PrinterStatus> avancaLinha(int quantLinhas) async {
-    int? status = int.tryParse(await methodChannel.invokeMethod<String>(
-            'avancaLinha', {"quantLinhas": quantLinhas}) ??
-        '');
-    return PrinterStatus
-        .values[status ?? PrinterStatus.statusDesconhecido.index];
+    await methodChannel
+        .invokeMethod<String>('avancaLinha', {"quantLinhas": quantLinhas});
+    return await _fimImpressao();
   }
 
   @override
@@ -52,50 +49,54 @@ class MethodChannelGpos720Printer extends Gpos720PrinterPlatform {
       int size = defaultFontSize,
       Font? font,
       AlignmentTypes align = AlignmentTypes.left}) async {
-    int? status =
-        int.tryParse(await methodChannel.invokeMethod<String>('imprimir', {
-              "tipoImpressao": PrintTypes.texto.getLabel,
-              "mensagem": mensagem,
-              "options": options?.toList() ?? TextOptions().toList(),
-              "size": size,
-              "font": font?.fontName ?? Font().fontName,
-              "align": align.getLabel
-            }) ??
-            '');
-    return PrinterStatus
-        .values[status ?? PrinterStatus.statusDesconhecido.index];
+    await methodChannel.invokeMethod<String>('imprimir', {
+      "tipoImpressao": PrintTypes.texto.getLabel,
+      "mensagem": mensagem,
+      "options": options?.toList() ?? TextOptions().toList(),
+      "size": size,
+      "font": font?.fontName ?? Font().fontName,
+      "align": align.getLabel
+    });
+    return await _fimImpressao();
   }
 
   @override
   Future<PrinterStatus> imprimirImagem(Uint8List data, int width, int height,
       {AlignmentTypes align = AlignmentTypes.center}) async {
-    int? status =
-        int.tryParse(await methodChannel.invokeMethod<String>('imprimir', {
-              "tipoImpressao": PrintTypes.imagem.getLabel,
-              "data": data,
-              "width": width,
-              "height": height,
-              "align": align.getLabel
-            }) ??
-            '');
-    return PrinterStatus
-        .values[status ?? PrinterStatus.statusDesconhecido.index];
+    await methodChannel.invokeMethod<String>('imprimir', {
+      "tipoImpressao": PrintTypes.imagem.getLabel,
+      "data": data,
+      "width": width,
+      "height": height,
+      "align": align.getLabel
+    });
+    return await _fimImpressao();
   }
 
   @override
   Future<PrinterStatus> imprimirCodigoDeBarra(
       String mensagem, int width, int height, BarcodeTypes barcodeType) async {
-    int? status =
-        int.tryParse(await methodChannel.invokeMethod<String>('imprimir', {
-              "tipoImpressao": PrintTypes.codgigoDeBarra.getLabel,
-              "mensagem": mensagem,
-              "width": width,
-              "height": height,
-              "barCode": barcodeType.getLabel
-            }) ??
-            '');
-    return PrinterStatus
-        .values[status ?? PrinterStatus.statusDesconhecido.index];
+    await methodChannel.invokeMethod<String>('imprimir', {
+      "tipoImpressao": PrintTypes.codgigoDeBarra.getLabel,
+      "mensagem": mensagem,
+      "width": width,
+      "height": height,
+      "barCode": barcodeType.getLabel
+    });
+    return await _fimImpressao();
+  }
+
+  @override
+  Future<PrinterStatus> imprimirCodigoDeBarraImg(
+      String mensagem, int width, int height, BarcodeTypes barcodeType) async {
+    await methodChannel.invokeMethod<String>('imprimir', {
+      "tipoImpressao": PrintTypes.codgigoDeBarraImg.getLabel,
+      "mensagem": mensagem,
+      "width": width,
+      "height": height,
+      "barCode": barcodeType.getLabel
+    });
+    return await _fimImpressao();
   }
 
   @override
@@ -107,6 +108,6 @@ class MethodChannelGpos720Printer extends Gpos720PrinterPlatform {
       "width": width,
       "height": height
     });
-    return await fimImpressao();
+    return await _fimImpressao();
   }
 }
