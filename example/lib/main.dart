@@ -8,13 +8,8 @@ import 'package:gpos720_printer/gpos720_printer.dart';
 import 'package:gpos720_printer/printer_status.dart';
 import 'package:gpos720_printer/text_options.dart';
 import 'package:flutter/services.dart'
-    show
-        ByteData,
-        MissingPluginException,
-        PlatformException,
-        Uint8List,
-        rootBundle;
-import 'dart:ui' as ui;
+    show MissingPluginException, PlatformException, Uint8List, rootBundle;
+import 'package:image/image.dart' as img;
 
 void main() {
   runApp(const MyApp());
@@ -60,19 +55,9 @@ class _ExampleState extends State<Example> {
   final double toolbarHeight = 65;
 
   Future<SnapshotData> loadAsyncData() async {
-    Completer<ui.Image> completer = Completer();
-    ui.decodeImageFromList(
-        (await rootBundle.load("assets/flutter.png")).buffer.asUint8List(),
-        (result) {
-      completer.complete(result);
-    });
-    ui.Image convertedImage =
-        await convertTransparentToWhite(await completer.future);
-    return SnapshotData(
-        await gpos720PrinterPlugin.getPlatformVersion(),
-        await convertUiImageToUint8List(convertedImage),
-        convertedImage.width,
-        convertedImage.height);
+    img.Image image = convertToGrayScale(await getImageFromAssets());
+    return SnapshotData(await gpos720PrinterPlugin.getPlatformVersion(),
+        Uint8List.fromList(img.encodeJpg(image)), image.width, image.height);
   }
 
   @override
@@ -206,7 +191,7 @@ class _ExampleState extends State<Example> {
                             return await gpos720PrinterPlugin.avancaLinha(5);
                           }),
                           SizedBox.fromSize(
-                            size: ui.Size(MediaQuery.of(context).size.width,
+                            size: Size(MediaQuery.of(context).size.width,
                                 snapshot.data!.imageHeight - toolbarHeight),
                           )
                         ])),
@@ -338,28 +323,27 @@ class _ExampleState extends State<Example> {
     );
   }
 
-  Future<ui.Image> convertTransparentToWhite(ui.Image image) async {
-    final pictureRecorder = ui.PictureRecorder();
-    final canvas = Canvas(pictureRecorder);
-    final paint = Paint();
-    canvas.drawImage(image, Offset.zero, paint);
-    paint.blendMode = BlendMode.dstOver;
-    paint.color = const Color(0xFFFFFFFF);
-    canvas.drawRect(
-        Rect.fromLTWH(0, 0, image.width.toDouble(), image.height.toDouble()),
-        paint);
-    final picture = pictureRecorder.endRecording();
-    final newImage = await picture.toImage(image.width, image.height);
-    return newImage;
+  img.Image convertToGrayScale(img.Image image) {
+    for (int y = 0; y < image.height; y++) {
+      for (int x = 0; x < image.width; x++) {
+        final pixel = image.getPixel(x, y);
+        final r = img.getRed(pixel);
+        final g = img.getGreen(pixel);
+        final b = img.getBlue(pixel);
+        final alpha = img.getAlpha(pixel);
+        if (alpha == 0) {
+          image.setPixel(x, y, img.getColor(255, 255, 255));
+        } else {
+          final gris = (0.2989 * r + 0.5870 * g + 0.1140 * b).toInt();
+          image.setPixel(x, y, img.getColor(gris, gris, gris));
+        }
+      }
+    }
+    return image;
   }
 
-  Future<Uint8List> convertUiImageToUint8List(ui.Image image) async {
-    final ByteData? byteData =
-        await image.toByteData(format: ui.ImageByteFormat.png);
-    if (byteData != null) {
-      return byteData.buffer
-          .asUint8List(byteData.offsetInBytes, byteData.lengthInBytes);
-    }
-    throw "The image could not be converted to png";
+  Future<img.Image> getImageFromAssets() async {
+    return img.decodeImage(
+        (await rootBundle.load("assets/flutter.png")).buffer.asUint8List())!;
   }
 }
