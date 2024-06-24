@@ -66,6 +66,14 @@ class MockGpos720PrinterPlatform
     // TODO: implement imprimirTodasFuncoes
     return Future.value(PrinterStatus.impressoraOk);
   }
+
+  @override
+  Future<PrinterStatus> imprimirImagemFiltrada(
+      Uint8List data, int width, int height,
+      {AlignmentTypes align = AlignmentTypes.center, double? threshold}) {
+    // TODO: implement imprimirImagemFiltrada
+    return Future.value(PrinterStatus.impressoraOk);
+  }
 }
 
 void main() {

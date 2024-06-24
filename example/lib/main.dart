@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter_image_filters/flutter_image_filters.dart';
 import 'package:gpos720_printer/alignment_types.dart';
 import 'package:gpos720_printer/barcode_types.dart';
 import 'package:gpos720_printer/constants.dart';
 import 'package:gpos720_printer/font_model.dart';
 import 'package:gpos720_printer/gpos720_printer.dart';
+import 'package:gpos720_printer/image_utils.dart';
 import 'package:gpos720_printer/printer_status.dart';
 import 'package:gpos720_printer/text_options.dart';
 import 'package:flutter/services.dart'
@@ -61,17 +61,21 @@ class _ExampleState extends State<Example> {
   final double toolbarHeight = 65;
 
   Future<SnapshotData> loadAsyncData() async {
-    TextureSource texture = await TextureSource.fromMemory(
-        (await rootBundle.load("assets/flutter.png")).buffer.asUint8List());
-    LuminanceThresholdShaderConfiguration shader =
-        LuminanceThresholdShaderConfiguration();
-    shader.threshold = 0.6;
+    Completer<ui.Image> completer = Completer();
+    ui.decodeImageFromList(
+        (await rootBundle.load("assets/flutter.png")).buffer.asUint8List(),
+        (result) {
+      completer.complete(result);
+    });
+    ui.Image image = await completer.future;
 
-    ui.Image image = await shader.export(
-        texture, Size(texture.width.toDouble(), texture.height.toDouble()));
-
-    return SnapshotData(await gpos720PrinterPlugin.getPlatformVersion(),
-        await convertUiImageToUint8List(image), image.width, image.height);
+    return SnapshotData(
+        await gpos720PrinterPlugin.getPlatformVersion(),
+        (await image.toByteData(format: ui.ImageByteFormat.png))!
+            .buffer
+            .asUint8List(),
+        image.width,
+        image.height);
   }
 
   @override
@@ -138,6 +142,7 @@ class _ExampleState extends State<Example> {
                           ),
                           background: Container(
                             color: Colors.white,
+                            padding: const EdgeInsets.all(8),
                             child: Image.memory(snapshot.data!.imageData),
                           ),
                         ),
@@ -177,14 +182,27 @@ class _ExampleState extends State<Example> {
                                     200,
                                     BarcodeTypes.qrCode);
                           }),
-                          methodCardBuilder(
-                              context, "imprimirImagem", "Prints raw images.",
+                          methodCardBuilder(context, "imprimirImagem",
+                              "Prints raw black and white images only.",
                               () async {
                             return await gpos720PrinterPlugin.imprimirImagem(
-                                snapshot.data!.imageData,
+                                await ImageUtils.imageBinaryFilter(
+                                    snapshot.data!.imageData,
+                                    threshold: 0.75),
                                 snapshot.data!.imageHeight,
                                 snapshot.data!.imageWidth,
                                 align: AlignmentTypes.center);
+                          }),
+                          methodCardBuilder(context, "imprimirImagemFiltrada",
+                              "Apply a binary filter and print the raw image.",
+                              () async {
+                            return await gpos720PrinterPlugin
+                                .imprimirImagemFiltrada(
+                                    snapshot.data!.imageData,
+                                    snapshot.data!.imageHeight,
+                                    snapshot.data!.imageWidth,
+                                    align: AlignmentTypes.center,
+                                    threshold: 0.75);
                           }),
                           methodCardBuilder(
                               context, "imprimirTexto", "Prints text.",

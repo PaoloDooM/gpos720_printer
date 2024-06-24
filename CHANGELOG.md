@@ -71,3 +71,9 @@
 ## 0.0.10+1
 
 * Updated example.
+
+## 1.0.0
+
+* Add a method that prints images, filtering them to black and white using a binary filter.
+* Add a utility method to apply a binary filter to images.
+* Updated README.md and example.

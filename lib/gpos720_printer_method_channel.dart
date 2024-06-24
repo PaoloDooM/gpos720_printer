@@ -8,6 +8,7 @@ import 'alignment_types.dart';
 import 'barcode_types.dart';
 import 'font_model.dart';
 import 'gpos720_printer_platform_interface.dart';
+import 'image_utils.dart';
 
 /// An implementation of [Gpos720PrinterPlatform] that uses method channels.
 class MethodChannelGpos720Printer extends Gpos720PrinterPlatform {
@@ -66,6 +67,20 @@ class MethodChannelGpos720Printer extends Gpos720PrinterPlatform {
     await methodChannel.invokeMethod<String>('imprimir', {
       "tipoImpressao": PrintTypes.imagem.getLabel,
       "data": data,
+      "width": width,
+      "height": height,
+      "align": align.getLabel
+    });
+    return await _fimImpressao();
+  }
+
+  @override
+  Future<PrinterStatus> imprimirImagemFiltrada(
+      Uint8List data, int width, int height,
+      {AlignmentTypes align = AlignmentTypes.center, double? threshold}) async {
+    await methodChannel.invokeMethod<String>('imprimir', {
+      "tipoImpressao": PrintTypes.imagem.getLabel,
+      "data": await ImageUtils.imageBinaryFilter(data, threshold: threshold),
       "width": width,
       "height": height,
       "align": align.getLabel

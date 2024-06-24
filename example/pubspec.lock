@@ -108,7 +108,7 @@ packages:
     source: hosted
     version: "0.0.18"
   flutter_image_filters:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: flutter_image_filters
       sha256: "0017b6e5cdc3583281ae151e77033a33dc21abc7b178fad79ec1be4732a77b8e"
@@ -139,7 +139,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "0.0.10+1"
+    version: "1.0.0"
   integration_test:
     dependency: "direct dev"
     description: flutter

@@ -35,6 +35,14 @@ class Gpos720Printer {
         .imprimirImagem(data, width, height, align: align);
   }
 
+  Future<PrinterStatus> imprimirImagemFiltrada(
+      Uint8List data, int width, int height,
+      {AlignmentTypes align = AlignmentTypes.center, double? threshold}) {
+    return Gpos720PrinterPlatform.instance.imprimirImagemFiltrada(
+        data, width, height,
+        align: align, threshold: threshold);
+  }
+
   Future<PrinterStatus> imprimirCodigoDeBarra(
       String mensagem, int width, int height, BarcodeTypes barcodeType) {
     return Gpos720PrinterPlatform.instance
