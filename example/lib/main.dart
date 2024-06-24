@@ -71,7 +71,8 @@ class _ExampleState extends State<Example> {
 
     TextureSource texture = await TextureSource.fromMemory(
         (await rootBundle.load("assets/flutter.png")).buffer.asUint8List());
-    LuminanceThresholdShaderConfiguration shader = LuminanceThresholdShaderConfiguration();
+    LuminanceThresholdShaderConfiguration shader =
+        LuminanceThresholdShaderConfiguration();
     shader.threshold = 0.6;
     ui.Image convertedImage = await shader.export(texture,
         Size(assetImage.width.toDouble(), assetImage.height.toDouble()));
