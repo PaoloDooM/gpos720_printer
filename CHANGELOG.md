@@ -67,3 +67,7 @@
 ## 0.0.10
 
 * Updated README.md and example.
+
+## 0.0.10+1
+
+* Updated example.

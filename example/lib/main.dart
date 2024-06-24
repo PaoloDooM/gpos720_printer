@@ -61,27 +61,17 @@ class _ExampleState extends State<Example> {
   final double toolbarHeight = 65;
 
   Future<SnapshotData> loadAsyncData() async {
-    Completer<ui.Image> completer = Completer();
-    ui.decodeImageFromList(
-        (await rootBundle.load("assets/flutter.png")).buffer.asUint8List(),
-        (result) {
-      completer.complete(result);
-    });
-    ui.Image assetImage = await completer.future;
-
     TextureSource texture = await TextureSource.fromMemory(
         (await rootBundle.load("assets/flutter.png")).buffer.asUint8List());
     LuminanceThresholdShaderConfiguration shader =
         LuminanceThresholdShaderConfiguration();
     shader.threshold = 0.6;
-    ui.Image convertedImage = await shader.export(texture,
-        Size(assetImage.width.toDouble(), assetImage.height.toDouble()));
 
-    return SnapshotData(
-        await gpos720PrinterPlugin.getPlatformVersion(),
-        await convertUiImageToUint8List(convertedImage),
-        convertedImage.width,
-        convertedImage.height);
+    ui.Image image = await shader.export(
+        texture, Size(texture.width.toDouble(), texture.height.toDouble()));
+
+    return SnapshotData(await gpos720PrinterPlugin.getPlatformVersion(),
+        await convertUiImageToUint8List(image), image.width, image.height);
   }
 
   @override
