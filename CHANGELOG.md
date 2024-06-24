@@ -63,3 +63,7 @@
 * Add the method <code>Future<PrinterStatus> imprimirCodigoDeBarraImg(String mensagem, int width, int height, BarcodeTypes barcodeType)</code>.
 * Remove the method <code>Future<PrinterStatus> fimImpressao()</code> and call it after every printer command.
 * Updated README.md and example.
+
+## 0.0.10
+
+* Updated README.md and example.

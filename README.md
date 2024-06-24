@@ -10,7 +10,7 @@ Gertec GPOS720</a>.
 | checarImpressora         |     ✔️      |
 | avancaLinha              |     ✔️      |
 | imprimirTexto            |     ✔️      |
-| imprimirImagem           |     ❌️      |
+| imprimirImagem           |     ✔️      |
 | imprimirCodigoDeBarra    |     ✔️      |
 | imprimirCodigoDeBarraImg |     ✔️      |
 | imprimirTodasFuncoes     |     ✔️      |
@@ -151,13 +151,13 @@ void main() {
 
 #### <code>Future\<PrinterStatus\> imprimirImagem(Uint8List data, int width, int height, {AlignmentTypes align = AlignmentTypes.center})</code>
 
-* Description: Prints raw images.
+* Description: Prints raw images. Only accepts black and white images, you can use this <a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/example/lib/main.dart">example</a> as a reference to convert the image to black and white.
 * Returns:
   A <a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/lib/printer_status.dart">
   PrinterStatus</a> enum indicating the printer’s status.
 * Parameters:
 
-1. <b>data</b>: A Uint8List with the image raw data.
+1. <b>data</b>: A Uint8List with the raw data of the black and white image.
 2. <b>width</b>: An Integer specifying the desired width.
 3. <b>height</b>: An Integer specifying the desired height.
 4. <b>align (optional)</b>: An AlignmentTypes enum specifying the desired alignment. By default,
@@ -191,7 +191,7 @@ void main() {
   PrinterStatus</a> enum indicating the printer’s status.
 * Parameters:
 
-1. <b>data</b>: A Uint8List with the image raw data.
+1. <b>data</b>: A Uint8List with the raw data of the black and white image.
 2. <b>width</b>: An Integer specifying the desired width.
 3. <b>height</b>: An Integer specifying the desired height.
 
@@ -238,7 +238,7 @@ Click here</a> to view the implementation.
 
 ## TODO
 
-* Fix the <code>imprimirImagem</code> method failure due to a bug in the Gertec printing library.
+* Add an image binary filter to printer methods.
 * Pass image data from outside the MethodChannel to avoid payload size/speed limitations.
 * Implement plugin tests.
 * Standardize exceptions outputs.
