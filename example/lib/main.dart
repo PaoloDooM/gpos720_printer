@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_image_filters/flutter_image_filters.dart';
 import 'package:gpos720_printer/alignment_types.dart';
 import 'package:gpos720_printer/barcode_types.dart';
 import 'package:gpos720_printer/constants.dart';
@@ -8,8 +9,13 @@ import 'package:gpos720_printer/gpos720_printer.dart';
 import 'package:gpos720_printer/printer_status.dart';
 import 'package:gpos720_printer/text_options.dart';
 import 'package:flutter/services.dart'
-    show MissingPluginException, PlatformException, Uint8List, rootBundle;
-import 'package:image/image.dart' as img;
+    show
+        ByteData,
+        MissingPluginException,
+        PlatformException,
+        Uint8List,
+        rootBundle;
+import 'dart:ui' as ui;
 
 void main() {
   runApp(const MyApp());
@@ -55,9 +61,26 @@ class _ExampleState extends State<Example> {
   final double toolbarHeight = 65;
 
   Future<SnapshotData> loadAsyncData() async {
-    img.Image image = convertToGrayScale(await getImageFromAssets());
-    return SnapshotData(await gpos720PrinterPlugin.getPlatformVersion(),
-        Uint8List.fromList(img.encodePng(image)), image.width, image.height);
+    Completer<ui.Image> completer = Completer();
+    ui.decodeImageFromList(
+        (await rootBundle.load("assets/flutter.png")).buffer.asUint8List(),
+        (result) {
+      completer.complete(result);
+    });
+    ui.Image assetImage = await completer.future;
+
+    TextureSource texture = await TextureSource.fromMemory(
+        (await rootBundle.load("assets/flutter.png")).buffer.asUint8List());
+    LuminanceThresholdShaderConfiguration shader = LuminanceThresholdShaderConfiguration();
+    shader.threshold = 0.6;
+    ui.Image convertedImage = await shader.export(texture,
+        Size(assetImage.width.toDouble(), assetImage.height.toDouble()));
+
+    return SnapshotData(
+        await gpos720PrinterPlugin.getPlatformVersion(),
+        await convertUiImageToUint8List(convertedImage),
+        convertedImage.width,
+        convertedImage.height);
   }
 
   @override
@@ -191,7 +214,7 @@ class _ExampleState extends State<Example> {
                             return await gpos720PrinterPlugin.avancaLinha(5);
                           }),
                           SizedBox.fromSize(
-                            size: Size(MediaQuery.of(context).size.width,
+                            size: ui.Size(MediaQuery.of(context).size.width,
                                 snapshot.data!.imageHeight - toolbarHeight),
                           )
                         ])),
@@ -323,36 +346,12 @@ class _ExampleState extends State<Example> {
     );
   }
 
-  img.Image convertToGrayScale(img.Image image,
-      {int grayThreshold = 164, int transparentThreshold = 32}) {
-    for (int y = 0; y < image.height; y++) {
-      for (int x = 0; x < image.width; x++) {
-        final pixel = image.getPixel(x, y);
-        final r = img.getRed(pixel);
-        final g = img.getGreen(pixel);
-        final b = img.getBlue(pixel);
-        final alpha = img.getAlpha(pixel);
-        if (alpha == 0) {
-          image.setPixel(x, y, img.getColor(255, 255, 255));
-        } else {
-          final gray = (0.2989 * r + 0.5870 * g + 0.1140 * b).toInt();
-          if (gray > grayThreshold) {
-            image.setPixel(x, y, img.getColor(255, 255, 255, alpha));
-          } else {
-            if (alpha < transparentThreshold) {
-              image.setPixel(x, y, img.getColor(255, 255, 255, alpha));
-            } else {
-              image.setPixel(x, y, img.getColor(0, 0, 0, alpha));
-            }
-          }
-        }
-      }
+  Future<Uint8List> convertUiImageToUint8List(ui.Image image) async {
+    final ByteData? byteData =
+        await image.toByteData(format: ui.ImageByteFormat.png);
+    if (byteData != null) {
+      return byteData.buffer.asUint8List();
     }
-    return image;
-  }
-
-  Future<img.Image> getImageFromAssets() async {
-    return img.decodeImage(
-        (await rootBundle.load("assets/flutter.png")).buffer.asUint8List())!;
+    throw "The image could not be converted to png";
   }
 }
