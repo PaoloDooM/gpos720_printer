@@ -57,7 +57,7 @@ class _ExampleState extends State<Example> {
   Future<SnapshotData> loadAsyncData() async {
     img.Image image = convertToGrayScale(await getImageFromAssets());
     return SnapshotData(await gpos720PrinterPlugin.getPlatformVersion(),
-        Uint8List.fromList(img.encodeJpg(image)), image.width, image.height);
+        Uint8List.fromList(img.encodePng(image)), image.width, image.height);
   }
 
   @override
@@ -323,7 +323,8 @@ class _ExampleState extends State<Example> {
     );
   }
 
-  img.Image convertToGrayScale(img.Image image) {
+  img.Image convertToGrayScale(img.Image image,
+      {int grayThreshold = 164, int transparentThreshold = 32}) {
     for (int y = 0; y < image.height; y++) {
       for (int x = 0; x < image.width; x++) {
         final pixel = image.getPixel(x, y);
@@ -334,8 +335,16 @@ class _ExampleState extends State<Example> {
         if (alpha == 0) {
           image.setPixel(x, y, img.getColor(255, 255, 255));
         } else {
-          final gris = (0.2989 * r + 0.5870 * g + 0.1140 * b).toInt();
-          image.setPixel(x, y, img.getColor(gris, gris, gris));
+          final gray = (0.2989 * r + 0.5870 * g + 0.1140 * b).toInt();
+          if (gray > grayThreshold) {
+            image.setPixel(x, y, img.getColor(255, 255, 255, alpha));
+          } else {
+            if (alpha < transparentThreshold) {
+              image.setPixel(x, y, img.getColor(255, 255, 255, alpha));
+            } else {
+              image.setPixel(x, y, img.getColor(0, 0, 0, alpha));
+            }
+          }
         }
       }
     }
