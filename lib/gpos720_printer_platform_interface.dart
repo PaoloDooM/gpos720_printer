@@ -59,9 +59,11 @@ abstract class Gpos720PrinterPlatform extends PlatformInterface {
 
   Future<PrinterStatus> imprimirImagemFiltrada(
       Uint8List data, int width, int height,
-      {AlignmentTypes align = AlignmentTypes.center, double? threshold}) {
+      {AlignmentTypes align = AlignmentTypes.center,
+      double? blackTolerance,
+      double? ditheringTolerance}) {
     throw UnimplementedError(
-        'imprimirImagemFiltrada(Uint8List data, int width, int height, AlignmentTypes align, double? threshold) has not been implemented.');
+        'imprimirImagemFiltrada(Uint8List data, int width, int height, AlignmentTypes align, double? blackTolerance, double? ditheringTolerance) has not been implemented.');
   }
 
   Future<PrinterStatus> imprimirCodigoDeBarra(

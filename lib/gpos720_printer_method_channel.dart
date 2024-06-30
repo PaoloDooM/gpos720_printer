@@ -77,10 +77,14 @@ class MethodChannelGpos720Printer extends Gpos720PrinterPlatform {
   @override
   Future<PrinterStatus> imprimirImagemFiltrada(
       Uint8List data, int width, int height,
-      {AlignmentTypes align = AlignmentTypes.center, double? threshold}) async {
+      {AlignmentTypes align = AlignmentTypes.center,
+      double? blackTolerance,
+      double? ditheringTolerance}) async {
     await methodChannel.invokeMethod<String>('imprimir', {
       "tipoImpressao": PrintTypes.imagem.getLabel,
-      "data": await ImageUtils.imageBinaryFilter(data, threshold: threshold),
+      "data": await ImageUtils.binaryFilterWithDithering(data,
+          blackTolerance: blackTolerance,
+          ditheringTolerance: ditheringTolerance),
       "width": width,
       "height": height,
       "align": align.getLabel

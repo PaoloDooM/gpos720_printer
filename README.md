@@ -3,6 +3,11 @@
 A Flutter plugin to integrate printing in the <a href="https://www.gertec.com.br/produtos/gpos720/">
 Gertec GPOS720</a>.
 
+<div style="display: flex;">
+    <img src="https://github.com/PaoloDooM/gpos720_printer/tree/master/GPOS720_4.png" alt="gpos720">
+    <img src="https://github.com/PaoloDooM/gpos720_printer/tree/master/example.gif" alt="example">
+</div>
+
 ## Features
 
 | Methods                  | Implemented |
@@ -154,7 +159,7 @@ void main() {
 
 * Description: Prints raw black and white images only. You can use the
   method <a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/lib/image_utils.dart">
-  imageBinaryFilter</a> to apply a binary filter to the image.
+  binaryFilterWithDithering</a> to apply a binary filter with dithering to the image.
 * Returns:
   A <a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/lib/printer_status.dart">
   PrinterStatus</a> enum indicating the printer’s status.
@@ -168,9 +173,9 @@ void main() {
 
 * Throws: A PlatformException or a MissingPluginException.
 
-#### <code>Future\<PrinterStatus\> imprimirImagemFiltrada(Uint8List data, int width, int height, {AlignmentTypes align = AlignmentTypes.center, double? threshold})</code>
+#### <code>Future\<PrinterStatus\> imprimirImagemFiltrada(Uint8List data, int width, int height, {AlignmentTypes align = AlignmentTypes.center, double? blackTolerance, double? ditheringTolerance})</code>
 
-* Description: Apply a binary filter and print the raw image.
+* Description: Apply a binary filter with dithering and print the raw image.
 * Returns:
   A <a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/lib/printer_status.dart">
   PrinterStatus</a> enum indicating the printer’s status.
@@ -181,8 +186,12 @@ void main() {
 3. <b>height</b>: An Integer specifying the desired height.
 4. <b>align (optional)</b>: An AlignmentTypes enum specifying the desired alignment. By default,
    align will be center.
-5. <b>threshold (optional)</b>: A double that describes luminance threshold manipulations. By
-   default, the threshold will be 0.75.
+5. <b>blackTolerance (optional)</b>: A double representing the tolerance level for using black
+   color. The
+   default value is 0.34.
+6. <b>ditheringTolerance (optional)</b>: A double representing the tolerance for using dithering to
+   represent
+   colors. The default value is 0.67.
 
 * Throws: A PlatformException or a MissingPluginException.
 
@@ -259,13 +268,19 @@ Click here</a> to view the implementation.
 
 ### ImageUtils:
 
-#### <code>imageBinaryFilter</code>
+#### <code>binaryFilterWithDithering</code>
 
-A method that applies a binary filter to an image, converting it to black and white. It takes the
-image as a Uint8List parameter and a threshold representing the color tolerance of the pixel to be
-converted to black. By
-default, the threshold will be
-0.75. <a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/lib/image_utils.dart">Click
+A method that applies a binary filter with dithering to an image, converting it to black and white
+while using dithering to represent colors that are not too dark. The method takes the following
+parameters:
+
+- `image`: A `Uint8List` representing the image.
+- `blackTolerance`: A `double` representing the tolerance level for using black color. The default
+  value is 0.34.
+- `ditheringTolerance`: A `double` representing the tolerance for using dithering to represent
+  colors. The default value is 0.67.
+
+<a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/lib/image_utils.dart">Click
 here</a> to view the implementation.
 
 ## TODO

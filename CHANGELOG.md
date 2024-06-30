@@ -77,3 +77,8 @@
 * Add a method that prints images, filtering them to black and white using a binary filter.
 * Add a utility method to apply a binary filter to images.
 * Updated README.md and example.
+
+## 1.1.0
+
+* Refactor of the binary filter, now implements dithering to represent not too dark colors.
+* Updated README.md and example.

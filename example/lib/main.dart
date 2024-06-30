@@ -24,11 +24,12 @@ void main() {
 class SnapshotData {
   String platformVersion;
   Uint8List imageData;
+  Uint8List filteredImageData;
   int imageWidth;
   int imageHeight;
 
-  SnapshotData(
-      this.platformVersion, this.imageData, this.imageWidth, this.imageHeight);
+  SnapshotData(this.platformVersion, this.imageData, this.filteredImageData,
+      this.imageWidth, this.imageHeight);
 }
 
 class MyApp extends StatefulWidget {
@@ -53,12 +54,39 @@ class Example extends StatefulWidget {
   State<Example> createState() => _ExampleState();
 }
 
-class _ExampleState extends State<Example> {
+class _ExampleState extends State<Example> with SingleTickerProviderStateMixin {
   final Gpos720Printer gpos720PrinterPlugin = Gpos720Printer();
   final String loremIpsum =
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Elementum pulvinar etiam non quam lacus. Vitae tortor condimentum lacinia quis vel eros. Massa sapien faucibus et molestie ac feugiat sed lectus vestibulum. Ullamcorper morbi tincidunt ornare massa eget egestas. Molestie at elementum eu facilisis sed odio morbi quis. Tincidunt ornare massa eget egestas purus viverra accumsan in. Augue ut lectus arcu bibendum at. Sem et tortor consequat id porta. Purus sit amet luctus venenatis lectus magna. Nunc lobortis mattis aliquam faucibus purus in massa tempor nec. Fringilla phasellus faucibus scelerisque eleifend donec pretium vulputate sapien. Accumsan sit amet nulla facilisi morbi tempus. Imperdiet proin fermentum leo vel orci porta non. Amet mauris commodo quis imperdiet.";
-  final ScrollController scrollbarController = ScrollController();
-  final double toolbarHeight = 65;
+  final ScrollController _scrollbarController = ScrollController();
+  final double _toolbarHeight = 65;
+  late AnimationController _animationController;
+  late Animation<double> _animation, _invertedAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _animationController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 3),
+    );
+
+    _animation = CurvedAnimation(
+      parent: _animationController,
+      curve: Curves.easeInOut,
+    );
+
+    _invertedAnimation =
+        Tween<double>(begin: 1.0, end: 0.0).animate(_animation);
+
+    _animationController.repeat(reverse: true);
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
 
   Future<SnapshotData> loadAsyncData() async {
     Completer<ui.Image> completer = Completer();
@@ -68,14 +96,17 @@ class _ExampleState extends State<Example> {
       completer.complete(result);
     });
     ui.Image image = await completer.future;
-
-    return SnapshotData(
-        await gpos720PrinterPlugin.getPlatformVersion(),
+    Uint8List imageData =
         (await image.toByteData(format: ui.ImageByteFormat.png))!
             .buffer
-            .asUint8List(),
-        image.width,
-        image.height);
+            .asUint8List();
+    Uint8List filteredImageData = await ImageUtils.binaryFilterWithDithering(
+        imageData,
+        blackTolerance: 0.34,
+        ditheringTolerance: 0.67);
+
+    return SnapshotData(await gpos720PrinterPlugin.getPlatformVersion(),
+        imageData, filteredImageData, image.width, image.height);
   }
 
   @override
@@ -90,62 +121,79 @@ class _ExampleState extends State<Example> {
               (BuildContext context, AsyncSnapshot<SnapshotData> snapshot) {
             if (snapshot.hasData) {
               return PrimaryScrollController(
-                controller: scrollbarController,
+                controller: _scrollbarController,
                 child: Scrollbar(
                   thumbVisibility: true,
-                  controller: scrollbarController,
+                  controller: _scrollbarController,
                   child: CustomScrollView(
                     slivers: [
                       SliverAppBar(
-                        expandedHeight: snapshot.data!.imageHeight.toDouble(),
-                        toolbarHeight: toolbarHeight,
+                        expandedHeight: snapshot.data!.imageHeight.toDouble() +
+                            _toolbarHeight,
+                        toolbarHeight: _toolbarHeight,
                         pinned: true,
                         flexibleSpace: FlexibleSpaceBar(
-                          expandedTitleScale: 1,
-                          centerTitle: false,
-                          titlePadding: EdgeInsets.zero,
-                          collapseMode: CollapseMode.parallax,
-                          title: AnimatedBuilder(
-                            animation: scrollbarController,
-                            builder: (BuildContext context, Widget? child) {
-                              double percentage = ((scrollbarController.offset -
-                                          scrollbarController
-                                              .initialScrollOffset) /
-                                      159)
-                                  .clamp(0, 1);
-                              return Align(
-                                alignment: Alignment.bottomCenter,
-                                child: Container(
-                                  margin:
-                                      const EdgeInsets.symmetric(vertical: 15),
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 10, vertical: 5),
-                                  child: Text(
-                                    'Running on: ${snapshot.data!.platformVersion}',
-                                    style: const TextStyle(fontSize: 20),
+                            expandedTitleScale: 1,
+                            centerTitle: false,
+                            titlePadding: EdgeInsets.zero,
+                            collapseMode: CollapseMode.parallax,
+                            title: AnimatedBuilder(
+                              animation: _scrollbarController,
+                              builder: (BuildContext context, Widget? child) {
+                                double percentage =
+                                    ((_scrollbarController.offset -
+                                                _scrollbarController
+                                                    .initialScrollOffset) /
+                                            (159 - _toolbarHeight))
+                                        .clamp(0, 1);
+                                return Align(
+                                  alignment: Alignment.bottomCenter,
+                                  child: Container(
+                                    margin: const EdgeInsets.symmetric(
+                                        vertical: 15),
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 10, vertical: 5),
+                                    child: Text(
+                                      'Running on: ${snapshot.data!.platformVersion}',
+                                      style: const TextStyle(fontSize: 20),
+                                    ),
+                                    decoration: ShapeDecoration(
+                                        shadows: [
+                                          BoxShadow(
+                                            color: Color.lerp(
+                                                Colors.black,
+                                                Colors.transparent,
+                                                percentage)!,
+                                            offset: const Offset(2.0, 2.0),
+                                            blurRadius: 3.0,
+                                          ),
+                                        ],
+                                        color: Color.lerp(Colors.purple,
+                                            Colors.transparent, percentage)!,
+                                        shape: const StadiumBorder()),
                                   ),
-                                  decoration: ShapeDecoration(
-                                      shadows: [
-                                        BoxShadow(
-                                          color: Color.lerp(Colors.black,
-                                              Colors.transparent, percentage)!,
-                                          offset: const Offset(2.0, 2.0),
-                                          blurRadius: 3.0,
-                                        ),
-                                      ],
-                                      color: Color.lerp(Colors.purple,
-                                          Colors.transparent, percentage)!,
-                                      shape: const StadiumBorder()),
-                                ),
-                              );
-                            },
-                          ),
-                          background: Container(
-                            color: Colors.white,
-                            padding: const EdgeInsets.all(8),
-                            child: Image.memory(snapshot.data!.imageData),
-                          ),
-                        ),
+                                );
+                              },
+                            ),
+                            background: Container(
+                                color: Colors.white,
+                                padding: EdgeInsets.only(
+                                    top: 8,
+                                    right: 8,
+                                    bottom: _toolbarHeight,
+                                    left: 8),
+                                child: Stack(
+                                  children: [
+                                    Image.memory(
+                                      snapshot.data!.filteredImageData,
+                                      opacity: _animation,
+                                    ),
+                                    Image.memory(
+                                      snapshot.data!.imageData,
+                                      opacity: _invertedAnimation,
+                                    )
+                                  ],
+                                ))),
                       ),
                       SliverPadding(
                         padding: const EdgeInsets.symmetric(
@@ -162,7 +210,7 @@ class _ExampleState extends State<Example> {
                               "Prints all printer functions.", () async {
                             return await gpos720PrinterPlugin
                                 .imprimirTodasFuncoes(
-                                    snapshot.data!.imageData,
+                                    snapshot.data!.filteredImageData,
                                     snapshot.data!.imageHeight,
                                     snapshot.data!.imageWidth);
                           }),
@@ -186,9 +234,7 @@ class _ExampleState extends State<Example> {
                               "Prints raw black and white images only.",
                               () async {
                             return await gpos720PrinterPlugin.imprimirImagem(
-                                await ImageUtils.imageBinaryFilter(
-                                    snapshot.data!.imageData,
-                                    threshold: 0.75),
+                                snapshot.data!.filteredImageData,
                                 snapshot.data!.imageHeight,
                                 snapshot.data!.imageWidth,
                                 align: AlignmentTypes.center);
@@ -202,7 +248,8 @@ class _ExampleState extends State<Example> {
                                     snapshot.data!.imageHeight,
                                     snapshot.data!.imageWidth,
                                     align: AlignmentTypes.center,
-                                    threshold: 0.75);
+                                    blackTolerance: 0.34,
+                                    ditheringTolerance: 0.64);
                           }),
                           methodCardBuilder(
                               context, "imprimirTexto", "Prints text.",
@@ -224,7 +271,7 @@ class _ExampleState extends State<Example> {
                           }),
                           SizedBox.fromSize(
                             size: ui.Size(MediaQuery.of(context).size.width,
-                                snapshot.data!.imageHeight - toolbarHeight),
+                                snapshot.data!.imageHeight - _toolbarHeight),
                           )
                         ])),
                       )

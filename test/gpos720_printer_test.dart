@@ -70,7 +70,9 @@ class MockGpos720PrinterPlatform
   @override
   Future<PrinterStatus> imprimirImagemFiltrada(
       Uint8List data, int width, int height,
-      {AlignmentTypes align = AlignmentTypes.center, double? threshold}) {
+      {AlignmentTypes align = AlignmentTypes.center,
+      double? blackTolerance,
+      double? ditheringTolerance}) {
     // TODO: implement imprimirImagemFiltrada
     return Future.value(PrinterStatus.impressoraOk);
   }
