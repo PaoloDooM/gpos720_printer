@@ -82,3 +82,7 @@
 
 * Refactor of the binary filter, now implements dithering to represent not too dark colors.
 * Updated README.md and example.
+
+## 1.1.0+1
+
+* Updated README.md.
