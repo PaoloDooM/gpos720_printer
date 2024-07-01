@@ -240,7 +240,7 @@ class _ExampleState extends State<Example> with SingleTickerProviderStateMixin {
                                 align: AlignmentTypes.center);
                           }),
                           methodCardBuilder(context, "imprimirImagemFiltrada",
-                              "Apply a binary filter and print the raw image.",
+                              "Apply a binary filter with dithering and print the raw image.",
                               () async {
                             return await gpos720PrinterPlugin
                                 .imprimirImagemFiltrada(

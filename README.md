@@ -3,7 +3,7 @@
 A Flutter plugin to integrate printing in the <a href="https://www.gertec.com.br/produtos/gpos720/">
 Gertec GPOS720</a>.
 
-<img src="https://raw.githubusercontent.com/PaoloDooM/gpos720_printer/master/GPOS720_4.png" alt="gpos720" height="400"/><img src="https://raw.githubusercontent.com/PaoloDooM/gpos720_printer/master/example.gif" alt="example" height="400"/>
+<img src="https://raw.githubusercontent.com/PaoloDooM/gpos720_printer/master/GPOS720.png" alt="gpos720" height="400"/><img src="https://raw.githubusercontent.com/PaoloDooM/gpos720_printer/master/example.gif" alt="example" height="400"/>
 
 ## Features
 
