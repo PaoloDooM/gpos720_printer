@@ -94,3 +94,7 @@
 ## 1.1.0+3
 
 * Formatting corrections in the CHANGELOG.md.
+
+## 1.2.0
+
+* Adds the boolean `finalizarImpresao` parameter to the `Gpos720Printer` constructor to determine if `fimImpressao` should be called after every print command.

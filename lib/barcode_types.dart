@@ -1,3 +1,4 @@
+///An enum to indicate the type of barcode to be printed.
 enum BarcodeTypes {
   aztec,
   codabar,

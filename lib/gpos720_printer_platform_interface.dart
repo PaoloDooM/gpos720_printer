@@ -37,12 +37,16 @@ abstract class Gpos720PrinterPlatform extends PlatformInterface {
     throw UnimplementedError('checarImpressora() has not been implemented.');
   }
 
-  Future<PrinterStatus> avancaLinha(int quantLinhas) {
+  Future<PrinterStatus> fimImpressao() {
+    throw UnimplementedError('fimImpressao() has not been implemented.');
+  }
+
+  Future<PrinterStatus> avancaLinha(int quantLinhas, bool finalizarImpressao) {
     throw UnimplementedError(
         'avancaLinha(int quantLinhas) has not been implemented.');
   }
 
-  Future<PrinterStatus> imprimirTexto(String mensagem,
+  Future<PrinterStatus> imprimirTexto(String mensagem, bool finalizarImpressao,
       {TextOptions? options,
       int size = defaultFontSize,
       Font? font,
@@ -51,14 +55,15 @@ abstract class Gpos720PrinterPlatform extends PlatformInterface {
         'imprimirTexto(String mensagem, TextOptions options, int size, Font font, AlignmentTypes align) has not been implemented.');
   }
 
-  Future<PrinterStatus> imprimirImagem(Uint8List data, int width, int height,
+  Future<PrinterStatus> imprimirImagem(
+      Uint8List data, int width, int height, bool finalizarImpressao,
       {AlignmentTypes align = AlignmentTypes.center}) {
     throw UnimplementedError(
         'imprimirImagem(Uint8List data, int width, int height, AlignmentTypes align) has not been implemented.');
   }
 
   Future<PrinterStatus> imprimirImagemFiltrada(
-      Uint8List data, int width, int height,
+      Uint8List data, int width, int height, bool finalizarImpressao,
       {AlignmentTypes align = AlignmentTypes.center,
       double? blackTolerance,
       double? ditheringTolerance}) {
@@ -66,20 +71,20 @@ abstract class Gpos720PrinterPlatform extends PlatformInterface {
         'imprimirImagemFiltrada(Uint8List data, int width, int height, AlignmentTypes align, double? blackTolerance, double? ditheringTolerance) has not been implemented.');
   }
 
-  Future<PrinterStatus> imprimirCodigoDeBarra(
-      String mensagem, int width, int height, BarcodeTypes barcodeType) {
+  Future<PrinterStatus> imprimirCodigoDeBarra(String mensagem, int width,
+      int height, BarcodeTypes barcodeType, bool finalizarImpressao) {
     throw UnimplementedError(
         'imprimirCodigoDeBarra(String mensagem, int width, int height, BarcodeTypes barcodeType) has not been implemented.');
   }
 
-  Future<PrinterStatus> imprimirCodigoDeBarraImg(
-      String mensagem, int width, int height, BarcodeTypes barcodeType) {
+  Future<PrinterStatus> imprimirCodigoDeBarraImg(String mensagem, int width,
+      int height, BarcodeTypes barcodeType, bool finalizarImpressao) {
     throw UnimplementedError(
         'imprimirCodigoDeBarraImg(String mensagem, int width, int height, BarcodeTypes barcodeType) has not been implemented.');
   }
 
   Future<PrinterStatus> imprimirTodasFuncoes(
-      Uint8List data, int width, int height) {
+      Uint8List data, int width, int height, bool finalizarImpressao) {
     throw UnimplementedError(
         'imprimirTodasFuncoes(Uint8List data, int width, int height) has not been implemented.');
   }

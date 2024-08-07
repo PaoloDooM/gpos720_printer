@@ -3,14 +3,21 @@ import 'dart:typed_data';
 import 'dart:ui' as ui;
 
 class ImageUtils {
+  ///A method that applies a binary filter with dithering to an image, converting it to black and white while using dithering to represent colors that are not too dark.
+  ///Parameters:
+  ///
+  ///-[image] A Uint8List representing the image.
+  ///
+  ///-[blackTolerance] A double representing the tolerance level for using black color. The default value is 0.34.
+  ///
+  ///-[ditheringTolerance] A double representing the tolerance for using dithering to represent colors. The default value is 0.67.
+  ///
+  ///Returns: A [Uint8List] with the filtered image.
   static Future<Uint8List> binaryFilterWithDithering(Uint8List imageData,
       {double? blackTolerance, double? ditheringTolerance}) async {
     final ui.Image image =
         (await (await ui.instantiateImageCodec(imageData)).getNextFrame())
             .image;
-
-    final int width = image.width;
-    final int height = image.height;
 
     final Uint8List pixels =
         (await image.toByteData(format: ui.ImageByteFormat.rawRgba))!
@@ -26,9 +33,9 @@ class ImageUtils {
     final int blackThreshold = (blackTolerance * 255).toInt();
     final int ditheringThreshold = (ditheringTolerance * 255).toInt();
 
-    for (int y = 0; y < height; y++) {
-      for (int x = 0; x < width; x++) {
-        final int index = (y * width + x) * 4;
+    for (int y = 0; y < image.height; y++) {
+      for (int x = 0; x < image.width; x++) {
+        final int index = (y * image.width + x) * 4;
 
         final int r = pixels[index];
         final int g = pixels[index + 1];
@@ -71,7 +78,7 @@ class ImageUtils {
 
     final Completer<ui.Image> completer = Completer();
     ui.decodeImageFromPixels(
-        outputPixels, width, height, ui.PixelFormat.rgba8888,
+        outputPixels, image.width, image.height, ui.PixelFormat.rgba8888,
         (ui.Image outputImage) {
       completer.complete(outputImage);
     });

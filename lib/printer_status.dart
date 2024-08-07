@@ -1,3 +1,4 @@
+///An enum to indicate the current status of the printer, it can be parsed to a String using the [getLabel] method.
 enum PrinterStatus {
   impressoraOk,
   semPapel,

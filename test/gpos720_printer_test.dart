@@ -18,40 +18,25 @@ class MockGpos720PrinterPlatform
   Future<String> getPlatformVersion() => Future.value('42');
 
   @override
-  Future<PrinterStatus> avancaLinha(int quantLinhas) {
-    // TODO: implement avancaLinha
-    return Future.value(PrinterStatus.impressoraOk);
-  }
-
-  @override
   Future<PrinterStatus> checarImpressora() {
     // TODO: implement checarImpressora
     return Future.value(PrinterStatus.impressoraOk);
   }
 
   @override
-  Future<PrinterStatus> imprimirCodigoDeBarra(
-      String mensagem, int width, int height, BarcodeTypes barcodeType) {
-    // TODO: implement imprimirCodigoDeBarra
+  Future<PrinterStatus> fimImpressao() {
+    // TODO: implement fimImpressao
     return Future.value(PrinterStatus.impressoraOk);
   }
 
   @override
-  Future<PrinterStatus> imprimirCodigoDeBarraImg(
-      String mensagem, int width, int height, BarcodeTypes barcodeType) {
-    // TODO: implement imprimirCodigoDeBarraImg
+  Future<PrinterStatus> avancaLinha(int quantLinhas, finalizarImpressao) {
+    // TODO: implement avancaLinha
     return Future.value(PrinterStatus.impressoraOk);
   }
 
   @override
-  Future<PrinterStatus> imprimirImagem(Uint8List data, int width, int height,
-      {AlignmentTypes align = AlignmentTypes.center}) {
-    // TODO: implement imprimirImagem
-    return Future.value(PrinterStatus.impressoraOk);
-  }
-
-  @override
-  Future<PrinterStatus> imprimirTexto(String mensagem,
+  Future<PrinterStatus> imprimirTexto(String mensagem, finalizarImpressao,
       {TextOptions? options,
       int size = defaultFontSize,
       Font? font,
@@ -61,19 +46,41 @@ class MockGpos720PrinterPlatform
   }
 
   @override
-  Future<PrinterStatus> imprimirTodasFuncoes(
-      Uint8List data, int width, int height) {
-    // TODO: implement imprimirTodasFuncoes
+  Future<PrinterStatus> imprimirImagem(
+      Uint8List data, int width, int height, finalizarImpressao,
+      {AlignmentTypes align = AlignmentTypes.center}) {
+    // TODO: implement imprimirImagem
     return Future.value(PrinterStatus.impressoraOk);
   }
 
   @override
   Future<PrinterStatus> imprimirImagemFiltrada(
-      Uint8List data, int width, int height,
+      Uint8List data, int width, int height, finalizarImpressao,
       {AlignmentTypes align = AlignmentTypes.center,
       double? blackTolerance,
       double? ditheringTolerance}) {
     // TODO: implement imprimirImagemFiltrada
+    return Future.value(PrinterStatus.impressoraOk);
+  }
+
+  @override
+  Future<PrinterStatus> imprimirCodigoDeBarra(String mensagem, int width,
+      int height, BarcodeTypes barcodeType, finalizarImpressao) {
+    // TODO: implement imprimirCodigoDeBarra
+    return Future.value(PrinterStatus.impressoraOk);
+  }
+
+  @override
+  Future<PrinterStatus> imprimirCodigoDeBarraImg(String mensagem, int width,
+      int height, BarcodeTypes barcodeType, finalizarImpressao) {
+    // TODO: implement imprimirCodigoDeBarraImg
+    return Future.value(PrinterStatus.impressoraOk);
+  }
+
+  @override
+  Future<PrinterStatus> imprimirTodasFuncoes(
+      Uint8List data, int width, int height, finalizarImpressao) {
+    // TODO: implement imprimirTodasFuncoes
     return Future.value(PrinterStatus.impressoraOk);
   }
 }

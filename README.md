@@ -99,13 +99,34 @@ Instantiate the "Gpos720Printer" object like this:
 import 'package:gpos720_printer/gpos720_printer.dart';
 
 void main() {
-  Gpos720Printer gpos720Printer = Gpos720Printer();
+  Gpos720Printer gpos720Printer = Gpos720Printer(finalizarImpressao: false);
 }
 ```
+
+> You can pass the optional boolean parameter `finalizarImpressao` in the constructor to call
+> the `fimImpressao` function after executing a print command. By default, this parameter is set
+> to `false`, so it might be necessary to call `fimImpressao` after executing all the desired print
+> commands.
 
 ## Documentation
 
 ### Methods:
+
+#### <code>Future\<PrinterStatus\> checarImpressora()</code>
+
+* Description: Checks the printer’s status.
+* Returns:
+  A <a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/lib/printer_status.dart">
+  PrinterStatus</a> enum indicating the printer’s status.
+* Throws: A PlatformException or a MissingPluginException.
+
+#### <code>Future\<PrinterStatus\> fimImpressao()</code>
+
+* Description: Prints all buffered printer commands.
+* Returns:
+  A <a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/lib/printer_status.dart">
+  PrinterStatus</a> enum indicating the printer’s status.
+* Throws: A PlatformException or a MissingPluginException.
 
 #### <code>Future\<PrinterStatus\> avancaLinha(int quantLinhas)</code>
 
@@ -119,41 +140,21 @@ void main() {
 
 * Throws: A PlatformException or a MissingPluginException.
 
-#### <code>Future\<PrinterStatus\> checarImpressora()</code>
+#### <code>Future\<PrinterStatus\> imprimirTexto(String mensagem, {TextOptions? options, int size = defaultFontSize, Font? font, AlignmentTypes align = AlignmentTypes.left})</code>
 
-* Description: Checks the printer’s status.
-* Returns:
-  A <a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/lib/printer_status.dart">
-  PrinterStatus</a> enum indicating the printer’s status.
-* Throws: A PlatformException or a MissingPluginException.
-
-#### <code>Future\<PrinterStatus\> imprimirCodigoDeBarra(String mensagem, int width, int height, BarcodeTypes barcodeType)</code>
-
-* Description: Prints various types of barcodes.
+* Description: Prints text.
 * Returns:
   A <a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/lib/printer_status.dart">
   PrinterStatus</a> enum indicating the printer’s status.
 * Parameters:
 
-1. <b>mensagem</b>: A String specifying the desired data on the barcode.
-2. <b>width</b>: An Integer specifying the desired width.
-3. <b>height</b>: An Integer specifying the desired height.
-4. <b>barcodeTypes</b>: A BarcodeTypes enum specifying the desired barcode type.
-
-* Throws: A PlatformException or a MissingPluginException.
-
-#### <code>Future\<PrinterStatus\> imprimirCodigoDeBarraImg(String mensagem, int width, int height, BarcodeTypes barcodeType)</code>
-
-* Description: Prints various types of barcodes, rendering them as images.
-* Returns:
-  A <a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/lib/printer_status.dart">
-  PrinterStatus</a> enum indicating the printer’s status.
-* Parameters:
-
-1. <b>mensagem</b>: A String specifying the desired data on the barcode.
-2. <b>width</b>: An Integer specifying the desired width.
-3. <b>height</b>: An Integer specifying the desired height.
-4. <b>barcodeTypes</b>: A BarcodeTypes enum specifying the desired barcode type.
+1. <b>mensagem</b>: A String with the desired text to be printed.
+2. <b>options (optional)</b>: A TextOptions specifying if the text will be render as bold, italic or
+   underlined.
+3. <b>size (optional)</b>: An Integer specifying the desired font size.
+4. <b>Font (optional)</b>: A Font specifying the desired font to be used in the text.
+5. <b>align (optional)</b>: An AlignmentTypes enum specifying the desired alignment. By default,
+   align will be left.
 
 * Throws: A PlatformException or a MissingPluginException.
 
@@ -197,21 +198,33 @@ void main() {
 
 * Throws: A PlatformException or a MissingPluginException.
 
-#### <code>Future\<PrinterStatus\> imprimirTexto(String mensagem, {TextOptions? options, int size = defaultFontSize, Font? font, AlignmentTypes align = AlignmentTypes.left})</code>
+#### <code>Future\<PrinterStatus\> imprimirCodigoDeBarra(String mensagem, int width, int height, BarcodeTypes barcodeType)</code>
 
-* Description: Prints text.
+* Description: Prints various types of barcodes.
 * Returns:
   A <a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/lib/printer_status.dart">
   PrinterStatus</a> enum indicating the printer’s status.
 * Parameters:
 
-1. <b>mensagem</b>: A String with the desired text to be printed.
-2. <b>options (optional)</b>: A TextOptions specifying if the text will be render as bold, italic or
-   underlined.
-3. <b>size (optional)</b>: An Integer specifying the desired font size.
-4. <b>Font (optional)</b>: A Font specifying the desired font to be used in the text.
-5. <b>align (optional)</b>: An AlignmentTypes enum specifying the desired alignment. By default,
-   align will be left.
+1. <b>mensagem</b>: A String specifying the desired data on the barcode.
+2. <b>width</b>: An Integer specifying the desired width.
+3. <b>height</b>: An Integer specifying the desired height.
+4. <b>barcodeTypes</b>: A BarcodeTypes enum specifying the desired barcode type.
+
+* Throws: A PlatformException or a MissingPluginException.
+
+#### <code>Future\<PrinterStatus\> imprimirCodigoDeBarraImg(String mensagem, int width, int height, BarcodeTypes barcodeType)</code>
+
+* Description: Prints various types of barcodes, rendering them as images.
+* Returns:
+  A <a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/lib/printer_status.dart">
+  PrinterStatus</a> enum indicating the printer’s status.
+* Parameters:
+
+1. <b>mensagem</b>: A String specifying the desired data on the barcode.
+2. <b>width</b>: An Integer specifying the desired width.
+3. <b>height</b>: An Integer specifying the desired height.
+4. <b>barcodeTypes</b>: A BarcodeTypes enum specifying the desired barcode type.
 
 * Throws: A PlatformException or a MissingPluginException.
 
@@ -239,7 +252,7 @@ Click here</a> to consult the available types.
 
 #### <code>AlignmentTypes</code>
 
-An enum to indicate the type of barcode to be
+An enum to indicate the desired alignment for the command to be
 printed. <a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/lib/alignment_types.dart">
 Click here</a> to consult the available types.
 
@@ -281,6 +294,8 @@ parameters:
   value is 0.34.
 - `ditheringTolerance`: A `double` representing the tolerance for using dithering to represent
   colors. The default value is 0.67.
+
+Returns: A `Uint8List` with the filtered image.
 
 <a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/lib/image_utils.dart">Click
 here</a> to view the implementation.

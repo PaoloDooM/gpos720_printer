@@ -55,7 +55,8 @@ class Example extends StatefulWidget {
 }
 
 class _ExampleState extends State<Example> with SingleTickerProviderStateMixin {
-  final Gpos720Printer gpos720PrinterPlugin = Gpos720Printer();
+  final Gpos720Printer gpos720PrinterPlugin =
+      Gpos720Printer(finalizarImpressao: true);
   final String loremIpsum =
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Elementum pulvinar etiam non quam lacus. Vitae tortor condimentum lacinia quis vel eros. Massa sapien faucibus et molestie ac feugiat sed lectus vestibulum. Ullamcorper morbi tincidunt ornare massa eget egestas. Molestie at elementum eu facilisis sed odio morbi quis. Tincidunt ornare massa eget egestas purus viverra accumsan in. Augue ut lectus arcu bibendum at. Sem et tortor consequat id porta. Purus sit amet luctus venenatis lectus magna. Nunc lobortis mattis aliquam faucibus purus in massa tempor nec. Fringilla phasellus faucibus scelerisque eleifend donec pretium vulputate sapien. Accumsan sit amet nulla facilisi morbi tempus. Imperdiet proin fermentum leo vel orci porta non. Amet mauris commodo quis imperdiet.";
   final ScrollController _scrollbarController = ScrollController();
@@ -206,29 +207,23 @@ class _ExampleState extends State<Example> with SingleTickerProviderStateMixin {
                               "Checks the printer’s status.",
                               () async =>
                                   gpos720PrinterPlugin.checarImpressora()),
-                          methodCardBuilder(context, "imprimirTodasFuncoes",
-                              "Prints all printer functions.", () async {
-                            return await gpos720PrinterPlugin
-                                .imprimirTodasFuncoes(
-                                    snapshot.data!.filteredImageData,
-                                    snapshot.data!.imageHeight,
-                                    snapshot.data!.imageWidth);
-                          }),
-                          methodCardBuilder(context, "imprimirCodigoDeBarra",
-                              "Prints various types of barcodes.", () async {
-                            return await gpos720PrinterPlugin
-                                .imprimirCodigoDeBarra(
-                                    "0123456789", 200, 100, BarcodeTypes.upcA);
-                          }),
-                          methodCardBuilder(context, "imprimirCodigoDeBarraImg",
-                              "Prints various types of barcodes, rendering them as images.",
+                          methodCardBuilder(context, "avancaLinha",
+                              "Adds line breaks to the current printout.",
                               () async {
-                            return await gpos720PrinterPlugin
-                                .imprimirCodigoDeBarraImg(
-                                    "https://www.google.com/",
-                                    200,
-                                    200,
-                                    BarcodeTypes.qrCode);
+                            return await gpos720PrinterPlugin.avancaLinha(5);
+                          }),
+                          methodCardBuilder(
+                              context, "imprimirTexto", "Prints text.",
+                              () async {
+                            return await gpos720PrinterPlugin.imprimirTexto(
+                                loremIpsum,
+                                align: AlignmentTypes.right,
+                                size: defaultFontSize,
+                                font: Font(fontName: 'NORMAL'),
+                                options: TextOptions(
+                                    bold: false,
+                                    italic: false,
+                                    underlined: false));
                           }),
                           methodCardBuilder(context, "imprimirImagem",
                               "Prints raw black and white images only.",
@@ -251,23 +246,29 @@ class _ExampleState extends State<Example> with SingleTickerProviderStateMixin {
                                     blackTolerance: 0.34,
                                     ditheringTolerance: 0.64);
                           }),
-                          methodCardBuilder(
-                              context, "imprimirTexto", "Prints text.",
-                              () async {
-                            return await gpos720PrinterPlugin.imprimirTexto(
-                                loremIpsum,
-                                align: AlignmentTypes.right,
-                                size: defaultFontSize,
-                                font: Font(fontName: 'NORMAL'),
-                                options: TextOptions(
-                                    bold: false,
-                                    italic: false,
-                                    underlined: false));
+                          methodCardBuilder(context, "imprimirCodigoDeBarra",
+                              "Prints various types of barcodes.", () async {
+                            return await gpos720PrinterPlugin
+                                .imprimirCodigoDeBarra(
+                                    "0123456789", 200, 100, BarcodeTypes.upcA);
                           }),
-                          methodCardBuilder(context, "avancaLinha",
-                              "Adds line breaks to the current printout.",
+                          methodCardBuilder(context, "imprimirCodigoDeBarraImg",
+                              "Prints various types of barcodes, rendering them as images.",
                               () async {
-                            return await gpos720PrinterPlugin.avancaLinha(5);
+                            return await gpos720PrinterPlugin
+                                .imprimirCodigoDeBarraImg(
+                                    "https://www.google.com/",
+                                    200,
+                                    200,
+                                    BarcodeTypes.qrCode);
+                          }),
+                          methodCardBuilder(context, "imprimirTodasFuncoes",
+                              "Prints all printer functions.", () async {
+                            return await gpos720PrinterPlugin
+                                .imprimirTodasFuncoes(
+                                    snapshot.data!.filteredImageData,
+                                    snapshot.data!.imageHeight,
+                                    snapshot.data!.imageWidth);
                           }),
                           SizedBox.fromSize(
                             size: ui.Size(MediaQuery.of(context).size.width,

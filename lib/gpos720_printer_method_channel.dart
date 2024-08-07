@@ -30,7 +30,8 @@ class MethodChannelGpos720Printer extends Gpos720PrinterPlatform {
         .values[status ?? PrinterStatus.statusDesconhecido.index];
   }
 
-  Future<PrinterStatus> _fimImpressao() async {
+  @override
+  Future<PrinterStatus> fimImpressao() async {
     int? status = int.tryParse(
         await methodChannel.invokeMethod<String>('fimImpressao') ?? '');
     return PrinterStatus
@@ -38,14 +39,15 @@ class MethodChannelGpos720Printer extends Gpos720PrinterPlatform {
   }
 
   @override
-  Future<PrinterStatus> avancaLinha(int quantLinhas) async {
+  Future<PrinterStatus> avancaLinha(
+      int quantLinhas, bool finalizarImpressao) async {
     await methodChannel
         .invokeMethod<String>('avancaLinha', {"quantLinhas": quantLinhas});
-    return await _fimImpressao();
+    return finalizarImpressao ? await fimImpressao() : await checarImpressora();
   }
 
   @override
-  Future<PrinterStatus> imprimirTexto(String mensagem,
+  Future<PrinterStatus> imprimirTexto(String mensagem, bool finalizarImpressao,
       {TextOptions? options,
       int size = defaultFontSize,
       Font? font,
@@ -58,11 +60,12 @@ class MethodChannelGpos720Printer extends Gpos720PrinterPlatform {
       "font": font?.fontName ?? Font().fontName,
       "align": align.getLabel
     });
-    return await _fimImpressao();
+    return finalizarImpressao ? await fimImpressao() : await checarImpressora();
   }
 
   @override
-  Future<PrinterStatus> imprimirImagem(Uint8List data, int width, int height,
+  Future<PrinterStatus> imprimirImagem(
+      Uint8List data, int width, int height, bool finalizarImpressao,
       {AlignmentTypes align = AlignmentTypes.center}) async {
     await methodChannel.invokeMethod<String>('imprimir', {
       "tipoImpressao": PrintTypes.imagem.getLabel,
@@ -71,12 +74,12 @@ class MethodChannelGpos720Printer extends Gpos720PrinterPlatform {
       "height": height,
       "align": align.getLabel
     });
-    return await _fimImpressao();
+    return finalizarImpressao ? await fimImpressao() : await checarImpressora();
   }
 
   @override
   Future<PrinterStatus> imprimirImagemFiltrada(
-      Uint8List data, int width, int height,
+      Uint8List data, int width, int height, bool finalizarImpressao,
       {AlignmentTypes align = AlignmentTypes.center,
       double? blackTolerance,
       double? ditheringTolerance}) async {
@@ -89,12 +92,12 @@ class MethodChannelGpos720Printer extends Gpos720PrinterPlatform {
       "height": height,
       "align": align.getLabel
     });
-    return await _fimImpressao();
+    return finalizarImpressao ? await fimImpressao() : await checarImpressora();
   }
 
   @override
-  Future<PrinterStatus> imprimirCodigoDeBarra(
-      String mensagem, int width, int height, BarcodeTypes barcodeType) async {
+  Future<PrinterStatus> imprimirCodigoDeBarra(String mensagem, int width,
+      int height, BarcodeTypes barcodeType, bool finalizarImpressao) async {
     await methodChannel.invokeMethod<String>('imprimir', {
       "tipoImpressao": PrintTypes.codgigoDeBarra.getLabel,
       "mensagem": mensagem,
@@ -102,12 +105,12 @@ class MethodChannelGpos720Printer extends Gpos720PrinterPlatform {
       "height": height,
       "barCode": barcodeType.getLabel
     });
-    return await _fimImpressao();
+    return finalizarImpressao ? await fimImpressao() : await checarImpressora();
   }
 
   @override
-  Future<PrinterStatus> imprimirCodigoDeBarraImg(
-      String mensagem, int width, int height, BarcodeTypes barcodeType) async {
+  Future<PrinterStatus> imprimirCodigoDeBarraImg(String mensagem, int width,
+      int height, BarcodeTypes barcodeType, bool finalizarImpressao) async {
     await methodChannel.invokeMethod<String>('imprimir', {
       "tipoImpressao": PrintTypes.codgigoDeBarraImg.getLabel,
       "mensagem": mensagem,
@@ -115,18 +118,18 @@ class MethodChannelGpos720Printer extends Gpos720PrinterPlatform {
       "height": height,
       "barCode": barcodeType.getLabel
     });
-    return await _fimImpressao();
+    return finalizarImpressao ? await fimImpressao() : await checarImpressora();
   }
 
   @override
   Future<PrinterStatus> imprimirTodasFuncoes(
-      Uint8List data, int width, int height) async {
+      Uint8List data, int width, int height, bool finalizarImpressao) async {
     await methodChannel.invokeMethod<String>('imprimir', {
       "tipoImpressao": PrintTypes.todasFuncoes.getLabel,
       "data": data,
       "width": width,
       "height": height
     });
-    return await _fimImpressao();
+    return finalizarImpressao ? await fimImpressao() : await checarImpressora();
   }
 }
