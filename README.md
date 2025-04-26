@@ -14,14 +14,14 @@ Gertec GPOS720</a>.
 
 | Methods                  | Implemented |
 |:-------------------------|:-----------:|
-| checarImpressora         |     ✔️      |
-| avancaLinha              |     ✔️      |
-| imprimirTexto            |     ✔️      |
-| imprimirImagem           |     ✔️      |
-| imprimirImagemFiltrada   |     ✔️      |
-| imprimirCodigoDeBarra    |     ✔️      |
-| imprimirCodigoDeBarraImg |     ✔️      |
-| imprimirTodasFuncoes     |     ✔️      |
+| checkPrinter         |     ✔️      |
+| lineFeed              |     ✔️      |
+| printText            |     ✔️      |
+| printImage           |     ✔️      |
+| printFilteredImage   |     ✔️      |
+| printBarcode    |     ✔️      |
+| printBarcodeImage |     ✔️      |
+| printAllFunctions     |     ✔️      |
 | imprimirEscPos           |     ❌️      |
 
 ## Requirements
@@ -83,6 +83,20 @@ allprojects {
 ...
 ```
 
+### Step 3
+
+You might need to add ProGuard rules to ensure the native Android code in the library isn't 
+obfuscated or removed during minification. To do this, navigate to 
+the <a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/example/android/app/proguard-rules.pro">android/app/proguard-rules.pro</a>
+file in your app's directory. If it doesn't exist, create it. In this file, you should add the 
+following rules:
+
+```proguard
+...
+-keep class br.com.gertec.** { *; }
+-dontwarn br.com.gertec.**
+```
+
 ## Getting Started
 
 Just instantiate the "Gpos720Printer" and invoke the desired functions as shown
@@ -99,20 +113,20 @@ Instantiate the "Gpos720Printer" object like this:
 import 'package:gpos720_printer/gpos720_printer.dart';
 
 void main() {
-  Gpos720Printer gpos720Printer = Gpos720Printer(finalizarImpressao: false);
+  Gpos720Printer gpos720Printer = Gpos720Printer(finishPrintingAfterEachCommand: false);
 }
 ```
 
-> You can pass the optional boolean parameter `finalizarImpressao` in the constructor to call
-> the `fimImpressao` function after executing a print command. By default, this parameter is set
-> to `false`, so it might be necessary to call `fimImpressao` after executing all the desired print
+> You can pass the optional boolean parameter `finishPrintingAfterEachCommand` in the constructor to call
+> the `endPrinting` function after executing a print command. By default, this parameter is set
+> to `false`, so it might be necessary to call `endPrinting` after executing all the desired print
 > commands.
 
 ## Documentation
 
 ### Methods:
 
-#### <code>Future\<PrinterStatus\> checarImpressora()</code>
+#### <code>Future\<PrinterStatus\> checkPrinter()</code>
 
 * Description: Checks the printer’s status.
 * Returns:
@@ -120,7 +134,7 @@ void main() {
   PrinterStatus</a> enum indicating the printer’s status.
 * Throws: A PlatformException or a MissingPluginException.
 
-#### <code>Future\<PrinterStatus\> fimImpressao()</code>
+#### <code>Future\<PrinterStatus\> endPrinting()</code>
 
 * Description: Prints all buffered printer commands.
 * Returns:
@@ -128,7 +142,7 @@ void main() {
   PrinterStatus</a> enum indicating the printer’s status.
 * Throws: A PlatformException or a MissingPluginException.
 
-#### <code>Future\<PrinterStatus\> avancaLinha(int quantLinhas)</code>
+#### <code>Future\<PrinterStatus\> lineFeed(int lineCount)</code>
 
 * Description: Adds line breaks to the current printout.
 * Returns:
@@ -136,11 +150,11 @@ void main() {
   PrinterStatus</a> enum indicating the printer’s status.
 * Parameters:
 
-1. <b>quantLinhas</b>: An Integer specifying the desired number of line breaks.
+1. <b>lineCount</b>: An Integer specifying the desired number of line breaks.
 
 * Throws: A PlatformException or a MissingPluginException.
 
-#### <code>Future\<PrinterStatus\> imprimirTexto(String mensagem, {TextOptions? options, int size = defaultFontSize, Font? font, AlignmentTypes align = AlignmentTypes.left})</code>
+#### <code>Future\<PrinterStatus\> printText(String text, {TextOptions? options, int size = defaultFontSize, Font? font, AlignmentTypes align = AlignmentTypes.left})</code>
 
 * Description: Prints text.
 * Returns:
@@ -148,7 +162,7 @@ void main() {
   PrinterStatus</a> enum indicating the printer’s status.
 * Parameters:
 
-1. <b>mensagem</b>: A String with the desired text to be printed.
+1. <b>text</b>: A String with the desired text to be printed.
 2. <b>options (optional)</b>: A TextOptions specifying if the text will be render as bold, italic or
    underlined.
 3. <b>size (optional)</b>: An Integer specifying the desired font size.
@@ -158,7 +172,7 @@ void main() {
 
 * Throws: A PlatformException or a MissingPluginException.
 
-#### <code>Future\<PrinterStatus\> imprimirImagem(Uint8List data, int width, int height, {AlignmentTypes align = AlignmentTypes.center})</code>
+#### <code>Future\<PrinterStatus\> printImage(Uint8List imageBytes, int width, int height, {AlignmentTypes align = AlignmentTypes.center})</code>
 
 * Description: Prints raw black and white images only. You can use the
   method <a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/lib/image_utils.dart">
@@ -168,7 +182,7 @@ void main() {
   PrinterStatus</a> enum indicating the printer’s status.
 * Parameters:
 
-1. <b>data</b>: A Uint8List with the raw data of the black and white image.
+1. <b>imageBytes</b>: A Uint8List with the raw data of the black and white image.
 2. <b>width</b>: An Integer specifying the desired width.
 3. <b>height</b>: An Integer specifying the desired height.
 4. <b>align (optional)</b>: An AlignmentTypes enum specifying the desired alignment. By default,
@@ -176,7 +190,7 @@ void main() {
 
 * Throws: A PlatformException or a MissingPluginException.
 
-#### <code>Future\<PrinterStatus\> imprimirImagemFiltrada(Uint8List data, int width, int height, {AlignmentTypes align = AlignmentTypes.center, double? blackTolerance, double? ditheringTolerance})</code>
+#### <code>Future\<PrinterStatus\> printFilteredImage(Uint8List imageBytes, int width, int height, {AlignmentTypes align = AlignmentTypes.center, double? blackTolerance, double? ditheringTolerance})</code>
 
 * Description: Apply a binary filter with dithering and print the raw image.
 * Returns:
@@ -184,7 +198,7 @@ void main() {
   PrinterStatus</a> enum indicating the printer’s status.
 * Parameters:
 
-1. <b>data</b>: A Uint8List with the raw data of the image.
+1. <b>imageBytes</b>: A Uint8List with the raw data of the image.
 2. <b>width</b>: An Integer specifying the desired width.
 3. <b>height</b>: An Integer specifying the desired height.
 4. <b>align (optional)</b>: An AlignmentTypes enum specifying the desired alignment. By default,
@@ -198,7 +212,7 @@ void main() {
 
 * Throws: A PlatformException or a MissingPluginException.
 
-#### <code>Future\<PrinterStatus\> imprimirCodigoDeBarra(String mensagem, int width, int height, BarcodeTypes barcodeType)</code>
+#### <code>Future\<PrinterStatus\> printBarcode(String barcode, int width, int height, BarcodeTypes barcodeType)</code>
 
 * Description: Prints various types of barcodes.
 * Returns:
@@ -206,14 +220,14 @@ void main() {
   PrinterStatus</a> enum indicating the printer’s status.
 * Parameters:
 
-1. <b>mensagem</b>: A String specifying the desired data on the barcode.
+1. <b>barcode</b>: A String specifying the desired data on the barcode.
 2. <b>width</b>: An Integer specifying the desired width.
 3. <b>height</b>: An Integer specifying the desired height.
-4. <b>barcodeTypes</b>: A BarcodeTypes enum specifying the desired barcode type.
+4. <b>barcodeType</b>: A BarcodeTypes enum specifying the desired barcode type.
 
 * Throws: A PlatformException or a MissingPluginException.
 
-#### <code>Future\<PrinterStatus\> imprimirCodigoDeBarraImg(String mensagem, int width, int height, BarcodeTypes barcodeType)</code>
+#### <code>Future\<PrinterStatus\> printBarcodeImage(String barcode, int width, int height, BarcodeTypes barcodeType)</code>
 
 * Description: Prints various types of barcodes, rendering them as images.
 * Returns:
@@ -221,14 +235,14 @@ void main() {
   PrinterStatus</a> enum indicating the printer’s status.
 * Parameters:
 
-1. <b>mensagem</b>: A String specifying the desired data on the barcode.
+1. <b>barcode</b>: A String specifying the desired data on the barcode.
 2. <b>width</b>: An Integer specifying the desired width.
 3. <b>height</b>: An Integer specifying the desired height.
-4. <b>barcodeTypes</b>: A BarcodeTypes enum specifying the desired barcode type.
+4. <b>barcodeType</b>: A BarcodeTypes enum specifying the desired barcode type.
 
 * Throws: A PlatformException or a MissingPluginException.
 
-#### <code>Future\<PrinterStatus\> imprimirTodasFuncoes(Uint8List data, int width, int height)</code>
+#### <code>Future\<PrinterStatus\> printAllFunctions(Uint8List imageBytes, int width, int height)</code>
 
 * Description: Prints all printer functions.
 * Returns:
@@ -236,7 +250,7 @@ void main() {
   PrinterStatus</a> enum indicating the printer’s status.
 * Parameters:
 
-1. <b>data</b>: A Uint8List with the raw data of the black and white image.
+1. <b>imageBytes</b>: A Uint8List with the raw data of the black and white image.
 2. <b>width</b>: An Integer specifying the desired width.
 3. <b>height</b>: An Integer specifying the desired height.
 
@@ -277,8 +291,8 @@ click here</a> to view the implementation.
 
 An enum to indicate the current status of the
 printer, it can be parsed to a String using
-the ".getLabel"
-method. <a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/lib/printer_status.dart">
+the "message"
+getter. <a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/lib/printer_status.dart">
 Click here</a> to view the implementation.
 
 ### ImageUtils:
@@ -289,7 +303,7 @@ A method that applies a binary filter with dithering to an image, converting it 
 while using dithering to represent colors that are not too dark. The method takes the following
 parameters:
 
-- `image`: A `Uint8List` representing the image.
+- `imageBytes`: A `Uint8List` representing the image.
 - `blackTolerance`: A `double` representing the tolerance level for using black color. The default
   value is 0.34.
 - `ditheringTolerance`: A `double` representing the tolerance for using dithering to represent

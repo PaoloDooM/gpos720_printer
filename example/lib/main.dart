@@ -56,7 +56,7 @@ class Example extends StatefulWidget {
 
 class _ExampleState extends State<Example> with SingleTickerProviderStateMixin {
   final Gpos720Printer gpos720PrinterPlugin =
-      Gpos720Printer(finalizarImpressao: true);
+      Gpos720Printer(finishPrintingAfterEachCommand: true);
   final String loremIpsum =
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Elementum pulvinar etiam non quam lacus. Vitae tortor condimentum lacinia quis vel eros. Massa sapien faucibus et molestie ac feugiat sed lectus vestibulum. Ullamcorper morbi tincidunt ornare massa eget egestas. Molestie at elementum eu facilisis sed odio morbi quis. Tincidunt ornare massa eget egestas purus viverra accumsan in. Augue ut lectus arcu bibendum at. Sem et tortor consequat id porta. Purus sit amet luctus venenatis lectus magna. Nunc lobortis mattis aliquam faucibus purus in massa tempor nec. Fringilla phasellus faucibus scelerisque eleifend donec pretium vulputate sapien. Accumsan sit amet nulla facilisi morbi tempus. Imperdiet proin fermentum leo vel orci porta non. Amet mauris commodo quis imperdiet.";
   final ScrollController _scrollbarController = ScrollController();
@@ -184,6 +184,7 @@ class _ExampleState extends State<Example> with SingleTickerProviderStateMixin {
                                     bottom: _toolbarHeight,
                                     left: 8),
                                 child: Stack(
+                                  alignment: Alignment.topCenter,
                                   children: [
                                     Image.memory(
                                       snapshot.data!.filteredImageData,
@@ -203,19 +204,17 @@ class _ExampleState extends State<Example> with SingleTickerProviderStateMixin {
                             delegate: SliverChildListDelegate([
                           methodCardBuilder(
                               context,
-                              "checarImpressora",
+                              "checkPrinter",
                               "Checks the printer’s status.",
-                              () async =>
-                                  gpos720PrinterPlugin.checarImpressora()),
-                          methodCardBuilder(context, "avancaLinha",
+                              () async => gpos720PrinterPlugin.checkPrinter()),
+                          methodCardBuilder(context, "lineFeed",
                               "Adds line breaks to the current printout.",
                               () async {
-                            return await gpos720PrinterPlugin.avancaLinha(5);
+                            return await gpos720PrinterPlugin.lineFeed(5);
                           }),
                           methodCardBuilder(
-                              context, "imprimirTexto", "Prints text.",
-                              () async {
-                            return await gpos720PrinterPlugin.imprimirTexto(
+                              context, "printText", "Prints text.", () async {
+                            return await gpos720PrinterPlugin.printText(
                                 loremIpsum,
                                 align: AlignmentTypes.right,
                                 size: defaultFontSize,
@@ -225,20 +224,20 @@ class _ExampleState extends State<Example> with SingleTickerProviderStateMixin {
                                     italic: false,
                                     underlined: false));
                           }),
-                          methodCardBuilder(context, "imprimirImagem",
+                          methodCardBuilder(context, "printImage",
                               "Prints raw black and white images only.",
                               () async {
-                            return await gpos720PrinterPlugin.imprimirImagem(
+                            return await gpos720PrinterPlugin.printImage(
                                 snapshot.data!.filteredImageData,
                                 snapshot.data!.imageHeight,
                                 snapshot.data!.imageWidth,
                                 align: AlignmentTypes.center);
                           }),
-                          methodCardBuilder(context, "imprimirImagemFiltrada",
+                          methodCardBuilder(context, "printFilteredImage",
                               "Apply a binary filter with dithering and print the raw image.",
                               () async {
                             return await gpos720PrinterPlugin
-                                .imprimirImagemFiltrada(
+                                .printFilteredImage(
                                     snapshot.data!.imageData,
                                     snapshot.data!.imageHeight,
                                     snapshot.data!.imageWidth,
@@ -246,29 +245,26 @@ class _ExampleState extends State<Example> with SingleTickerProviderStateMixin {
                                     blackTolerance: 0.34,
                                     ditheringTolerance: 0.64);
                           }),
-                          methodCardBuilder(context, "imprimirCodigoDeBarra",
+                          methodCardBuilder(context, "printBarcode",
                               "Prints various types of barcodes.", () async {
-                            return await gpos720PrinterPlugin
-                                .imprimirCodigoDeBarra(
-                                    "0123456789", 200, 100, BarcodeTypes.upcA);
+                            return await gpos720PrinterPlugin.printBarcode(
+                                "0123456789", 200, 100, BarcodeTypes.upcA);
                           }),
-                          methodCardBuilder(context, "imprimirCodigoDeBarraImg",
+                          methodCardBuilder(context, "printBarcodeImage",
                               "Prints various types of barcodes, rendering them as images.",
                               () async {
-                            return await gpos720PrinterPlugin
-                                .imprimirCodigoDeBarraImg(
-                                    "https://www.google.com/",
-                                    200,
-                                    200,
-                                    BarcodeTypes.qrCode);
+                            return await gpos720PrinterPlugin.printBarcodeImage(
+                                "https://www.google.com/",
+                                200,
+                                200,
+                                BarcodeTypes.qrCode);
                           }),
-                          methodCardBuilder(context, "imprimirTodasFuncoes",
+                          methodCardBuilder(context, "printAllFunctions",
                               "Prints all printer functions.", () async {
-                            return await gpos720PrinterPlugin
-                                .imprimirTodasFuncoes(
-                                    snapshot.data!.filteredImageData,
-                                    snapshot.data!.imageHeight,
-                                    snapshot.data!.imageWidth);
+                            return await gpos720PrinterPlugin.printAllFunctions(
+                                snapshot.data!.filteredImageData,
+                                snapshot.data!.imageHeight,
+                                snapshot.data!.imageWidth);
                           }),
                           SizedBox.fromSize(
                             size: ui.Size(MediaQuery.of(context).size.width,
@@ -342,7 +338,7 @@ class _ExampleState extends State<Example> with SingleTickerProviderStateMixin {
           child: const Text("Print"),
           onPressed: () async {
             try {
-              _dialogBuilder(context, (await method()).getLabel);
+              _dialogBuilder(context, (await method()).message);
             } on PlatformException catch (e) {
               _dialogBuilder(context,
                   "${e.code}\n\n${e.message ?? 'Empty message'}\n\n${e.details ?? 'Empty stacktrace'}",

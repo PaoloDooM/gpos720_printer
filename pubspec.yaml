@@ -1,6 +1,6 @@
 name: gpos720_printer
 description: "A Flutter plugin to integrate printing in the Gertec GPOS720."
-version: 1.2.0
+version: 1.2.1
 homepage: "https://github.com/PaoloDooM/gpos720_printer"
 
 environment:

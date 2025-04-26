@@ -1,0 +1,2 @@
+-keep class br.com.gertec.** { *; }
+-dontwarn br.com.gertec.**

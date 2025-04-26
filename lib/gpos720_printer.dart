@@ -8,11 +8,11 @@ import 'font_model.dart';
 import 'gpos720_printer_platform_interface.dart';
 
 class Gpos720Printer {
-  final bool finalizarImpressao;
+  final bool finishPrintingAfterEachCommand;
 
   ///Constructor for the [Gpos720Printer] class.
-  ///Parameters: An optional boolean parameter [finalizarImpressao] that calls the [fimImpressao] function after executing a print command. By default, this parameter is false, so it might be necessary to call [fimImpressao] after executing all the desired print commands.
-  Gpos720Printer({this.finalizarImpressao = false});
+  ///Parameters: An optional boolean parameter [finishPrintingAfterEachCommand] that calls the [endPrinting] function after executing a print command. By default, this parameter is false, so it might be necessary to call [endPrinting] after executing all the desired print commands.
+  Gpos720Printer({this.finishPrintingAfterEachCommand = false});
 
   Future<String> getPlatformVersion() {
     return Gpos720PrinterPlatform.instance.getPlatformVersion();
@@ -21,31 +21,31 @@ class Gpos720Printer {
   ///Checks the printer’s status.
   ///Returns: A [PrinterStatus] enum indicating the printer’s status.
   ///Throws: A [PlatformException] or a [MissingPluginException].
-  Future<PrinterStatus> checarImpressora() {
-    return Gpos720PrinterPlatform.instance.checarImpressora();
+  Future<PrinterStatus> checkPrinter() {
+    return Gpos720PrinterPlatform.instance.checkPrinter();
   }
 
   ///Prints all buffered printer commands.
   ///Returns: A [PrinterStatus] enum indicating the printer’s status.
   ///Throws: A [PlatformException] or a [MissingPluginException].
-  Future<PrinterStatus> fimImpressao() {
-    return Gpos720PrinterPlatform.instance.fimImpressao();
+  Future<PrinterStatus> endPrinting() {
+    return Gpos720PrinterPlatform.instance.endPrinting();
   }
 
   ///Adds line breaks to the current printout.
   ///Returns: A [PrinterStatus] enum indicating the printer’s status.
-  ///Parameters: [quantLinhas] An Integer specifying the desired number of line breaks.
+  ///Parameters: [lineCount] An Integer specifying the desired number of line breaks.
   ///Throws: A [PlatformException] or a [MissingPluginException].
-  Future<PrinterStatus> avancaLinha(int quantLinhas) {
+  Future<PrinterStatus> lineFeed(int lineCount) {
     return Gpos720PrinterPlatform.instance
-        .avancaLinha(quantLinhas, finalizarImpressao);
+        .lineFeed(lineCount, finishPrintingAfterEachCommand);
   }
 
   ///Prints text.
   ///Returns: A [PrinterStatus] enum indicating the printer’s status.
   ///Parameters:
   ///
-  ///-[mensagem] A String with the desired text to be printed.
+  ///-[text] A String with the desired text to be printed.
   ///
   ///-[options] (optional) A [TextOptions] specifying if the text will be render as bold, italic or underlined.
   ///
@@ -56,13 +56,13 @@ class Gpos720Printer {
   ///-[align] (optional) An [AlignmentTypes] enum specifying the desired alignment. By default, align will be left.
   ///
   ///Throws: A [PlatformException] or a [MissingPluginException].
-  Future<PrinterStatus> imprimirTexto(String mensagem,
+  Future<PrinterStatus> printText(String text,
       {TextOptions? options,
       int size = defaultFontSize,
       Font? font,
       AlignmentTypes align = AlignmentTypes.left}) {
-    return Gpos720PrinterPlatform.instance.imprimirTexto(
-        mensagem, finalizarImpressao,
+    return Gpos720PrinterPlatform.instance.printText(
+        text, finishPrintingAfterEachCommand,
         options: options, size: size, font: font, align: align);
   }
 
@@ -70,7 +70,7 @@ class Gpos720Printer {
   ///Returns: A [PrinterStatus] enum indicating the printer’s status.
   ///Parameters:
   ///
-  ///-[data] A Uint8List with the raw data of the black and white image.
+  ///-[imageBytes] A Uint8List with the raw data of the black and white image.
   ///
   ///-[width] An Integer specifying the desired width.
   ///
@@ -79,17 +79,18 @@ class Gpos720Printer {
   ///-[align] (optional) An [AlignmentTypes] enum specifying the desired alignment. By default, align will be center.
   ///
   ///Throws: A [PlatformException] or a [MissingPluginException].
-  Future<PrinterStatus> imprimirImagem(Uint8List data, int width, int height,
+  Future<PrinterStatus> printImage(Uint8List imageBytes, int width, int height,
       {AlignmentTypes align = AlignmentTypes.center}) {
-    return Gpos720PrinterPlatform.instance
-        .imprimirImagem(data, width, height, finalizarImpressao, align: align);
+    return Gpos720PrinterPlatform.instance.printImage(
+        imageBytes, width, height, finishPrintingAfterEachCommand,
+        align: align);
   }
 
   ///Apply a binary filter with dithering and print the raw image.
   ///Returns: A [PrinterStatus] enum indicating the printer’s status.
   ///Parameters:
   ///
-  ///-[data] A Uint8List with the raw data of the image.
+  ///-[imageBytes] A Uint8List with the raw data of the image.
   ///
   ///-[width] An Integer specifying the desired width.
   ///
@@ -102,13 +103,13 @@ class Gpos720Printer {
   ///-[ditheringTolerance] (optional) A double representing the tolerance for using dithering to represent colors. The default value is 0.67.
   ///
   ///Throws: A [PlatformException] or a [MissingPluginException].
-  Future<PrinterStatus> imprimirImagemFiltrada(
-      Uint8List data, int width, int height,
+  Future<PrinterStatus> printFilteredImage(
+      Uint8List imageBytes, int width, int height,
       {AlignmentTypes align = AlignmentTypes.center,
       double? blackTolerance,
       double? ditheringTolerance}) {
-    return Gpos720PrinterPlatform.instance.imprimirImagemFiltrada(
-        data, width, height, finalizarImpressao,
+    return Gpos720PrinterPlatform.instance.printFilteredImage(
+        imageBytes, width, height, finishPrintingAfterEachCommand,
         align: align,
         blackTolerance: blackTolerance,
         ditheringTolerance: ditheringTolerance);
@@ -118,54 +119,54 @@ class Gpos720Printer {
   ///Returns: A [PrinterStatus] enum indicating the printer’s status.
   ///Parameters:
   ///
-  ///-[mensagem] A String specifying the desired data on the barcode.
+  ///-[barcode] A String specifying the desired data on the barcode.
   ///
   ///-[width] An Integer specifying the desired width.
   ///
   ///-[height] An Integer specifying the desired height.
   ///
-  ///-[barcodeTypes] A [BarcodeTypes] enum specifying the desired barcode type.
+  ///-[barcodeType] A [BarcodeTypes] enum specifying the desired barcode type.
   ///
   ///Throws: A [PlatformException] or a [MissingPluginException].
-  Future<PrinterStatus> imprimirCodigoDeBarra(
-      String mensagem, int width, int height, BarcodeTypes barcodeType) {
-    return Gpos720PrinterPlatform.instance.imprimirCodigoDeBarra(
-        mensagem, width, height, barcodeType, finalizarImpressao);
+  Future<PrinterStatus> printBarcode(
+      String barcode, int width, int height, BarcodeTypes barcodeType) {
+    return Gpos720PrinterPlatform.instance.printBarcode(
+        barcode, width, height, barcodeType, finishPrintingAfterEachCommand);
   }
 
   ///Prints various types of barcodes, rendering them as images.
   ///Returns: A [PrinterStatus] enum indicating the printer’s status.
   ///Parameters:
   ///
-  ///-[mensagem] A String specifying the desired data on the barcode.
+  ///-[barcode] A String specifying the desired data on the barcode.
   ///
   ///-[width] An Integer specifying the desired width.
   ///
   ///-[height] An Integer specifying the desired height.
   ///
-  ///-[barcodeTypes] A [BarcodeTypes] enum specifying the desired barcode type.
+  ///-[barcodeType] A [BarcodeTypes] enum specifying the desired barcode type.
   ///
   ///Throws: A [PlatformException] or a [MissingPluginException].
-  Future<PrinterStatus> imprimirCodigoDeBarraImg(
-      String mensagem, int width, int height, BarcodeTypes barcodeType) {
-    return Gpos720PrinterPlatform.instance.imprimirCodigoDeBarraImg(
-        mensagem, width, height, barcodeType, finalizarImpressao);
+  Future<PrinterStatus> printBarcodeImage(
+      String barcode, int width, int height, BarcodeTypes barcodeType) {
+    return Gpos720PrinterPlatform.instance.printBarcodeImage(
+        barcode, width, height, barcodeType, finishPrintingAfterEachCommand);
   }
 
   ///Prints all printer functions.
   ///Returns: A [PrinterStatus] enum indicating the printer’s status.
   ///Parameters:
   ///
-  ///-[data] A Uint8List with the raw data of the black and white image.
+  ///-[imageBytes] A Uint8List with the raw data of the black and white image.
   ///
   ///-[width] An Integer specifying the desired width.
   ///
   ///-[height] An Integer specifying the desired height.
   ///
   ///Throws: A [PlatformException] or a [MissingPluginException].
-  Future<PrinterStatus> imprimirTodasFuncoes(
-      Uint8List data, int width, int height) {
-    return Gpos720PrinterPlatform.instance
-        .imprimirTodasFuncoes(data, width, height, finalizarImpressao);
+  Future<PrinterStatus> printAllFunctions(
+      Uint8List imageBytes, int width, int height) {
+    return Gpos720PrinterPlatform.instance.printAllFunctions(
+        imageBytes, width, height, finishPrintingAfterEachCommand);
   }
 }

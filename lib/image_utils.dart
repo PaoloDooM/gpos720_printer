@@ -6,17 +6,17 @@ class ImageUtils {
   ///A method that applies a binary filter with dithering to an image, converting it to black and white while using dithering to represent colors that are not too dark.
   ///Parameters:
   ///
-  ///-[image] A Uint8List representing the image.
+  ///-[imageBytes] A Uint8List representing the image.
   ///
   ///-[blackTolerance] A double representing the tolerance level for using black color. The default value is 0.34.
   ///
   ///-[ditheringTolerance] A double representing the tolerance for using dithering to represent colors. The default value is 0.67.
   ///
   ///Returns: A [Uint8List] with the filtered image.
-  static Future<Uint8List> binaryFilterWithDithering(Uint8List imageData,
+  static Future<Uint8List> binaryFilterWithDithering(Uint8List imageBytes,
       {double? blackTolerance, double? ditheringTolerance}) async {
     final ui.Image image =
-        (await (await ui.instantiateImageCodec(imageData)).getNextFrame())
+        (await (await ui.instantiateImageCodec(imageBytes)).getNextFrame())
             .image;
 
     final Uint8List pixels =

@@ -2,7 +2,7 @@
 enum AlignmentTypes { left, center, right }
 
 extension AlignmentTypesExtension on AlignmentTypes {
-  String get getLabel {
+  String get label {
     switch (this) {
       case AlignmentTypes.left:
         return "LEFT";

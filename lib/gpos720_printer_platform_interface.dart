@@ -30,62 +30,55 @@ abstract class Gpos720PrinterPlatform extends PlatformInterface {
   }
 
   Future<String> getPlatformVersion() {
-    throw UnimplementedError('platformVersion() has not been implemented.');
+    throw UnimplementedError('"platformVersion" has not been implemented.');
   }
 
-  Future<PrinterStatus> checarImpressora() {
-    throw UnimplementedError('checarImpressora() has not been implemented.');
+  Future<PrinterStatus> checkPrinter() {
+    throw UnimplementedError('"checkPrinter" has not been implemented.');
   }
 
-  Future<PrinterStatus> fimImpressao() {
-    throw UnimplementedError('fimImpressao() has not been implemented.');
+  Future<PrinterStatus> endPrinting() {
+    throw UnimplementedError('"endPrinting" has not been implemented.');
   }
 
-  Future<PrinterStatus> avancaLinha(int quantLinhas, bool finalizarImpressao) {
-    throw UnimplementedError(
-        'avancaLinha(int quantLinhas) has not been implemented.');
+  Future<PrinterStatus> lineFeed(int lineCount, bool finishPrinting) {
+    throw UnimplementedError('"lineFeed" has not been implemented.');
   }
 
-  Future<PrinterStatus> imprimirTexto(String mensagem, bool finalizarImpressao,
+  Future<PrinterStatus> printText(String text, bool finishPrinting,
       {TextOptions? options,
       int size = defaultFontSize,
       Font? font,
       AlignmentTypes align = AlignmentTypes.left}) {
-    throw UnimplementedError(
-        'imprimirTexto(String mensagem, TextOptions options, int size, Font font, AlignmentTypes align) has not been implemented.');
+    throw UnimplementedError('"printText" has not been implemented.');
   }
 
-  Future<PrinterStatus> imprimirImagem(
-      Uint8List data, int width, int height, bool finalizarImpressao,
+  Future<PrinterStatus> printImage(
+      Uint8List imageBytes, int width, int height, bool finishPrinting,
       {AlignmentTypes align = AlignmentTypes.center}) {
-    throw UnimplementedError(
-        'imprimirImagem(Uint8List data, int width, int height, AlignmentTypes align) has not been implemented.');
+    throw UnimplementedError('"printImage" has not been implemented.');
   }
 
-  Future<PrinterStatus> imprimirImagemFiltrada(
-      Uint8List data, int width, int height, bool finalizarImpressao,
+  Future<PrinterStatus> printFilteredImage(
+      Uint8List imageBytes, int width, int height, bool finishPrinting,
       {AlignmentTypes align = AlignmentTypes.center,
       double? blackTolerance,
       double? ditheringTolerance}) {
-    throw UnimplementedError(
-        'imprimirImagemFiltrada(Uint8List data, int width, int height, AlignmentTypes align, double? blackTolerance, double? ditheringTolerance) has not been implemented.');
+    throw UnimplementedError('"printFilteredImage" has not been implemented.');
   }
 
-  Future<PrinterStatus> imprimirCodigoDeBarra(String mensagem, int width,
-      int height, BarcodeTypes barcodeType, bool finalizarImpressao) {
-    throw UnimplementedError(
-        'imprimirCodigoDeBarra(String mensagem, int width, int height, BarcodeTypes barcodeType) has not been implemented.');
+  Future<PrinterStatus> printBarcode(String barcode, int width, int height,
+      BarcodeTypes barcodeType, bool finishPrinting) {
+    throw UnimplementedError('"printBarcode" has not been implemented.');
   }
 
-  Future<PrinterStatus> imprimirCodigoDeBarraImg(String mensagem, int width,
-      int height, BarcodeTypes barcodeType, bool finalizarImpressao) {
-    throw UnimplementedError(
-        'imprimirCodigoDeBarraImg(String mensagem, int width, int height, BarcodeTypes barcodeType) has not been implemented.');
+  Future<PrinterStatus> printBarcodeImage(String barcode, int width, int height,
+      BarcodeTypes barcodeType, bool finishPrinting) {
+    throw UnimplementedError('"printBarcodeImage" has not been implemented.');
   }
 
-  Future<PrinterStatus> imprimirTodasFuncoes(
-      Uint8List data, int width, int height, bool finalizarImpressao) {
-    throw UnimplementedError(
-        'imprimirTodasFuncoes(Uint8List data, int width, int height) has not been implemented.');
+  Future<PrinterStatus> printAllFunctions(
+      Uint8List imageBytes, int width, int height, bool finishPrinting) {
+    throw UnimplementedError('"printAllFunctions" has not been implemented.');
   }
 }

@@ -26,7 +26,7 @@
 
 ## 0.0.6
 
-* Fixes invalid arguments in method <code>imprimirTexto</code>.
+* Fixes invalid arguments in method <code>printText</code>.
 
 ## 0.0.6+1
 
@@ -43,7 +43,7 @@
 ## 0.0.7
 
 * Reconfiguration of default values.
-* Refactor in <code>getLabel</code> methods.
+* Refactor in <code>label</code> & <code>message</code> getters.
 * Updated README.md.
 
 ## 0.0.7+1
@@ -56,12 +56,12 @@
 
 ## 0.0.8
 
-* Refactor from method <code>bool PrinterStatus.isImpressoraOK()</code> to getter <code>bool PrinterStatus.isImpressoraOK</code>.
+* Refactor from method <code>bool PrinterStatus.isPrinterOk()</code> to getter <code>bool PrinterStatus.isPrinterOk</code>.
 
 ## 0.0.9
 
-* Add the method `Future<PrinterStatus> imprimirCodigoDeBarraImg(String mensagem, int width, int height, BarcodeTypes barcodeType)`.
-* Remove the method `Future<PrinterStatus> fimImpressao()` and call it after every printer command.
+* Add the method `Future<PrinterStatus> printBarcodeImage(String barcode, int width, int height, BarcodeTypes barcodeType)`.
+* Remove the method `Future<PrinterStatus> endPrinting()` and call it after every printer command.
 * Updated README.md and example.
 
 ## 0.0.10
@@ -97,4 +97,9 @@
 
 ## 1.2.0
 
-* Adds the boolean `finalizarImpresao` parameter to the `Gpos720Printer` constructor to determine if `fimImpressao` should be called after every print command.
+* Adds the boolean `finishPrintingAfterEachCommand` parameter to the `Gpos720Printer` constructor to determine if `endPrinting` should be called after every print command.
+
+## 1.2.1
+
+* Renamed all method names from Portuguese to English for consistency.
+* Added ProGuard rules to keep important classes safe from removal or obfuscation during minification to ensure correct runtime behavior.
