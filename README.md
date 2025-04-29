@@ -26,7 +26,7 @@ Gertec GPOS720</a>.
 
 ## Requirements
 
-* <b>Android minimum sdk version</b> >= 22.
+* <b>Android SDK version</b> >= 22.
 * <b>Flutter version</b> >= 2.0.0.
 * <b>Dart version</b> >= 2.12.0.
 

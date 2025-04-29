@@ -103,3 +103,7 @@
 
 * Renamed all method names from Portuguese to English for consistency.
 * Added ProGuard rules to keep important classes safe from removal or obfuscation during minification to ensure correct runtime behavior.
+
+## 1.2.1+1
+
+* Readme fix.
