@@ -12,17 +12,17 @@ Gertec GPOS720</a>.
 
 ## Features
 
-| Methods                  | Implemented |
-|:-------------------------|:-----------:|
-| checkPrinter         |     ✔️      |
-| lineFeed              |     ✔️      |
-| printText            |     ✔️      |
-| printImage           |     ✔️      |
-| printFilteredImage   |     ✔️      |
-| printBarcode    |     ✔️      |
-| printBarcodeImage |     ✔️      |
-| printAllFunctions     |     ✔️      |
-| imprimirEscPos           |     ❌️      |
+| Methods            | Implemented |
+|:-------------------|:-----------:|
+| checkPrinter       |     ✔️      |
+| lineFeed           |     ✔️      |
+| printText          |     ✔️      |
+| printImage         |     ✔️      |
+| printFilteredImage |     ✔️      |
+| printBarcode       |     ✔️      |
+| printBarcodeImage  |     ✔️      |
+| printAllFunctions  |     ✔️      |
+| printEscPos        |     ❌️      |
 
 ## Requirements
 
@@ -289,10 +289,9 @@ click here</a> to view the implementation.
 
 #### <code>PrinterStatus</code>
 
-An enum to indicate the current status of the
-printer, it can be parsed to a String using
-the "message"
-getter. <a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/lib/printer_status.dart">
+An enum to indicate the current status of the printer. The "isPrinterOk" getter returns "true" only 
+if the printer is functioning properly without any issues. 
+<a href="https://github.com/PaoloDooM/gpos720_printer/blob/master/lib/printer_status.dart">
 Click here</a> to view the implementation.
 
 ### ImageUtils:

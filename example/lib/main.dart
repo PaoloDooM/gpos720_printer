@@ -338,7 +338,7 @@ class _ExampleState extends State<Example> with SingleTickerProviderStateMixin {
           child: const Text("Print"),
           onPressed: () async {
             try {
-              _dialogBuilder(context, (await method()).message);
+              _dialogBuilder(context, printerStatusToMessage(await method()));
             } on PlatformException catch (e) {
               _dialogBuilder(context,
                   "${e.code}\n\n${e.message ?? 'Empty message'}\n\n${e.details ?? 'Empty stacktrace'}",
@@ -406,5 +406,20 @@ class _ExampleState extends State<Example> with SingleTickerProviderStateMixin {
       return byteData.buffer.asUint8List();
     }
     throw "The image could not be converted to png";
+  }
+
+  String printerStatusToMessage(PrinterStatus printerStatus) {
+    switch (printerStatus) {
+      case PrinterStatus.printerOk:
+        return "Printer OK";
+      case PrinterStatus.outOfPaper:
+        return "Out of paper";
+      case PrinterStatus.overheat:
+        return "Overheat";
+      case PrinterStatus.unknownError:
+        return "Unknown error";
+      case PrinterStatus.unknownStatus:
+        return "Unknown status";
+    }
   }
 }

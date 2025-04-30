@@ -1,4 +1,4 @@
-///An enum to indicate the current status of the printer, it can be parsed to a String using the [message] getter.
+///An enum to indicate the current status of the printer. The `isPrinterOk` getter returns `true` only if the printer is functioning properly without any issues.
 enum PrinterStatus {
   printerOk,
   outOfPaper,
@@ -8,25 +8,24 @@ enum PrinterStatus {
 }
 
 extension PrinterStatusExtension on PrinterStatus {
-  String get message {
+  String get label {
     switch (this) {
       case PrinterStatus.printerOk:
-        return 'Printer OK';
+        return 'printerOk';
       case PrinterStatus.outOfPaper:
-        return 'Out of paper';
+        return 'outOfPaper';
       case PrinterStatus.overheat:
-        return 'Overheat';
+        return 'overheat';
       case PrinterStatus.unknownError:
-        return 'Unknown error';
+        return 'unknownError';
       case PrinterStatus.unknownStatus:
-        return 'Unknown status';
+        return 'unknownStatus';
       default:
         throw UnimplementedError("Not implemented.");
     }
   }
 
   bool get isPrinterOk {
-    return this ==
-        PrinterStatus.printerOk; // Checks if the status is "printerOk"
+    return this == PrinterStatus.printerOk;
   }
 }
